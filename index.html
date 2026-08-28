@@ -1,101 +1,261 @@
-EarnSmart Nigeria — Jobs
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EarnSmart Nigeria — Jobs</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f4f6fa;color:#102a43}header{background:#092642;color:#fff;padding:18px}.nav{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between}.brand{font-size:24px;font-weight:800}.nav button,button,.apply{background:#092642;color:#fff;border:0;border-radius:10px;padding:12px 16px;margin:5px 3px;text-decoration:none;font-weight:bold;cursor:pointer}.nav button{background:#fff;color:#092642}.secondary{background:#e9eef3;color:#102a43}.danger{background:#b42318}.success{background:#16794c}.hidden{display:none!important}main{max-width:1100px;margin:auto;padding:20px}.hero{background:#092642;color:#fff;border-radius:22px;padding:34px 24px;margin-bottom:20px}.hero h1{font-size:38px;margin:0 0 10px}.hero p{font-size:18px;line-height:1.5;margin:0 0 20px}.hero .cta{display:inline-block;background:#fff;color:#092642;padding:13px 18px;border-radius:10px;text-decoration:none;font-weight:bold}.card{background:#fff;padding:20px;border-radius:18px;margin:18px 0;box-shadow:0 5px 18px #0001}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{background:#fff;padding:18px;border-radius:16px;text-align:center;box-shadow:0 5px 18px #0001}.stat strong{display:block;font-size:28px}.toolbar{display:grid;grid-template-columns:2fr 1fr;gap:10px}input,select,textarea{width:100%;padding:13px;margin:6px 0;border:1px solid #ccd6e0;border-radius:10px;font-size:16px;font-family:inherit}textarea{min-height:100px}.job{border:1px solid #e1e7ee;border-radius:14px;padding:17px;margin:12px 0;overflow:hidden}.job h3{margin-top:0;overflow-wrap:anywhere}.badge{display:inline-block;background:#e7f7ef;color:#16794c;padding:5px 8px;border-radius:20px;font-size:12px;margin-right:4px}.badge.off{background:#fff0ee;color:#b42318}.muted{color:#667085}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.actions button,.actions a{margin:0!important;min-height:44px;display:inline-flex;align-items:center;justify-content:center;white-space:normal;text-align:center;line-height:1.2}.adminbar{display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid #e1e7ee;padding-bottom:12px;margin-bottom:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.loginbox{max-width:500px;margin:35px auto}.footer{text-align:center;color:#667085;padding:25px}@media(max-width:650px){.hero h1{font-size:30px}.stats,.toolbar{grid-template-columns:1fr}.brand{font-size:20px}}</style></head><body><header><div class="nav"><div class="brand">🇳🇬 EarnSmart Nigeria</div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button onclick="showApplicantAccount()">👤 Applicant Account</button><button onclick="showAdminLogin()">⚙️ Admin</button></div></div></header><main><section id="homeView"><div class="hero"><h1>Find genuine opportunities. Earn smarter.</h1><p>Discover verified jobs and opportunities from their original sources. EarnSmart Nigeria helps you find opportunities without charging applicants to access jobs.</p><a class="cta" href="#jobs">💼 Browse Verified Jobs</a></div><div class="stats"><div class="stat"><strong id="totalCount">0</strong>Verified Jobs</div><div class="stat"><strong id="remoteCount">0</strong>Remote Jobs</div><div class="stat"><strong id="categoryCount">0</strong>Categories</div></div><section id="jobs" class="card"><h2>💼 Verified Jobs</h2><p class="muted">Apply through the original job source. EarnSmart does not charge applicants to access jobs.</p><div class="toolbar">
+<input id="search" placeholder="🔎 Search jobs, companies or categories..." oninput="renderPublic()">
+<select id="cat" onchange="renderPublic()"><option value="">All categories</option></select>
+<select id="loc" onchange="renderPublic()"><option value="">📍 All locations</option></select>
+<select id="remoteOnly" onchange="renderPublic()">
+<option value="">🏠 All work types</option>
+<option value="true">Remote only</option>
+<option value="false">On-site / Hybrid</option>
+</select>
+</div><div style="display:flex;justify-content:flex-end;margin:10px 0"><button class="secondary" onclick="showSavedJobs()">⭐ Saved Jobs (<span id="savedCount">0</span>)</button></div><div id="savedJobsBox" class="card hidden"></div><div id="list">Loading jobs...</div></section></section><section id="applicantView" class="hidden"><div class="card loginbox">
+<h2>👤 Applicant Account</h2>
+<p class="muted">Create an account or log in to your EarnSmart Nigeria account.</p>
+<input id="applicantEmail" type="email" placeholder="Email address">
+<input id="applicantPassword" type="password" placeholder="Password (minimum 6 characters)">
+<div class="actions">
+<button onclick="applicantSignUp()">📝 Create Account</button>
+<button class="secondary" onclick="applicantLogin()">🔐 Log In</button>
+</div>
+<div id="applicantAccountStatus" class="muted"></div>
+<div id="applicantLoggedIn" class="hidden">
+<hr>
+<p><b>Account:</b> <span id="applicantEmailDisplay"></span></p>
+<button onclick="showHome()">💼 Browse Jobs</button>
+<button class="secondary" onclick="applicantLogout()">🚪 Log Out</button>
+</div>
+<button class="secondary" onclick="showHome()">Back to Jobs</button>
+</div></section><section id="adminLoginView" class="hidden"><div class="card loginbox"><h2>🔐 Admin Login</h2><p class="muted">Only your approved administrator account can manage jobs.</p><input id="email" type="email" placeholder="Admin email"><input id="password" type="password" placeholder="Password"><button onclick="login()">Log In</button><button class="secondary" onclick="showHome()">Back to Jobs</button><p id="msg" class="muted"></p></div></section><section id="adminView" class="hidden"><div class="card"><div class="adminbar"><button onclick="showHome()">💼 Public Jobs</button><button class="secondary" onclick="logout()">Log Out</button></div><h2>⚙️ EarnSmart Admin Dashboard</h2><p class="muted">Add, edit, verify, activate or delete jobs.</p><div id="adminMsg" class="muted"></div><div class="card"><h3 id="formTitle">➕ Add Job</h3><div class="grid"><input id="jtitle" placeholder="Job title *"><input id="jcompany" placeholder="Company"><input id="jcategory" placeholder="Category"><input id="jlocation" placeholder="Location"><input id="jsource" placeholder="Source name *"><input id="jsourceurl" placeholder="Source URL *"><input id="jappurl" placeholder="Application URL *"><input id="jsalary" placeholder="Salary / pay"><select id="jremote"><option value="true">Remote</option><option value="false">On-site / Hybrid</option></select></div><textarea id="jdesc" placeholder="Job description"></textarea><label><input id="jverified" type="checkbox" style="width:auto"> Verified</label><label><input id="jactive" type="checkbox" style="width:auto" checked> Active</label><br><button onclick="saveJob()">Save Job</button><button class="secondary" onclick="resetForm()">Clear</button></div><div class="card"><h3>📥 Bulk Add Jobs</h3><p class="muted">Paste CSV data below. The first row must contain these columns:</p><p class="muted"><b>title, company, category, location, source_name, source_url, application_url, salary_text, remote, description, verified, active</b></p><textarea id="bulkJobs" style="min-height:240px" placeholder="title,company,category,location,source_name,source_url,application_url,salary_text,remote,description,verified,active
+Administrator,Example Company,Admin & Office,Nigeria,Jobberman,https://example.com/job,https://example.com/app,₦300,000,true,Remote administrator opportunity,false,true"></textarea><div class="actions"><button onclick="importBulkJobs()">📥 Import Jobs</button><button class="secondary" onclick="loadBulkTemplate()">📋 Load Template</button><button class="secondary" onclick="clearBulk()">Clear</button></div><p id="bulkMsg" class="muted"></p></div><div class="card"><h3>📋 All Jobs</h3><div id="adminJobs">Loading...</div></div></div></section>
+<div id="jobModal" class="hidden" style="position:fixed;inset:0;background:#0008;z-index:999;padding:18px;overflow:auto">
+  <div style="max-width:760px;margin:35px auto;background:#fff;border-radius:20px;padding:24px;position:relative">
+    <button class="secondary" onclick="closeJob()" style="position:absolute;right:16px;top:16px">✕ Close</button>
+    <div id="jobDetails"></div>
+  </div>
+</div>
 
+<div class="footer">EarnSmart Nigeria 🇳🇬 · Learn. Earn. Grow.</div></main><script>
+const db=supabase.createClient('https://nvifxcudispvdgatrunk.supabase.co','sb_publishable_wCFkTXL6MJVSHxQr5geRwg_OEndNw_F');
 
-🇳🇬 EarnSmart Nigeria
+function showApplicantAccount(){
+  $('homeView').classList.add('hidden');
+  $('adminLoginView').classList.add('hidden');
+  $('adminView').classList.add('hidden');
+  $('applicantView').classList.remove('hidden');
+  refreshApplicantAccount();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+async function refreshApplicantAccount(){
+  const r=await db.auth.getUser();
+  const user=r.data?.user;
+  if(user){
+    $('applicantEmailDisplay').textContent=user.email||'';
+    $('applicantLoggedIn').classList.remove('hidden');
+  }else{
+    $('applicantLoggedIn').classList.add('hidden');
+  }
+}
+async function applicantSignUp(){
+  const email=$('applicantEmail').value.trim();
+  const password=$('applicantPassword').value;
+  if(!email||!password){$('applicantAccountStatus').textContent='Please enter your email and password.';return}
+  if(password.length<6){$('applicantAccountStatus').textContent='Password must be at least 6 characters.';return}
+  const r=await db.auth.signUp({email,password});
+  if(r.error){$('applicantAccountStatus').textContent=r.error.message;return}
+  $('applicantAccountStatus').textContent=r.data.session?'Account created successfully.':'Account created. Please check your email to confirm your account.';
+  await refreshApplicantAccount();
+}
+async function applicantLogin(){
+  const email=$('applicantEmail').value.trim();
+  const password=$('applicantPassword').value;
+  if(!email||!password){$('applicantAccountStatus').textContent='Please enter your email and password.';return}
+  const r=await db.auth.signInWithPassword({email,password});
+  if(r.error){$('applicantAccountStatus').textContent=r.error.message;return}
+  $('applicantAccountStatus').textContent='Login successful.';
+  await refreshApplicantAccount();
+}
+async function applicantLogout(){
+  const r=await db.auth.signOut();
+  $('applicantAccountStatus').textContent=r.error?'Logout error: '+r.error.message:'You have been logged out.';
+  await refreshApplicantAccount();
+}
+let jobs=[],editingId=null,isAdmin=false;const $=id=>document.getElementById(id);function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}function safe(s){try{let u=new URL(s);return /^https?:$/.test(u.protocol)?u.href:'#'}catch{return '#'}}function showHome(){ $('homeView').classList.remove('hidden');$('applicantView').classList.add('hidden');$('adminLoginView').classList.add('hidden');$('adminView').classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'})}function showAdminLogin(){ $('homeView').classList.add('hidden');$('applicantView').classList.add('hidden');$('adminView').classList.add('hidden');$('adminLoginView').classList.remove('hidden');$('email').focus()}async function login(){let r=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});$('msg').textContent=r.error?r.error.message:'';if(!r.error){await checkAdmin();if(isAdmin){$('adminLoginView').classList.add('hidden');$('adminView').classList.remove('hidden');await loadAdmin()}else{$('msg').textContent='This account is not approved as an EarnSmart admin.';await db.auth.signOut()}}}async function logout(){await db.auth.signOut();isAdmin=false;showHome()}async function checkAdmin(){let r=await db.auth.getUser();if(r.error||!r.data.user){isAdmin=false;return}let x=await db.from('admin_users').select('user_id').eq('user_id',r.data.user.id).maybeSingle();isAdmin=!x.error&&!!x.data}
+function getSavedIds(){
+  try{return JSON.parse(localStorage.getItem('earnsmart_saved_jobs')||'[]')}catch{return[]}
+}
+function updateSavedCount(){
+  const el=$('savedCount');
+  if(el)el.textContent=getSavedIds().length;
+}
+function isSaved(id){return getSavedIds().includes(id)}
+function toggleSave(id){
+  let ids=getSavedIds();
+  if(ids.includes(id)) ids=ids.filter(x=>x!==id);
+  else ids.push(id);
+  localStorage.setItem('earnsmart_saved_jobs',JSON.stringify(ids));
+  updateSavedCount();
+  openJob(id);
+}
+function copyJobLink(url){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(()=>alert('Job link copied. You can paste it into WhatsApp or anywhere else.'));
+  }else{
+    prompt('Copy this job link:',url);
+  }
+}
+function reportJob(title){
+  const subject=encodeURIComponent('Report job on EarnSmart Nigeria: '+title);
+  const body=encodeURIComponent('I would like to report this job because:');
+  location.href='mailto:earnsmartnigeria@gmail.com?subject='+subject+'&body='+body;
+}
+function showSavedJobs(){
+  const box=$('savedJobsBox');
+  if(!box)return;
+  const ids=getSavedIds();
+  const saved=(window.publicJobs||jobs).filter(x=>ids.includes(x.id));
+  box.classList.remove('hidden');
+  box.innerHTML='<h3>⭐ Saved Jobs</h3>'+
+    (saved.length?saved.map(x=>`<div class="job"><h3>${esc(x.title)}</h3><p><b>${esc(x.company||'')}</b> · ${esc(x.location||'Remote')}</p><button onclick="openJob('${x.id}')">👁️ View</button><button class="secondary" onclick="toggleSave('${x.id}')">Remove</button></div>`).join(''):'<p class="muted">You have not saved any jobs yet.</p>');
+  box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function openJob(id){
+  const x=jobs.find(j=>j.id===id);
+  if(!x)return;
+  const shareUrl=location.origin+location.pathname+'?job='+encodeURIComponent(id);
+  const sourceUrl=safe(x.source_url);
+  const applicationUrl=safe(x.application_url);
+  const saved=isSaved(id);
+  $('jobDetails').innerHTML=`
+    <h2 style="font-size:30px;margin-top:35px">${esc(x.title)}</h2>
+    <p><b>${esc(x.company||'Company not stated')}</b> · ${esc(x.location||'Remote')}</p>
+    <p><span class="badge">✓ Verified</span>
+    ${x.remote?'<span class="badge">Remote</span>':'<span class="badge off">On-site / Hybrid</span>'}</p>
+    ${x.salary_text?`<h3>💰 Pay</h3><p>${esc(x.salary_text)}</p>`:''}
+    <h3>📝 Job Description</h3>
+    <p style="white-space:pre-line;line-height:1.6">${esc(x.description||'No detailed description provided.')}</p>
+    <h3>📌 Job Source</h3>
+    <p>${esc(x.source_name||'Original source')}</p>
+    <div class="actions">
+      <a class="secondary" style="display:inline-block" target="_blank" rel="noopener" href="${sourceUrl}">🔗 Open Source Listing</a>
+      <button class="apply" onclick="window.open('${applicationUrl}','_blank','noopener')">🚀 APPLY NOW</button>
+      <button class="secondary" onclick="shareJob('${esc(x.title)}','${shareUrl}')">📤 Share Job</button>
+      <button class="secondary" onclick="copyJobLink('${shareUrl}')">📋 Copy Link</button>
+      <button class="secondary" onclick="toggleSave('${x.id}')">${saved?'⭐ Saved':'☆ Save Job'}</button>
+      <button class="danger" onclick="reportJob('${esc(x.title)}')">⚠️ Report</button>
+    </div>
+    <p class="muted" style="margin-top:18px">EarnSmart Nigeria does not charge applicants to access jobs. Always confirm the opportunity on the original source before applying.</p>
+  `;
+  $('jobModal').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+}
 
-👤 Applicant Account
+function closeJob(){
+  updateSavedCount();
+  $('jobModal').classList.add('hidden');
+  document.body.style.overflow='';
+}
 
-⚙️ Admin
+async function shareJob(title,url){
+  try{
+    if(navigator.share){
+      await navigator.share({title:'EarnSmart Nigeria - '+title,text:'Check out this job on EarnSmart Nigeria',url});
+    }else{
+      await navigator.clipboard.writeText(url);
+      alert('Job link copied. You can paste it into WhatsApp or any social app.');
+    }
+  }catch(e){}
+}
 
-Find genuine opportunities. Earn smarter.
+function openJobFromUrl(){
+  const id=new URLSearchParams(location.search).get('job');
+  if(id && jobs.some(j=>j.id===id)) openJob(id);
+}
 
-Discover verified jobs and opportunities from their original sources.
-EarnSmart Nigeria helps you find opportunities without charging
-applicants to access jobs.
+async function loadPublic(){
+  let r=await db.from('jobs').select('*').eq('active',true).eq('verified',true).order('created_at',{ascending:false});
+  if(r.error){$('list').textContent='Jobs database error: '+r.error.message;return}
+  window.publicJobs=r.data||[];
+  jobs=window.publicJobs.slice();
 
-💼 Browse Verified Jobs
+  let cats=[...new Set(jobs.map(x=>x.category).filter(Boolean))].sort();
+  let locs=[...new Set(jobs.map(x=>x.location).filter(Boolean))].sort();
 
-0Verified Jobs
+  $('cat').innerHTML='<option value="">All categories</option>'+cats.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join('');
+  $('loc').innerHTML='<option value="">📍 All locations</option>'+locs.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join('');
 
-0Remote Jobs
+  $('totalCount').textContent=jobs.length;
+  $('remoteCount').textContent=jobs.filter(x=>x.remote).length;
+  $('categoryCount').textContent=cats.length;
 
-0Categories
+  updateSavedCount();
+  renderPublic();
+  openJobFromUrl();
+}
 
-💼 Verified Jobs
+function renderPublic(){
+  let q=$('search').value.toLowerCase().trim();
+  let c=$('cat').value;
+  let l=$('loc').value;
+  let ro=$('remoteOnly').value;
 
-Apply through the original job source. EarnSmart does not charge
-applicants to access jobs.
+  let a=(window.publicJobs||jobs).filter(x=>
+    (!c||x.category===c)&&
+    (!l||x.location===l)&&
+    (!ro||(ro==='true'?!!x.remote:!x.remote))&&
+    (!q||[x.title,x.company,x.description,x.category,x.location].join(' ').toLowerCase().includes(q))
+  );
 
-All categories 📍 All locations 🏠 All work types Remote only On-site /
-Hybrid
+  $('list').innerHTML=a.length?a.map(x=>`<article class="job"><h3>${esc(x.title)}</h3><span class="badge">✓ Verified</span>${x.remote?'<span class="badge">Remote</span>':''}<p><b>${esc(x.company||'Company not stated')}</b> · ${esc(x.location||'Remote')}</p><p>${esc(x.description||'')}</p>${x.salary_text?`<p><b>Pay:</b> ${esc(x.salary_text)}</p>`:''}<p class="muted">Source: ${esc(x.source_name)}</p><div class="actions"><button onclick="openJob('${x.id}')">👁️ View Job Details</button><a class="apply" target="_blank" rel="noopener" href="${safe(x.application_url)}">🚀 Apply at original source ↗</a></div></article>`).join(''):'<p class="muted">No matching verified jobs found.</p>';
+}
 
-⭐ Saved Jobs (0)
-
-Loading jobs...
-
-👤 Applicant Account
-
-Create an account or log in to your EarnSmart Nigeria account.
-
-📝 Create Account
-
-🔐 Log In
-
-------------------------------------------------------------------------
-
-Account:
-
-💼 Browse Jobs
-
-🚪 Log Out
-
-Back to Jobs
-
-🔐 Admin Login
-
-Only your approved administrator account can manage jobs.
-
-Log In
-
-Back to Jobs
-
-💼 Public Jobs
-
-Log Out
-
-⚙️ EarnSmart Admin Dashboard
-
-Add, edit, verify, activate or delete jobs.
-
-➕ Add Job
-
-RemoteOn-site / Hybrid
-
-Verified
-
-Active
-
-Save Job
-
-Clear
-
-📥 Bulk Add Jobs
-
-Paste CSV data below. The first row must contain these columns:
-
-title, company, category, location, source_name, source_url,
-application_url, salary_text, remote, description, verified, active
-
-📥 Import Jobs
-
-📋 Load Template
-
-Clear
-
-📋 All Jobs
-
-Loading...
-
-✕ Close
-
-EarnSmart Nigeria 🇳🇬 · Learn. Earn. Grow.
+async function loadAdmin(){if(!isAdmin)return;let r=await db.from('jobs').select('*').order('created_at',{ascending:false});if(r.error){$('adminJobs').textContent=r.error.message;return}jobs=r.data||[];$('adminJobs').innerHTML=jobs.length?jobs.map(x=>`<article class="job"><h3>${esc(x.title)}</h3><p><b>${esc(x.company||'')}</b> · ${esc(x.category||'')} · ${esc(x.location||'')}</p><p class="muted">${esc(x.salary_text||'')}</p><span class="badge ${x.verified?'':'off'}">${x.verified?'✓ Verified':'Not verified'}</span><span class="badge ${x.active?'':'off'}">${x.active?'Active':'Inactive'}</span><br><button onclick="editJob('${x.id}')">✏️ Edit</button><button class="success" onclick="toggleVerified('${x.id}',${!x.verified})">${x.verified?'Unverify':'Verify'}</button><button class="secondary" onclick="toggleActive('${x.id}',${!x.active})">${x.active?'Deactivate':'Activate'}</button><button class="danger" onclick="deleteJob('${x.id}')">🗑️ Delete</button></article>`).join(''):'<p class="muted">No jobs yet.</p>'}function resetForm(){editingId=null;$('formTitle').textContent='➕ Add Job';['jtitle','jcompany','jcategory','jlocation','jsource','jsourceurl','jappurl','jsalary','jdesc'].forEach(id=>$(id).value='');$('jremote').value='true';$('jverified').checked=false;$('jactive').checked=true}function editJob(id){let x=jobs.find(j=>j.id===id);if(!x)return;editingId=id;$('formTitle').textContent='✏️ Edit Job';$('jtitle').value=x.title||'';$('jcompany').value=x.company||'';$('jcategory').value=x.category||'';$('jlocation').value=x.location||'';$('jsource').value=x.source_name||'';$('jsourceurl').value=x.source_url||'';$('jappurl').value=x.application_url||'';$('jsalary').value=x.salary_text||'';$('jremote').value=String(x.remote);$('jdesc').value=x.description||'';$('jverified').checked=!!x.verified;$('jactive').checked=!!x.active;window.scrollTo({top:0,behavior:'smooth'})}async function saveJob(){if(!isAdmin)return;let p={title:$('jtitle').value.trim(),company:$('jcompany').value.trim(),description:$('jdesc').value.trim(),category:$('jcategory').value.trim(),location:$('jlocation').value.trim(),remote:$('jremote').value==='true',source_name:$('jsource').value.trim(),source_url:$('jsourceurl').value.trim(),application_url:$('jappurl').value.trim(),salary_text:$('jsalary').value.trim(),verified:$('jverified').checked,active:$('jactive').checked};if(!p.title||!p.source_name||!p.source_url||!p.application_url){$('adminMsg').textContent='Please fill all fields marked *.';return}let r=editingId?await db.from('jobs').update(p).eq('id',editingId):await db.from('jobs').insert(p);$('adminMsg').textContent=r.error?r.error.message:'Saved successfully.';if(!r.error){resetForm();await loadAdmin();await loadPublic()}}
+function parseCSV(text){
+  const rows=[];let row=[],cell='',quoted=false;
+  for(let i=0;i<text.length;i++){const ch=text[i],next=text[i+1];
+    if(ch==='"'&&quoted&&next==='"'){cell+='"';i++;continue}
+    if(ch==='"'){quoted=!quoted;continue}
+    if(ch===','&&!quoted){row.push(cell);cell='';continue}
+    if((ch==='\n'||ch==='\r')&&!quoted){if(ch==='\r'&&next==='\n')i++;row.push(cell);cell='';if(row.some(v=>v.trim()!=='')){rows.push(row)}row=[];continue}
+    cell+=ch;
+  }
+  if(cell!==''||row.length){row.push(cell);if(row.some(v=>v.trim()!==''))rows.push(row)}
+  return rows;
+}
+function csvBool(v,def=false){const x=String(v??'').trim().toLowerCase();if(['true','yes','1','y'].includes(x))return true;if(['false','no','0','n'].includes(x))return false;return def}
+function loadBulkTemplate(){
+  $('bulkJobs').value='title,company,category,location,source_name,source_url,application_url,salary_text,remote,description,verified,active\nAdministrator,Example Company,Admin & Office,Nigeria,Jobberman,https://example.com/job,https://example.com/app,"₦300,000 - ₦350,000",true,"Remote administrator opportunity",false,true';
+  $('bulkMsg').textContent='Template loaded. Replace the example row(s) with your jobs.';
+}
+function clearBulk(){$('bulkJobs').value='';$('bulkMsg').textContent=''}
+async function importBulkJobs(){
+  if(!isAdmin)return;
+  const text=$('bulkJobs').value.trim();
+  if(!text){$('bulkMsg').textContent='Paste CSV data first.';return}
+  const rows=parseCSV(text);
+  if(rows.length<2){$('bulkMsg').textContent='Please include a header row and at least one job.';return}
+  const headers=rows[0].map(x=>x.trim().toLowerCase());
+  const required=['title','source_name','source_url','application_url'];
+  const missing=required.filter(k=>!headers.includes(k));
+  if(missing.length){$('bulkMsg').textContent='Missing required columns: '+missing.join(', ');return}
+  const idx=k=>headers.indexOf(k);
+  const existing=new Set((jobs||[]).map(x=>String(x.source_url||'').trim()).filter(Boolean));
+  const payload=[],errors=[],seen=new Set();
+  rows.slice(1).forEach((r,n)=>{
+    const get=k=>String(r[idx(k)]??'').trim();
+    const title=get('title'),source=get('source_name'),sourceUrl=get('source_url'),appUrl=get('application_url');
+    if(!title||!source||!sourceUrl||!appUrl){errors.push('Row '+(n+2)+': missing title/source/source URL/application URL');return}
+    if(existing.has(sourceUrl)||seen.has(sourceUrl)){errors.push('Row '+(n+2)+': duplicate source URL skipped');return}
+    seen.add(sourceUrl);
+    payload.push({title,company:get('company'),category:get('category'),location:get('location'),source_name:source,source_url:sourceUrl,application_url:appUrl,salary_text:get('salary_text'),remote:csvBool(get('remote'),true),description:get('description'),verified:csvBool(get('verified'),false),active:csvBool(get('active'),true)});
+  });
+  if(!payload.length){$('bulkMsg').textContent='No new valid jobs to import. '+errors.join(' | ');return}
+  let added=0;
+  for(let i=0;i<payload.length;i+=50){
+    const batch=payload.slice(i,i+50);const r=await db.from('jobs').insert(batch);
+    if(r.error){$('bulkMsg').textContent='Import stopped after '+added+' jobs: '+r.error.message;return}
+    added+=batch.length;
+  }
+  $('bulkMsg').textContent='Successfully imported '+added+' job(s).'+(errors.length?' Skipped: '+errors.length+'.':'');
+  $('bulkJobs').value='';
+  await loadAdmin();await loadPublic();
+}
+async function toggleVerified(id,v){let r=await db.from('jobs').update({verified:v}).eq('id',id);$('adminMsg').textContent=r.error?r.error.message:'Updated.';await loadAdmin();await loadPublic()}async function toggleActive(id,v){let r=await db.from('jobs').update({active:v}).eq('id',id);$('adminMsg').textContent=r.error?r.error.message:'Updated.';await loadAdmin();await loadPublic()}async function deleteJob(id){if(!confirm('Delete this job?'))return;let r=await db.from('jobs').delete().eq('id',id);$('adminMsg').textContent=r.error?r.error.message:'Job deleted.';await loadAdmin();await loadPublic()}loadPublic();</script></body></html>
