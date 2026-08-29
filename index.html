@@ -20,6 +20,28 @@
 <div id="applicantLoggedIn" class="hidden">
 <hr>
 <p><b>Account:</b> <span id="applicantEmailDisplay"></span></p>
+<div class="card" style="margin-top:16px">
+<h3>👤 My Applicant Profile</h3>
+<p class="muted">Complete your profile so your EarnSmart account is ready for future application features.</p>
+<div class="grid">
+<input id="profileName" placeholder="Full name">
+<input id="profilePhone" type="tel" placeholder="Phone number">
+<input id="profileLocation" placeholder="Location / City">
+<input id="profileHeadline" placeholder="Professional headline (e.g. Admin Assistant)">
+</div>
+<textarea id="profileBio" placeholder="Short professional bio"></textarea>
+<button onclick="saveApplicantProfile()">💾 Save Profile</button>
+<span id="profileMsg" class="muted"></span>
+</div>
+<div class="card" style="margin-top:16px">
+<h3>⭐ My Saved Jobs</h3>
+<div id="applicantSavedJobs">Loading...</div>
+</div>
+<div class="card" style="margin-top:16px">
+<h3>📝 My Applications</h3>
+<p class="muted">Jobs you mark as applied will appear here for tracking.</p>
+<div id="applicantApplications">Loading...</div>
+</div>
 <button onclick="showHome()">💼 Browse Jobs</button>
 <button class="secondary" onclick="applicantLogout()">🚪 Log Out</button>
 </div>
@@ -42,6 +64,7 @@ function showApplicantAccount(){
   $('adminView').classList.add('hidden');
   $('applicantView').classList.remove('hidden');
   refreshApplicantAccount();
+  setTimeout(()=>{loadApplicantProfile();loadApplicantSavedJobs();loadApplicantApplications()},0);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 async function refreshApplicantAccount(){
@@ -54,6 +77,51 @@ async function refreshApplicantAccount(){
     $('applicantLoggedIn').classList.add('hidden');
   }
 }
+
+async function getApplicantUser(){
+  const r=await db.auth.getUser();
+  return r.data?.user||null;
+}
+async function loadApplicantProfile(){
+  const user=await getApplicantUser();
+  if(!user)return;
+  const r=await db.from('applicant_profiles').select('*').eq('user_id',user.id).maybeSingle();
+  if(r.error){$('profileMsg').textContent='Profile table is not ready yet. Run the Stage 2 Supabase SQL once.';return}
+  const p=r.data||{};
+  $('profileName').value=p.full_name||'';
+  $('profilePhone').value=p.phone||'';
+  $('profileLocation').value=p.location||'';
+  $('profileHeadline').value=p.headline||'';
+  $('profileBio').value=p.bio||'';
+}
+async function saveApplicantProfile(){
+  const user=await getApplicantUser();
+  if(!user){$('profileMsg').textContent='Please log in first.';return}
+  const payload={user_id:user.id,full_name:$('profileName').value.trim(),phone:$('profilePhone').value.trim(),location:$('profileLocation').value.trim(),headline:$('profileHeadline').value.trim(),bio:$('profileBio').value.trim(),updated_at:new Date().toISOString()};
+  const r=await db.from('applicant_profiles').upsert(payload,{onConflict:'user_id'});
+  $('profileMsg').textContent=r.error?'Profile error: '+r.error.message:'Profile saved successfully.';
+}
+async function loadApplicantSavedJobs(){
+  const ids=getSavedIds();
+  const saved=(window.publicJobs||jobs).filter(x=>ids.includes(x.id));
+  $('applicantSavedJobs').innerHTML=saved.length?saved.map(x=>`<div class="job"><h4 style="margin:0 0 6px">${esc(x.title)}</h4><p>${esc(x.company||'Company not stated')} · ${esc(x.location||'Remote')}</p><button onclick="openJob('${x.id}')">👁️ View Job</button><button class="secondary" onclick="toggleSave('${x.id}')">Remove</button></div>`).join(''):'<p class="muted">No saved jobs yet. Save a job from the Jobs section.</p>';
+}
+async function loadApplicantApplications(){
+  const user=await getApplicantUser();
+  if(!user)return;
+  const r=await db.from('applications').select('id,job_id,status,applied_at,notes,jobs(title,company,location,application_url)').eq('user_id',user.id).order('applied_at',{ascending:false});
+  if(r.error){$('applicantApplications').innerHTML='<p class="muted">Application tracking is not ready yet. Run the Stage 2 Supabase SQL once.</p>';return}
+  const rows=r.data||[];
+  $('applicantApplications').innerHTML=rows.length?rows.map(a=>{const j=a.jobs||{};return `<div class="job"><h4 style="margin:0 0 6px">${esc(j.title||'Job')}</h4><p>${esc(j.company||'')} · ${esc(j.location||'')}</p><span class="badge">${esc(a.status||'Applied')}</span><p class="muted">Marked applied: ${new Date(a.applied_at).toLocaleDateString()}</p><a class="apply" target="_blank" rel="noopener" href="${safe(j.application_url)}">🚀 Open Application</a></div>`}).join(''):'<p class="muted">No applications tracked yet.</p>';
+}
+async function markApplied(id){
+  const user=await getApplicantUser();
+  if(!user){showApplicantAccount();$('applicantAccountStatus').textContent='Please log in to track an application.';return}
+  const r=await db.from('applications').upsert({user_id:user.id,job_id:id,status:'Applied',applied_at:new Date().toISOString()},{onConflict:'user_id,job_id'});
+  if(r.error){alert('Could not save application status: '+r.error.message);return}
+  alert('Application marked as applied. You can track it from Applicant Account.');
+  loadApplicantApplications();
+}
 async function applicantSignUp(){
   const email=$('applicantEmail').value.trim();
   const password=$('applicantPassword').value;
@@ -63,6 +131,7 @@ async function applicantSignUp(){
   if(r.error){$('applicantAccountStatus').textContent=r.error.message;return}
   $('applicantAccountStatus').textContent=r.data.session?'Account created successfully.':'Account created. Please check your email to confirm your account.';
   await refreshApplicantAccount();
+  loadApplicantProfile();loadApplicantSavedJobs();loadApplicantApplications();
 }
 async function applicantLogin(){
   const email=$('applicantEmail').value.trim();
@@ -72,6 +141,7 @@ async function applicantLogin(){
   if(r.error){$('applicantAccountStatus').textContent=r.error.message;return}
   $('applicantAccountStatus').textContent='Login successful.';
   await refreshApplicantAccount();
+  loadApplicantProfile();loadApplicantSavedJobs();loadApplicantApplications();
 }
 async function applicantLogout(){
   const r=await db.auth.signOut();
@@ -93,6 +163,7 @@ function toggleSave(id){
   else ids.push(id);
   localStorage.setItem('earnsmart_saved_jobs',JSON.stringify(ids));
   updateSavedCount();
+  if($('applicantSavedJobs')) loadApplicantSavedJobs();
   openJob(id);
 }
 function copyJobLink(url){
@@ -137,6 +208,7 @@ function openJob(id){
     <div class="actions">
       <a class="secondary" style="display:inline-block" target="_blank" rel="noopener" href="${sourceUrl}">🔗 Open Source Listing</a>
       <button class="apply" onclick="window.open('${applicationUrl}','_blank','noopener')">🚀 APPLY NOW</button>
+      <button class="secondary" onclick="markApplied('${x.id}')">📝 Mark as Applied</button>
       <button class="secondary" onclick="shareJob('${esc(x.title)}','${shareUrl}')">📤 Share Job</button>
       <button class="secondary" onclick="copyJobLink('${shareUrl}')">📋 Copy Link</button>
       <button class="secondary" onclick="toggleSave('${x.id}')">${saved?'⭐ Saved':'☆ Save Job'}</button>
