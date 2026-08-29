@@ -35,6 +35,9 @@ textarea{min-height:110px}
 .actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
 .muted{color:#667085}
 .notice{background:#eef4ff;padding:12px;border-radius:10px}
+.filebox{border:1px dashed #98a2b3;border-radius:12px;padding:14px;margin:8px 0;background:#f8fafc}
+.filebox input[type=file]{padding:8px;background:white}
+.cvlink{display:inline-block;margin-top:8px}
 .hidden{display:none!important}
 .status{display:inline-block;padding:6px 10px;border-radius:20px;font-weight:bold;font-size:13px}
 .applied{background:#e7f7ef;color:#16794c}
@@ -130,13 +133,20 @@ textarea{min-height:110px}
 
 <div id="profileForm" class="hidden">
 <div class="grid">
-<input id="fullName" placeholder="Full name">
-<input id="phone" placeholder="Phone number">
-<input id="profileLocation" placeholder="Location / City">
+<input id="fullName" placeholder="Full name *">
+<input id="phone" placeholder="Phone number *">
+<input id="profileLocation" placeholder="Location / City *">
 <input id="headline" placeholder="Professional headline">
 </div>
 
 <textarea id="bio" placeholder="Short professional bio"></textarea>
+
+<div class="filebox">
+<b>📄 CV / Resume</b>
+<p class="muted">Upload PDF, DOC or DOCX. Maximum 5MB.</p>
+<input id="cvFile" type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+<p id="currentCv" class="muted"></p>
+</div>
 
 <button onclick="saveProfile()">💾 Save Profile</button>
 <button class="light" onclick="cancelProfileEdit()">Cancel</button>
@@ -464,26 +474,37 @@ async function loadProfile(){
  }
 
  if(!data){
-
   $("profileView").innerHTML=
    "<p class='muted'>Your profile is not complete yet.</p>"+
    "<button onclick='editProfile()'>✏️ Create Profile</button>";
-
   return;
+ }
+
+ let cvHtml="<p><b>CV / Resume:</b> Not uploaded</p>";
+ if(data.cv_path){
+   const {data:signed,error:signedError}=await db.storage
+    .from("resumes")
+    .createSignedUrl(data.cv_path,300);
+   if(!signedError && signed?.signedUrl){
+     cvHtml=`<p><b>CV / Resume:</b> ${escapeHtml(data.cv_name || "Resume")}<br><a class="btn light cvlink" target="_blank" rel="noopener" href="${safeUrl(signed.signedUrl)}">📄 View CV</a></p>`;
+   } else {
+     cvHtml=`<p><b>CV / Resume:</b> ${escapeHtml(data.cv_name || "Uploaded")}</p>`;
+   }
  }
 
  $("profileView").innerHTML=`
  <div class="notice">
  <p><b>Full name:</b> ${escapeHtml(data.full_name || "Not provided")}</p>
  <p><b>Phone:</b> ${escapeHtml(data.phone || "Not provided")}</p>
+ <p><b>Email:</b> ${escapeHtml(currentUser.email || "Not provided")}</p>
  <p><b>Location:</b> ${escapeHtml(data.location || "Not provided")}</p>
  <p><b>Professional headline:</b> ${escapeHtml(data.headline || "Not provided")}</p>
  <p><b>Bio:</b> ${escapeHtml(data.bio || "Not provided")}</p>
+ ${cvHtml}
  </div>
  <button onclick="editProfile()">✏️ Edit Profile</button>
  `;
 }
-
 
 async function editProfile(){
 
@@ -500,6 +521,9 @@ async function editProfile(){
  $("profileLocation").value=p.location || "";
  $("headline").value=p.headline || "";
  $("bio").value=p.bio || "";
+ $("cvFile").value="";
+ $("currentCv").textContent=p.cv_name ? "Current CV: "+p.cv_name+" (choose a new file to replace it)" : "No CV uploaded yet.";
+ $("profileMessage").textContent="";
 
  $("profileView").classList.add("hidden");
  $("profileForm").classList.remove("hidden");
@@ -515,34 +539,74 @@ function cancelProfileEdit(){
 
 
 async function saveProfile(){
+ const fullName=$("fullName").value.trim();
+ const phone=$("phone").value.trim();
+ const location=$("profileLocation").value.trim();
+ const file=$("cvFile").files[0];
+
+ if(!fullName || !phone || !location){
+  $("profileMessage").textContent="Please fill in your full name, phone number and location.";
+  return;
+ }
+
+ if(file){
+  const allowed=["application/pdf","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+  const ext=(file.name.split(".").pop()||"").toLowerCase();
+  if(!allowed.includes(file.type) && !["pdf","doc","docx"].includes(ext)){
+   $("profileMessage").textContent="CV must be PDF, DOC or DOCX.";
+   return;
+  }
+  if(file.size>5*1024*1024){
+   $("profileMessage").textContent="CV is too large. Maximum size is 5MB.";
+   return;
+  }
+ }
+
+ $("profileMessage").textContent=file ? "Uploading CV and saving profile..." : "Saving profile...";
+
+ const existing=await db.from("applicant_profiles")
+  .select("cv_path,cv_name")
+  .eq("id",currentUser.id)
+  .maybeSingle();
+
+ let cv_path=existing.data?.cv_path || null;
+ let cv_name=existing.data?.cv_name || null;
+
+ if(file){
+  const cleanName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+  const path=currentUser.id+"/"+Date.now()+"_"+cleanName;
+  const upload=await db.storage.from("resumes").upload(path,file,{upsert:false,contentType:file.type||undefined});
+  if(upload.error){
+   $("profileMessage").textContent="CV upload error: "+upload.error.message;
+   return;
+  }
+  cv_path=path;
+  cv_name=file.name;
+ }
 
  const payload={
   id:currentUser.id,
-  full_name:$("fullName").value.trim(),
-  phone:$("phone").value.trim(),
-  location:$("profileLocation").value.trim(),
+  full_name:fullName,
+  phone:phone,
+  location:location,
   headline:$("headline").value.trim(),
   bio:$("bio").value.trim(),
+  cv_path:cv_path,
+  cv_name:cv_name,
   updated_at:new Date().toISOString()
  };
 
- const {error}=await db
- .from("applicant_profiles")
- .upsert(payload);
-
+ const {error}=await db.from("applicant_profiles").upsert(payload);
  if(error){
-  $("profileMessage").textContent="Error: "+error.message;
+  $("profileMessage").textContent="Error saving profile: "+error.message;
   return;
  }
 
  $("profileMessage").textContent="Profile saved successfully.";
-
  $("profileForm").classList.add("hidden");
  $("profileView").classList.remove("hidden");
-
  await loadProfile();
 }
-
 
 function getSaved(){
 
@@ -1548,7 +1612,7 @@ async function loadAdminApplications(){
 
   const r=await db
    .from("applicant_profiles")
-   .select("id,full_name,phone,location,headline")
+   .select("id,full_name,phone,location,headline,bio,cv_path,cv_name")
    .in("id",userIds);
 
   if(!r.error){
@@ -1582,6 +1646,8 @@ async function loadAdminApplications(){
     ${escapeHtml(profile.location || "Not provided")}
    </p>
 
+   ${profile.cv_path ? `<p><button class="light" onclick="viewApplicantCv('${escapeHtml(profile.cv_path)}')">📄 View CV / Resume</button></p>` : "<p class='muted'>CV / Resume: Not uploaded</p>"}
+
    <p class="muted">
     Applied:
     ${a.applied_at ? new Date(a.applied_at).toLocaleString() : "—"}
@@ -1614,6 +1680,15 @@ async function loadAdminApplications(){
 
 }
 
+
+async function viewApplicantCv(path){
+ const {data,error}=await db.storage.from("resumes").createSignedUrl(path,300);
+ if(error || !data?.signedUrl){
+  alert("Could not open CV: "+(error?.message || "Storage access denied."));
+  return;
+ }
+ window.open(data.signedUrl,"_blank","noopener");
+}
 
 async function updateApplicationStatus(id,status){
 
