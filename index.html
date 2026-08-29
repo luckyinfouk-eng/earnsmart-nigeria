@@ -295,6 +295,7 @@ const supabaseKey = "sb_publishable_wCFkTXL6MJVSHxQr5geRwg_OEndNw_F";
 const db = supabase.createClient(supabaseUrl,supabaseKey);
 
 let allJobs=[];
+let adminJobs=[];
 let editingJobId=null;
 let currentUser=null;
 let isAdmin=false;
@@ -1408,9 +1409,9 @@ async function importJobs(){
  const index=name=>headers.indexOf(name);
 
  const existing=new Set(
-  allJobs
-  .map(x=>String(x.source_url || "").trim())
-  .filter(Boolean)
+   adminJobs
+   .map(x=>String(x.source_url || "").trim())
+   .filter(Boolean)
  );
 
  const seen=new Set();
@@ -1624,16 +1625,8 @@ async function updateApplicationStatus(id,status){
 }
 
 
-db.auth.onAuthStateChange(async()=>{
-
- const {data}=await db.auth.getUser();
-
- currentUser=data?.user || null;
-
- if(!$("applicant").classList.contains("hidden")){
-  await refreshApplicant();
- }
-
+db.auth.onAuthStateChange((event, session)=>{
+  currentUser=session?.user || null;
 });
 
 
