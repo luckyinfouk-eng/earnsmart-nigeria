@@ -187,7 +187,7 @@ textarea{min-height:110px}
 
 <div class="actions">
 <button onclick="showHome()">💼 Public Jobs</button>
-<button class="light" onclick="loadAdminApplications()">📝 Applications</button>
+<button class="light" onclick="openAdminApplications()">📝 Applications</button>
 <button class="light" onclick="adminLogout()">🚪 Log Out</button>
 </div>
 
@@ -1487,6 +1487,17 @@ async function importJobs(){
  await loadPublicJobs();
 }
 
+
+async function openAdminApplications(){
+ if(!isAdmin){
+  alert("Please log in as an approved administrator first.");
+  return;
+ }
+ await loadAdminApplications();
+ setTimeout(()=>{
+  $("adminApplicationBox").scrollIntoView({behavior:"smooth",block:"start"});
+ },100);
+}
 
 async function loadAdminApplications(){
 
