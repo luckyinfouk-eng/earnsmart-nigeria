@@ -655,4 +655,1402 @@ Loading...
 
 <div id="jobModal" class="modal hidden">
 
-<div class="modal
+<div class="modalbox">
+
+<button
+class="secondary"
+onclick="closeJob()"
+>
+✕ Close
+</button>
+
+<div id="jobDetails"></div>
+
+</div>
+
+</div>
+
+
+<div class="footer">
+EarnSmart Nigeria 🇳🇬 · Learn. Earn. Grow.
+</div>
+
+</main>
+
+
+<script>
+
+const db = supabase.createClient(
+'https://nvifxcudispvdgatrunk.supabase.co',
+'sb_publishable_wCFkTXL6MJVSHxQr5geRwg_OEndNw_F'
+);
+
+const $ = id => document.getElementById(id);
+
+let jobs = [];
+let editingId = null;
+let isAdmin = false;
+
+
+function esc(v){
+
+return String(v ?? '').replace(
+/[&<>"']/g,
+m => ({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#39;'
+}[m])
+);
+
+}
+
+
+function safe(v){
+
+try{
+
+let u = new URL(v);
+
+return /^https?:$/.test(u.protocol)
+? u.href
+: '#';
+
+}catch(e){
+
+return '#';
+
+}
+
+}
+
+
+function showHome(){
+
+$('homeView').classList.remove('hidden');
+
+$('applicantView').classList.add('hidden');
+
+$('adminLoginView').classList.add('hidden');
+
+$('adminView').classList.add('hidden');
+
+scrollTo(0,0);
+
+}
+
+
+function showApplicant(){
+
+$('homeView').classList.add('hidden');
+
+$('adminLoginView').classList.add('hidden');
+
+$('adminView').classList.add('hidden');
+
+$('applicantView').classList.remove('hidden');
+
+scrollTo(0,0);
+
+refreshApplicant();
+
+}
+
+
+function showAdminLogin(){
+
+$('homeView').classList.add('hidden');
+
+$('applicantView').classList.add('hidden');
+
+$('adminView').classList.add('hidden');
+
+$('adminLoginView').classList.remove('hidden');
+
+scrollTo(0,0);
+
+}
+
+
+/* APPLICANT ACCOUNT */
+
+async function refreshApplicant(){
+
+let r = await db.auth.getUser();
+
+let u = r.data?.user;
+
+if(u){
+
+$('accountEmail').textContent = u.email || '';
+
+$('loggedAccount').classList.remove('hidden');
+
+await loadProfile();
+
+await loadMySaved();
+
+await loadMyApplications();
+
+}else{
+
+$('loggedAccount').classList.add('hidden');
+
+}
+
+}
+
+
+async function signUp(){
+
+let email = $('appEmail').value.trim();
+
+let password = $('appPassword').value;
+
+if(!email || !password){
+
+$('appStatus').textContent =
+'Please enter your email and password.';
+
+return;
+
+}
+
+if(password.length < 6){
+
+$('appStatus').textContent =
+'Password must be at least 6 characters.';
+
+return;
+
+}
+
+let r = await db.auth.signUp({
+email,
+password
+});
+
+$('appStatus').textContent =
+r.error
+? r.error.message
+: (
+r.data.session
+? 'Account created successfully.'
+: 'Account created. Check your email if confirmation is required.'
+);
+
+if(!r.error){
+
+await refreshApplicant();
+
+}
+
+}
+
+
+async function signIn(){
+
+let email = $('appEmail').value.trim();
+
+let password = $('appPassword').value;
+
+if(!email || !password){
+
+$('appStatus').textContent =
+'Please enter your email and password.';
+
+return;
+
+}
+
+let r = await db.auth.signInWithPassword({
+email,
+password
+});
+
+$('appStatus').textContent =
+r.error
+? r.error.message
+: 'Login successful.';
+
+if(!r.error){
+
+await refreshApplicant();
+
+}
+
+}
+
+
+async function signOut(){
+
+await db.auth.signOut();
+
+$('loggedAccount').classList.add('hidden');
+
+$('appStatus').textContent =
+'You have been logged out.';
+
+}
+
+
+/* PROFILE */
+
+async function loadProfile(){
+
+let u = (await db.auth.getUser()).data?.user;
+
+if(!u)return;
+
+let r = await db
+.from('applicant_profiles')
+.select('*')
+.eq('id',u.id)
+.maybeSingle();
+
+if(r.error){
+
+$('profileStatus').textContent =
+'Profile error: ' + r.error.message;
+
+return;
+
+}
+
+let p = r.data || {};
+
+$('pName').value = p.full_name || '';
+
+$('pPhone').value = p.phone || '';
+
+$('pLocation').value = p.location || '';
+
+$('pHeadline').value = p.headline || '';
+
+$('pBio').value = p.bio || '';
+
+$('profileStatus').textContent =
+r.data
+? 'Profile loaded.'
+: 'Fill in your details and save.';
+
+}
+
+
+async function saveProfile(){
+
+let u = (await db.auth.getUser()).data?.user;
+
+if(!u){
+
+$('profileStatus').textContent =
+'Please log in first.';
+
+return;
+
+}
+
+let p = {
+
+id:u.id,
+
+full_name:$('pName').value.trim(),
+
+phone:$('pPhone').value.trim(),
+
+location:$('pLocation').value.trim(),
+
+headline:$('pHeadline').value.trim(),
+
+bio:$('pBio').value.trim(),
+
+updated_at:new Date().toISOString()
+
+};
+
+let r = await db
+.from('applicant_profiles')
+.upsert(p);
+
+$('profileStatus').textContent =
+r.error
+? 'Profile error: ' + r.error.message
+: 'Profile saved successfully.';
+
+}
+
+
+/* SAVED JOBS */
+
+function savedIds(){
+
+try{
+
+return JSON.parse(
+localStorage.getItem('earnsmart_saved_jobs') || '[]'
+);
+
+}catch(e){
+
+return [];
+
+}
+
+}
+
+
+function updateSavedCount(){
+
+$('savedCount').textContent =
+savedIds().length;
+
+}
+
+
+function isSaved(id){
+
+return savedIds().includes(id);
+
+}
+
+
+function toggleSave(id){
+
+let a = savedIds();
+
+a = a.includes(id)
+? a.filter(x => x !== id)
+: [...a,id];
+
+localStorage.setItem(
+'earnsmart_saved_jobs',
+JSON.stringify(a)
+);
+
+updateSavedCount();
+
+loadMySaved();
+
+openJob(id);
+
+}
+
+
+function showSaved(){
+
+let a = jobs.filter(
+j => savedIds().includes(j.id)
+);
+
+$('savedBox').classList.remove('hidden');
+
+$('savedBox').innerHTML =
+'<h3>⭐ Saved Jobs</h3>' +
+
+(
+a.length
+
+?
+
+a.map(j =>
+
+'<div class="job">' +
+
+'<h3>' +
+esc(j.title) +
+'</h3>' +
+
+'<p>' +
+esc(j.company || '') +
+' · ' +
+esc(j.location || 'Remote') +
+'</p>' +
+
+'<button onclick="openJob(\'' +
+j.id +
+'\')">' +
+'👁️ View' +
+'</button> ' +
+
+'<button class="secondary" onclick="toggleSave(\'' +
+j.id +
+'\')">' +
+'Remove' +
+'</button>' +
+
+'</div>'
+
+).join('')
+
+:
+
+'<p class="muted">No saved jobs yet.</p>'
+
+);
+
+}
+
+
+/* MY SAVED */
+
+async function loadMySaved(){
+
+let a = jobs.filter(
+j => savedIds().includes(j.id)
+);
+
+$('mySaved').innerHTML =
+
+a.length
+
+?
+
+a.map(j =>
+
+'<div class="job">' +
+
+'<h4>' +
+esc(j.title) +
+'</h4>' +
+
+'<p>' +
+esc(j.company || '') +
+' · ' +
+esc(j.location || 'Remote') +
+'</p>' +
+
+'<button onclick="openJob(\'' +
+j.id +
+'\')">' +
+'👁️ View Job' +
+'</button> ' +
+
+'<button class="secondary" onclick="toggleSave(\'' +
+j.id +
+'\')">' +
+'Remove' +
+'</button>' +
+
+'</div>'
+
+).join('')
+
+:
+
+'<p class="muted">No saved jobs yet.</p>';
+
+}
+
+
+/* APPLICATIONS */
+
+async function markApplied(id){
+
+let u = (await db.auth.getUser()).data?.user;
+
+if(!u){
+
+showApplicant();
+
+$('appStatus').textContent =
+'Please log in to track an application.';
+
+return;
+
+}
+
+let r = await db
+.from('job_applications')
+.upsert(
+{
+applicant_id:u.id,
+job_id:id,
+status:'Applied',
+applied_at:new Date().toISOString()
+},
+{
+onConflict:'applicant_id,job_id'
+}
+);
+
+if(r.error){
+
+alert(
+'Could not save application: ' +
+r.error.message
+);
+
+return;
+
+}
+
+alert('Application marked as applied.');
+
+loadMyApplications();
+
+}
+
+
+async function loadMyApplications(){
+
+let u = (await db.auth.getUser()).data?.user;
+
+if(!u)return;
+
+let r = await db
+.from('job_applications')
+.select('id,job_id,status,applied_at')
+.eq('applicant_id',u.id)
+.order('applied_at',{ascending:false});
+
+if(r.error){
+
+$('myApplications').innerHTML =
+'<p class="muted">Application error: ' +
+esc(r.error.message) +
+'</p>';
+
+return;
+
+}
+
+let a = r.data || [];
+
+$('myApplications').innerHTML =
+
+a.length
+
+?
+
+a.map(x => {
+
+let j =
+jobs.find(y => y.id === x.job_id) || {};
+
+return (
+
+'<div class="job">' +
+
+'<h4>' +
+esc(j.title || 'Job') +
+'</h4>' +
+
+'<p>' +
+esc(j.company || '') +
+' · ' +
+esc(j.location || '') +
+'</p>' +
+
+'<span class="badge">' +
+esc(x.status || 'Applied') +
+'</span>' +
+
+'<p class="muted">' +
+'Applied: ' +
+(
+x.applied_at
+?
+new Date(x.applied_at).toLocaleDateString()
+:
+'—'
+) +
+'</p>' +
+
+(
+j.application_url
+
+?
+
+'<a class="apply" target="_blank" href="' +
+safe(j.application_url) +
+'">' +
+'🚀 Open Application' +
+'</a>'
+
+:
+
+''
+
+) +
+
+'</div>'
+
+);
+
+}).join('')
+
+:
+
+'<p class="muted">No applications tracked yet.</p>';
+
+}
+
+
+/* JOB DETAILS */
+
+function openJob(id){
+
+let j = jobs.find(x => x.id === id);
+
+if(!j)return;
+
+let s = isSaved(id);
+
+$('jobDetails').innerHTML =
+
+'<h2>' +
+esc(j.title) +
+'</h2>' +
+
+'<p><b>' +
+esc(j.company || 'Company not stated') +
+'</b> · ' +
+esc(j.location || 'Remote') +
+'</p>' +
+
+'<p>' +
+
+'<span class="badge">✓ Verified</span>' +
+
+(
+j.remote
+?
+'<span class="badge">Remote</span>'
+:
+'<span class="badge off">On-site / Hybrid</span>'
+)
+
++
+
+'</p>' +
+
+(
+j.salary_text
+
+?
+
+'<h3>💰 Pay</h3>' +
+'<p>' +
+esc(j.salary_text) +
+'</p>'
+
+:
+
+''
+
+) +
+
+'<h3>📝 Job Description</h3>' +
+
+'<p style="white-space:pre-line;line-height:1.6">' +
+
+esc(
+j.description ||
+'No detailed description provided.'
+) +
+
+'</p>' +
+
+'<h3>📌 Job Source</h3>' +
+
+'<p>' +
+esc(j.source_name || 'Original source') +
+'</p>' +
+
+'<div class="actions">' +
+
+'<a class="apply" target="_blank" href="' +
+safe(j.application_url) +
+'">' +
+'🚀 APPLY NOW' +
+'</a>' +
+
+'<button class="secondary" onclick="markApplied(\'' +
+j.id +
+'\')">' +
+'📝 Mark as Applied' +
+'</button>' +
+
+'<button class="secondary" onclick="toggleSave(\'' +
+j.id +
+'\')">' +
+(
+s
+?
+'⭐ Saved'
+:
+'☆ Save Job'
+) +
+'</button>' +
+
+'</div>' +
+
+'<p class="muted">' +
+'EarnSmart Nigeria does not charge applicants to access jobs.' +
+'</p>';
+
+$('jobModal').classList.remove('hidden');
+
+document.body.style.overflow = 'hidden';
+
+}
+
+
+function closeJob(){
+
+$('jobModal').classList.add('hidden');
+
+document.body.style.overflow = '';
+
+}
+
+
+/* PUBLIC JOBS */
+
+async function loadPublicJobs(){
+
+let r = await db
+.from('jobs')
+.select('*')
+.eq('active',true)
+.eq('verified',true)
+.order('created_at',{ascending:false});
+
+if(r.error){
+
+$('jobList').innerHTML =
+'<p class="muted">Jobs database error: ' +
+esc(r.error.message) +
+'</p>';
+
+return;
+
+}
+
+jobs = r.data || [];
+
+let cats = [
+...new Set(
+jobs.map(x => x.category)
+.filter(Boolean)
+)
+].sort();
+
+let locs = [
+...new Set(
+jobs.map(x => x.location)
+.filter(Boolean)
+)
+].sort();
+
+$('cat').innerHTML =
+'<option value="">All categories</option>' +
+
+cats.map(x =>
+'<option value="' +
+esc(x) +
+'">' +
+esc(x) +
+'</option>'
+).join('');
+
+$('loc').innerHTML =
+'<option value="">📍 All locations</option>' +
+
+locs.map(x =>
+'<option value="' +
+esc(x) +
+'">' +
+esc(x) +
+'</option>'
+).join('');
+
+$('totalCount').textContent =
+jobs.length;
+
+$('remoteCount').textContent =
+jobs.filter(x => x.remote).length;
+
+$('categoryCount').textContent =
+cats.length;
+
+updateSavedCount();
+
+renderJobs();
+
+}
+
+
+function renderJobs(){
+
+let q =
+$('search').value
+.toLowerCase()
+.trim();
+
+let c = $('cat').value;
+
+let l = $('loc').value;
+
+let r = $('remoteOnly').value;
+
+let a = jobs.filter(j =>
+
+(!c || j.category === c) &&
+
+(!l || j.location === l) &&
+
+(
+!r ||
+(
+r === 'true'
+?
+!!j.remote
+:
+!j.remote
+)
+) &&
+
+(
+!q ||
+
+[
+j.title,
+j.company,
+j.category,
+j.location,
+j.description
+]
+.join(' ')
+.toLowerCase()
+.includes(q)
+
+)
+
+);
+
+$('jobList').innerHTML =
+
+a.length
+
+?
+
+a.map(j =>
+
+'<article class="job">' +
+
+'<h3>' +
+esc(j.title) +
+'</h3>' +
+
+'<span class="badge">✓ Verified</span>' +
+
+(
+j.remote
+?
+'<span class="badge">Remote</span>'
+:
+''
+) +
+
+'<p><b>' +
+esc(j.company || 'Company not stated') +
+'</b> · ' +
+esc(j.location || 'Remote') +
+'</p>' +
+
+(
+j.salary_text
+?
+'<p><b>Pay:</b> ' +
+esc(j.salary_text) +
+'</p>'
+:
+''
+) +
+
+'<p>' +
+esc(j.description || '') +
+'</p>' +
+
+'<p class="muted">' +
+'Source: ' +
+esc(j.source_name || 'Original source') +
+'</p>' +
+
+'<div class="actions">' +
+
+'<button onclick="openJob(\'' +
+j.id +
+'\')">' +
+'👁️ View Job Details' +
+'</button>' +
+
+'<a class="apply" target="_blank" href="' +
+safe(j.application_url) +
+'">' +
+'🚀 Apply at original source ↗' +
+'</a>' +
+
+'</div>' +
+
+'</article>'
+
+).join('')
+
+:
+
+'<p class="muted">No matching verified jobs found.</p>';
+
+}
+
+
+/* ADMIN */
+
+async function adminLogin(){
+
+let r =
+await db.auth.signInWithPassword(
+{
+email:$('adminEmail').value.trim(),
+password:$('adminPassword').value
+}
+);
+
+if(r.error){
+
+$('adminLoginStatus').textContent =
+r.error.message;
+
+return;
+
+}
+
+let a =
+await db
+.from('admin_users')
+.select('user_id')
+.eq('user_id',r.data.user.id)
+.maybeSingle();
+
+if(a.error || !a.data){
+
+$('adminLoginStatus').textContent =
+'This account is not approved as an EarnSmart admin.';
+
+await db.auth.signOut();
+
+return;
+
+}
+
+isAdmin = true;
+
+$('adminLoginView')
+.classList.add('hidden');
+
+$('adminView')
+.classList.remove('hidden');
+
+loadAdmin();
+
+}
+
+
+async function adminLogout(){
+
+await db.auth.signOut();
+
+isAdmin = false;
+
+showHome();
+
+}
+
+
+async function loadAdmin(){
+
+if(!isAdmin)return;
+
+let r =
+await db
+.from('jobs')
+.select('*')
+.order('created_at',{ascending:false});
+
+if(r.error){
+
+$('adminJobs').textContent =
+r.error.message;
+
+return;
+
+}
+
+jobs = r.data || [];
+
+$('adminJobs').innerHTML =
+
+jobs.length
+
+?
+
+jobs.map(j =>
+
+'<article class="job">' +
+
+'<h3>' +
+esc(j.title) +
+'</h3>' +
+
+'<p><b>' +
+esc(j.company || '') +
+'</b> · ' +
+esc(j.category || '') +
+' · ' +
+esc(j.location || '') +
+'</p>' +
+
+'<span class="badge ' +
+(j.verified ? '' : 'off') +
+'">' +
+
+(
+j.verified
+?
+'✓ Verified'
+:
+'Not verified'
+) +
+
+'</span> ' +
+
+'<span class="badge ' +
+(j.active ? '' : 'off') +
+'">' +
+
+(
+j.active
+?
+'Active'
+:
+'Inactive'
+) +
+
+'</span>' +
+
+'<div class="actions">' +
+
+'<button onclick="editJob(\'' +
+j.id +
+'\')">' +
+'✏️ Edit' +
+'</button>' +
+
+'<button class="success" onclick="setVerified(\'' +
+j.id +
+'\',' +
+(!j.verified) +
+')">' +
+
+(
+j.verified
+?
+'Unverify'
+:
+'Verify'
+) +
+
+'</button>' +
+
+'<button class="secondary" onclick="setActive(\'' +
+j.id +
+'\',' +
+(!j.active) +
+')">' +
+
+(
+j.active
+?
+'Deactivate'
+:
+'Activate'
+) +
+
+'</button>' +
+
+'<button class="danger" onclick="deleteJob(\'' +
+j.id +
+'\')">' +
+'🗑️ Delete' +
+'</button>' +
+
+'</div>' +
+
+'</article>'
+
+).join('')
+
+:
+
+'<p class="muted">No jobs yet.</p>';
+
+}
+
+
+/* CLEAR FORM */
+
+function clearForm(){
+
+editingId = null;
+
+$('formTitle').textContent =
+'➕ Add Job';
+
+[
+'jTitle',
+'jCompany',
+'jCategory',
+'jLocation',
+'jSource',
+'jSourceUrl',
+'jAppUrl',
+'jSalary',
+'jDescription'
+].forEach(
+id => $(id).value = ''
+);
+
+$('jRemote').value = 'true';
+
+$('jVerified').checked = false;
+
+$('jActive').checked = true;
+
+}
+
+
+/* EDIT JOB */
+
+function editJob(id){
+
+let j = jobs.find(x => x.id === id);
+
+if(!j)return;
+
+editingId = id;
+
+$('formTitle').textContent =
+'✏️ Edit Job';
+
+$('jTitle').value =
+j.title || '';
+
+$('jCompany').value =
+j.company || '';
+
+$('jCategory').value =
+j.category || '';
+
+$('jLocation').value =
+j.location || '';
+
+$('jSource').value =
+j.source_name || '';
+
+$('jSourceUrl').value =
+j.source_url || '';
+
+$('jAppUrl').value =
+j.application_url || '';
+
+$('jSalary').value =
+j.salary_text || '';
+
+$('jDescription').value =
+j.description || '';
+
+$('jRemote').value =
+String(!!j.remote);
+
+$('jVerified').checked =
+!!j.verified;
+
+$('jActive').checked =
+!!j.active;
+
+scrollTo(0,0);
+
+}
+
+
+/* SAVE JOB */
+
+async function saveJob(){
+
+if(!isAdmin)return;
+
+let p = {
+
+title:$('jTitle').value.trim(),
+
+company:$('jCompany').value.trim(),
+
+category:$('jCategory').value.trim(),
+
+location:$('jLocation').value.trim(),
+
+source_name:$('jSource').value.trim(),
+
+source_url:$('jSourceUrl').value.trim(),
+
+application_url:$('jAppUrl').value.trim(),
+
+salary_text:$('jSalary').value.trim(),
+
+remote:$('jRemote').value === 'true',
+
+description:$('jDescription').value.trim(),
+
+verified:$('jVerified').checked,
+
+active:$('jActive').checked
+
+};
+
+if(
+!p.title ||
+!p.source_name ||
+!p.source_url ||
+!p.application_url
+){
+
+$('adminStatus').textContent =
+'Please fill all fields marked *.';
+
+return;
+
+}
+
+let r = editingId
+
+?
+
+await db
+.from('jobs')
+.update(p)
+.eq('id',editingId)
+
+:
+
+await db
+.from('jobs')
+.insert(p);
+
+if(r.error){
+
+$('adminStatus').textContent =
+'Error: ' +
+r.error.message;
+
+return;
+
+}
+
+$('adminStatus').textContent =
+'Job saved successfully.';
+
+clearForm();
+
+await loadAdmin();
+
+await loadPublicJobs();
+
+}
+
+
+/* VERIFY */
+
+async function setVerified(id,v){
+
+let r =
+await db
+.from('jobs')
+.update({verified:v})
+.eq('id',id);
+
+$('adminStatus').textContent =
+r.error
+?
+r.error.message
+:
+'Updated successfully.';
+
+await loadAdmin();
+
+await loadPublicJobs();
+
+}
+
+
+/* ACTIVATE */
+
+async function setActive(id,v){
+
+let r =
+await db
+.from('jobs')
+.update({active:v})
+.eq('id',id);
+
+$('adminStatus').textContent =
+r.error
+?
+r.error.message
+:
+'Updated successfully.';
+
+await loadAdmin();
+
+await loadPublicJobs();
+
+}
+
+
+/* DELETE */
+
+async function deleteJob(id){
+
+if(!confirm('Delete this job?'))
+return;
+
+let r =
+await db
+.from('jobs')
+.delete()
+.eq('id',id);
+
+$('adminStatus').textContent =
+r.error
+?
+r.error.message
+:
+'Job deleted.';
+
+await loadAdmin();
+
+await loadPublicJobs();
+
+}
+
+
+/* START */
+
+loadPublicJobs();
+
+</script>
+
+</body>
+  </html>
