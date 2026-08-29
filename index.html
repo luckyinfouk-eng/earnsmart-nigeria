@@ -3,264 +3,209 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>EarnSmart Nigeria — Jobs</title>
+<title>EarnSmart Nigeria</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
-
 body{
-  font-family:Arial,sans-serif;
-  margin:0;
-  background:#f4f6fa;
-  color:#102a43;
+margin:0;
+font-family:Arial,sans-serif;
+background:#f4f6fa;
+color:#102a43
 }
-
 header{
-  background:#092642;
-  color:#fff;
-  padding:18px;
+background:#092642;
+color:#fff;
+padding:18px
 }
-
 .nav{
-  max-width:1100px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
+max-width:1100px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px
 }
-
 .brand{
-  font-size:24px;
-  font-weight:800;
+font-size:24px;
+font-weight:800
 }
-
-.nav button,
-button,
-.apply{
-  background:#092642;
-  color:#fff;
-  border:0;
-  border-radius:10px;
-  padding:12px 16px;
-  margin:5px 3px;
-  text-decoration:none;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.nav button{
-  background:#fff;
-  color:#092642;
-}
-
-.secondary{
-  background:#e9eef3;
-  color:#102a43;
-}
-
-.danger{
-  background:#b42318;
-}
-
-.success{
-  background:#16794c;
-}
-
-.hidden{
-  display:none!important;
-}
-
 main{
-  max-width:1100px;
-  margin:auto;
-  padding:20px;
+max-width:1100px;
+margin:auto;
+padding:20px
 }
-
+button,.apply{
+border:0;
+border-radius:10px;
+padding:12px 16px;
+font-weight:bold;
+cursor:pointer;
+text-decoration:none;
+display:inline-block
+}
+button{
+background:#092642;
+color:#fff
+}
+.secondary{
+background:#e9eef3;
+color:#102a43
+}
+.success{
+background:#16794c;
+color:#fff
+}
+.danger{
+background:#b42318;
+color:#fff
+}
+.hidden{
+display:none!important
+}
 .hero{
-  background:#092642;
-  color:#fff;
-  border-radius:22px;
-  padding:34px 24px;
-  margin-bottom:20px;
+background:#092642;
+color:#fff;
+border-radius:22px;
+padding:35px 25px
 }
-
 .hero h1{
-  font-size:38px;
-  margin:0 0 10px;
+font-size:40px;
+margin:0 0 12px
 }
-
 .hero p{
-  font-size:18px;
-  line-height:1.5;
-  margin:0 0 20px;
+font-size:18px;
+line-height:1.6
 }
-
-.hero .cta{
-  display:inline-block;
-  background:#fff;
-  color:#092642;
-  padding:13px 18px;
-  border-radius:10px;
-  text-decoration:none;
-  font-weight:bold;
+.cta{
+background:#fff;
+color:#092642;
+padding:14px 18px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+display:inline-block
 }
-
 .card{
-  background:#fff;
-  padding:20px;
-  border-radius:18px;
-  margin:18px 0;
-  box-shadow:0 5px 18px #0001;
+background:#fff;
+border-radius:18px;
+padding:20px;
+margin:18px 0;
+box-shadow:0 5px 18px #0001
 }
-
 .stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-top:20px
 }
-
 .stat{
-  background:#fff;
-  padding:18px;
-  border-radius:16px;
-  text-align:center;
-  box-shadow:0 5px 18px #0001;
+text-align:center;
+background:#fff;
+padding:20px;
+border-radius:16px
 }
-
 .stat strong{
-  display:block;
-  font-size:28px;
+display:block;
+font-size:30px
 }
-
+.toolbar,.grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px
+}
 .toolbar{
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:10px;
+grid-template-columns:2fr 1fr 1fr 1fr
 }
-
-input,
-select,
+input,select,textarea{
+width:100%;
+padding:13px;
+margin:6px 0;
+border:1px solid #ccd6e0;
+border-radius:10px;
+font-size:16px
+}
 textarea{
-  width:100%;
-  padding:13px;
-  margin:6px 0;
-  border:1px solid #ccd6e0;
-  border-radius:10px;
-  font-size:16px;
-  font-family:inherit;
+min-height:110px
 }
-
-textarea{
-  min-height:100px;
-}
-
 .job{
-  border:1px solid #e1e7ee;
-  border-radius:14px;
-  padding:17px;
-  margin:12px 0;
-  overflow:hidden;
+border:1px solid #e1e7ee;
+border-radius:14px;
+padding:17px;
+margin:12px 0
 }
-
-.job h3{
-  margin-top:0;
-  overflow-wrap:anywhere;
-}
-
 .badge{
-  display:inline-block;
-  background:#e7f7ef;
-  color:#16794c;
-  padding:5px 8px;
-  border-radius:20px;
-  font-size:12px;
-  margin-right:4px;
+display:inline-block;
+background:#e7f7ef;
+color:#16794c;
+padding:5px 9px;
+border-radius:20px;
+font-size:12px;
+margin-right:5px
 }
-
 .badge.off{
-  background:#fff0ee;
-  color:#b42318;
+background:#fff0ee;
+color:#b42318
 }
-
 .muted{
-  color:#667085;
+color:#667085
 }
-
 .actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:12px;
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-top:12px
 }
-
-.actions button,
-.actions a{
-  margin:0!important;
-  min-height:44px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  white-space:normal;
-  text-align:center;
-  line-height:1.2;
-}
-
-.adminbar{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  border-bottom:1px solid #e1e7ee;
-  padding-bottom:12px;
-  margin-bottom:14px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
 .loginbox{
-  max-width:500px;
-  margin:35px auto;
+max-width:600px;
+margin:30px auto
 }
-
+.adminbar{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+border-bottom:1px solid #ddd;
+padding-bottom:12px
+}
+.modal{
+position:fixed;
+inset:0;
+background:#0008;
+z-index:999;
+padding:18px;
+overflow:auto
+}
+.modalbox{
+max-width:760px;
+margin:35px auto;
+background:#fff;
+border-radius:20px;
+padding:24px
+}
 .footer{
-  text-align:center;
-  color:#667085;
-  padding:25px;
+text-align:center;
+color:#667085;
+padding:30px
 }
-
-.status-select{
-  max-width:220px;
+@media(max-width:700px){
+.nav{
+align-items:flex-start
 }
-
-@media(max-width:650px){
-
-  .hero h1{
-    font-size:30px;
-  }
-
-  .stats,
-  .toolbar{
-    grid-template-columns:1fr;
-  }
-
-  .brand{
-    font-size:20px;
-  }
-
-  .nav{
-    align-items:flex-start;
-  }
-
-  .nav>div:last-child{
-    flex-direction:column;
-  }
-
+.brand{
+font-size:20px
+}
+.nav>div:last-child{
+display:flex;
+flex-direction:column
+}
+.hero h1{
+font-size:31px
+}
+.stats,.toolbar,.grid{
+grid-template-columns:1fr
+}
 }
 </style>
 </head>
@@ -269,21 +214,11 @@ textarea{
 
 <header>
 <div class="nav">
+<div class="brand">🇳🇬 EarnSmart Nigeria</div>
 
-<div class="brand">
-🇳🇬 EarnSmart Nigeria
-</div>
-
-<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
-
-<button onclick="showApplicantAccount()">
-👤 Applicant Account
-</button>
-
-<button onclick="showAdminLogin()">
-⚙️ Admin
-</button>
-
+<div>
+<button onclick="showApplicant()">👤 Applicant Account</button>
+<button onclick="showAdminLogin()">⚙️ Admin</button>
 </div>
 
 </div>
@@ -291,15 +226,10 @@ textarea{
 
 <main>
 
-<!-- ================= HOME ================= -->
-
 <section id="homeView">
 
 <div class="hero">
-
-<h1>
-Find genuine opportunities. Earn smarter.
-</h1>
+<h1>Find genuine opportunities. Earn smarter.</h1>
 
 <p>
 Discover verified jobs and opportunities from their original sources.
@@ -307,10 +237,7 @@ EarnSmart Nigeria helps you find opportunities without charging applicants
 to access jobs.
 </p>
 
-<a class="cta" href="#jobs">
-💼 Browse Verified Jobs
-</a>
-
+<a class="cta" href="#jobs">💼 Browse Verified Jobs</a>
 </div>
 
 <div class="stats">
@@ -334,9 +261,7 @@ Categories
 
 <section id="jobs" class="card">
 
-<h2>
-💼 Verified Jobs
-</h2>
+<h2>💼 Verified Jobs</h2>
 
 <p class="muted">
 Apply through the original job source.
@@ -348,49 +273,36 @@ EarnSmart does not charge applicants to access jobs.
 <input
 id="search"
 placeholder="🔎 Search jobs, companies or categories..."
-oninput="renderPublic()"
+oninput="renderJobs()"
 >
 
-<select id="cat" onchange="renderPublic()">
+<select id="cat" onchange="renderJobs()">
 <option value="">All categories</option>
 </select>
 
-<select id="loc" onchange="renderPublic()">
+<select id="loc" onchange="renderJobs()">
 <option value="">📍 All locations</option>
 </select>
 
-<select id="remoteOnly" onchange="renderPublic()">
-
-<option value="">
-🏠 All work types
-</option>
-
-<option value="true">
-Remote only
-</option>
-
-<option value="false">
-On-site / Hybrid
-</option>
-
+<select id="remoteOnly" onchange="renderJobs()">
+<option value="">🏠 All work types</option>
+<option value="true">Remote only</option>
+<option value="false">On-site / Hybrid</option>
 </select>
 
 </div>
 
-<div style="display:flex;justify-content:flex-end;margin:10px 0">
+<div style="text-align:right;margin:12px 0">
 
-<button
-class="secondary"
-onclick="showSavedJobs()"
->
+<button class="secondary" onclick="showSaved()">
 ⭐ Saved Jobs (<span id="savedCount">0</span>)
 </button>
 
 </div>
 
-<div id="savedJobsBox" class="card hidden"></div>
+<div id="savedBox" class="card hidden"></div>
 
-<div id="list">
+<div id="jobList">
 Loading jobs...
 </div>
 
@@ -399,127 +311,110 @@ Loading jobs...
 </section>
 
 
-<!-- ================= APPLICANT ACCOUNT ================= -->
+<!-- APPLICANT ACCOUNT -->
 
 <section id="applicantView" class="hidden">
 
 <div class="card loginbox">
 
-<h2>
-👤 Applicant Account
-</h2>
+<h2>👤 Applicant Account</h2>
 
 <p class="muted">
 Create an account or log in to your EarnSmart Nigeria account.
 </p>
 
 <input
-id="applicantEmail"
+id="appEmail"
 type="email"
 placeholder="Email address"
 >
 
 <input
-id="applicantPassword"
+id="appPassword"
 type="password"
 placeholder="Password (minimum 6 characters)"
 >
 
 <div class="actions">
 
-<button onclick="applicantSignUp()">
+<button onclick="signUp()">
 📝 Create Account
 </button>
 
-<button
-class="secondary"
-onclick="applicantLogin()"
->
+<button class="secondary" onclick="signIn()">
 🔐 Log In
 </button>
 
 </div>
 
-<div
-id="applicantAccountStatus"
-class="muted"
-></div>
+<p id="appStatus" class="muted"></p>
 
 
-<div id="applicantLoggedIn" class="hidden">
+<div id="loggedAccount" class="hidden">
 
 <hr>
 
 <p>
 <b>Account:</b>
-<span id="applicantEmailDisplay"></span>
+<span id="accountEmail"></span>
 </p>
 
 
 <!-- PROFILE -->
 
-<div class="card" style="margin-top:16px">
+<div class="card">
 
-<h3>
-👤 My Applicant Profile
-</h3>
+<h3>👤 My Applicant Profile</h3>
 
 <p class="muted">
-Complete your profile so your EarnSmart account is ready
-for future application features.
+Complete your profile for future application features.
 </p>
 
 <div class="grid">
 
 <input
-id="profileName"
+id="pName"
 placeholder="Full name"
 >
 
 <input
-id="profilePhone"
-type="tel"
+id="pPhone"
 placeholder="Phone number"
 >
 
 <input
-id="profileLocation"
+id="pLocation"
 placeholder="Location / City"
 >
 
 <input
-id="profileHeadline"
-placeholder="Professional headline (e.g. Admin Assistant)"
+id="pHeadline"
+placeholder="Professional headline"
 >
 
 </div>
 
 <textarea
-id="profileBio"
+id="pBio"
 placeholder="Short professional bio"
 ></textarea>
 
-<button onclick="saveApplicantProfile()">
+<button onclick="saveProfile()">
 💾 Save Profile
 </button>
 
-<span
-id="profileMsg"
-class="muted"
-></span>
+<span id="profileStatus" class="muted"></span>
 
 </div>
 
 
 <!-- SAVED JOBS -->
 
-<div class="card" style="margin-top:16px">
+<div class="card">
 
-<h3>
-⭐ My Saved Jobs
-</h3>
+<h3>⭐ My Saved Jobs</h3>
 
-<div id="applicantSavedJobs">
+<div id="mySaved">
 Loading...
 </div>
 
@@ -528,17 +423,15 @@ Loading...
 
 <!-- APPLICATIONS -->
 
-<div class="card" style="margin-top:16px">
+<div class="card">
 
-<h3>
-📝 My Applications
-</h3>
+<h3>📝 My Applications</h3>
 
 <p class="muted">
-Jobs you mark as applied will appear here for tracking.
+Jobs you mark as applied will appear here.
 </p>
 
-<div id="applicantApplications">
+<div id="myApplications">
 Loading...
 </div>
 
@@ -549,19 +442,13 @@ Loading...
 💼 Browse Jobs
 </button>
 
-<button
-class="secondary"
-onclick="applicantLogout()"
->
+<button class="secondary" onclick="signOut()">
 🚪 Log Out
 </button>
 
 </div>
 
-<button
-class="secondary"
-onclick="showHome()"
->
+<button class="secondary" onclick="showHome()">
 Back to Jobs
 </button>
 
@@ -570,54 +457,46 @@ Back to Jobs
 </section>
 
 
-<!-- ================= ADMIN LOGIN ================= -->
+<!-- ADMIN LOGIN -->
 
 <section id="adminLoginView" class="hidden">
 
 <div class="card loginbox">
 
-<h2>
-🔐 Admin Login
-</h2>
+<h2>🔐 Admin Login</h2>
 
 <p class="muted">
-Only your approved administrator account can manage jobs.
+Only an approved administrator can manage jobs.
 </p>
 
 <input
-id="email"
+id="adminEmail"
 type="email"
 placeholder="Admin email"
 >
 
 <input
-id="password"
+id="adminPassword"
 type="password"
 placeholder="Password"
 >
 
-<button onclick="login()">
-Log In
+<button onclick="adminLogin()">
+🔐 Log In
 </button>
 
-<button
-class="secondary"
-onclick="showHome()"
->
+<button class="secondary" onclick="showHome()">
 Back to Jobs
 </button>
 
-<p
-id="msg"
-class="muted"
-></p>
+<p id="adminLoginStatus" class="muted"></p>
 
 </div>
 
 </section>
 
 
-<!-- ================= ADMIN DASHBOARD ================= -->
+<!-- ADMIN DASHBOARD -->
 
 <section id="adminView" class="hidden">
 
@@ -629,27 +508,19 @@ class="muted"
 💼 Public Jobs
 </button>
 
-<button
-class="secondary"
-onclick="logout()"
->
+<button class="secondary" onclick="adminLogout()">
 🚪 Log Out
 </button>
 
 </div>
 
-<h2>
-⚙️ EarnSmart Admin Dashboard
-</h2>
+<h2>⚙️ EarnSmart Admin Dashboard</h2>
 
 <p class="muted">
 Add, edit, verify, activate or delete jobs.
 </p>
 
-<div
-id="adminMsg"
-class="muted"
-></div>
+<p id="adminStatus" class="muted"></p>
 
 
 <!-- ADD JOB -->
@@ -663,46 +534,46 @@ class="muted"
 <div class="grid">
 
 <input
-id="jtitle"
+id="jTitle"
 placeholder="Job title *"
 >
 
 <input
-id="jcompany"
+id="jCompany"
 placeholder="Company"
 >
 
 <input
-id="jcategory"
+id="jCategory"
 placeholder="Category"
 >
 
 <input
-id="jlocation"
+id="jLocation"
 placeholder="Location"
 >
 
 <input
-id="jsource"
+id="jSource"
 placeholder="Source name *"
 >
 
 <input
-id="jsourceurl"
+id="jSourceUrl"
 placeholder="Source URL *"
 >
 
 <input
-id="jappurl"
+id="jAppUrl"
 placeholder="Application URL *"
 >
 
 <input
-id="jsalary"
+id="jSalary"
 placeholder="Salary / pay"
 >
 
-<select id="jremote">
+<select id="jRemote">
 
 <option value="true">
 Remote
@@ -717,14 +588,14 @@ On-site / Hybrid
 </div>
 
 <textarea
-id="jdesc"
+id="jDescription"
 placeholder="Job description"
 ></textarea>
 
 <label>
 
 <input
-id="jverified"
+id="jVerified"
 type="checkbox"
 style="width:auto"
 >
@@ -733,10 +604,12 @@ Verified
 
 </label>
 
+<br>
+
 <label>
 
 <input
-id="jactive"
+id="jActive"
 type="checkbox"
 style="width:auto"
 checked
@@ -746,82 +619,20 @@ Active
 
 </label>
 
-<br>
+<br><br>
 
 <button onclick="saveJob()">
-Save Job
+💾 Save Job
 </button>
 
-<button
-class="secondary"
-onclick="resetForm()"
->
+<button class="secondary" onclick="clearForm()">
 Clear
 </button>
 
 </div>
 
 
-<!-- BULK JOBS -->
-
-<div class="card">
-
-<h3>
-📥 Bulk Add Jobs
-</h3>
-
-<p class="muted">
-Paste CSV data below. The first row must contain these columns:
-</p>
-
-<p class="muted">
-
-<b>
-title, company, category, location,
-source_name, source_url, application_url,
-salary_text, remote, description, verified, active
-</b>
-
-</p>
-
-<textarea
-id="bulkJobs"
-style="min-height:240px"
-placeholder="title,company,category,location,source_name,source_url,application_url,salary_text,remote,description,verified,active
-Administrator,Example Company,Admin & Office,Nigeria,Jobberman,https://example.com/job,https://example.com/app,&quot;₦300,000 - ₦350,000&quot;,true,&quot;Remote administrator opportunity&quot;,false,true"
-></textarea>
-
-<div class="actions">
-
-<button onclick="importBulkJobs()">
-📥 Import Jobs
-</button>
-
-<button
-class="secondary"
-onclick="loadBulkTemplate()"
->
-📋 Load Template
-</button>
-
-<button
-class="secondary"
-onclick="clearBulk()"
->
-Clear
-</button>
-
-</div>
-
-<p
-id="bulkMsg"
-class="muted"
-></p>
-
-</div>
-
-
-<!-- ALL JOBS -->
+<!-- JOB LIST -->
 
 <div class="card">
 
@@ -835,2902 +646,13 @@ Loading...
 
 </div>
 
-
-<!-- ================= ADMIN APPLICATIONS ================= -->
-
-<div class="card">
-
-<h3>
-📋 Applicant Applications
-</h3>
-
-<p class="muted">
-View and manage applications submitted by EarnSmart applicants.
-</p>
-
-<div id="adminApplications">
-Loading applications...
-</div>
-
-</div>
-
-
 </div>
 
 </section>
 
 
-<!-- ================= JOB MODAL ================= -->
+<!-- JOB MODAL -->
 
-<div
-id="jobModal"
-class="hidden"
-style="
-position:fixed;
-inset:0;
-background:#0008;
-z-index:999;
-padding:18px;
-overflow:auto;
-"
->
+<div id="jobModal" class="modal hidden">
 
-<div
-style="
-max-width:760px;
-margin:35px auto;
-background:#fff;
-border-radius:20px;
-padding:24px;
-position:relative;
-"
->
-
-<button
-class="secondary"
-onclick="closeJob()"
-style="
-position:absolute;
-right:16px;
-top:16px;
-"
->
-✕ Close
-</button>
-
-<div id="jobDetails"></div>
-
-</div>
-
-</div>
-
-
-<div class="footer">
-EarnSmart Nigeria 🇳🇬 · Learn. Earn. Grow.
-</div>
-
-</main>
-
-
-<script>
-
-/* =========================================================
-   SUPABASE CONNECTION
-========================================================= */
-
-const db=supabase.createClient(
-  'https://nvifxcudispvdgatrunk.supabase.co',
-  'sb_publishable_wCFkTXL6MJVSHxQr5geRwg_OEndNw_F'
-);
-
-
-/* =========================================================
-   HELPER FUNCTIONS
-========================================================= */
-
-const $=id=>document.getElementById(id);
-
-function esc(s){
-  return String(s??'').replace(
-    /[&<>"']/g,
-    m=>({
-      '&':'&amp;',
-      '<':'&lt;',
-      '>':'&gt;',
-      '"':'&quot;',
-      "'":'&#39;'
-    }[m])
-  );
-}
-
-function safe(s){
-  try{
-    let u=new URL(s);
-    return /^https?:$/.test(u.protocol)?u.href:'#';
-  }catch{
-    return '#';
-  }
-}
-
-
-/* =========================================================
-   PAGE NAVIGATION
-========================================================= */
-
-function showHome(){
-
-  $('homeView').classList.remove('hidden');
-
-  $('applicantView').classList.add('hidden');
-
-  $('adminLoginView').classList.add('hidden');
-
-  $('adminView').classList.add('hidden');
-
-  window.scrollTo({
-    top:0,
-    behavior:'smooth'
-  });
-
-}
-
-
-function showApplicantAccount(){
-
-  $('homeView').classList.add('hidden');
-
-  $('adminLoginView').classList.add('hidden');
-
-  $('adminView').classList.add('hidden');
-
-  $('applicantView').classList.remove('hidden');
-
-  refreshApplicantAccount();
-
-  setTimeout(()=>{
-    loadApplicantProfile();
-    loadApplicantSavedJobs();
-    loadApplicantApplications();
-  },0);
-
-  window.scrollTo({
-    top:0,
-    behavior:'smooth'
-  });
-
-}
-
-
-function showAdminLogin(){
-
-  $('homeView').classList.add('hidden');
-
-  $('applicantView').classList.add('hidden');
-
-  $('adminView').classList.add('hidden');
-
-  $('adminLoginView').classList.remove('hidden');
-
-  $('email').focus();
-
-}
-
-
-/* =========================================================
-   APPLICANT ACCOUNT
-========================================================= */
-
-async function refreshApplicantAccount(){
-
-  const r=await db.auth.getUser();
-
-  const user=r.data?.user;
-
-  if(user){
-
-    $('applicantEmailDisplay').textContent=user.email||'';
-
-    $('applicantLoggedIn').classList.remove('hidden');
-
-  }else{
-
-    $('applicantLoggedIn').classList.add('hidden');
-
-  }
-
-}
-
-
-async function getApplicantUser(){
-
-  const r=await db.auth.getUser();
-
-  return r.data?.user||null;
-
-}
-
-
-/* =========================================================
-   APPLICANT SIGN UP
-========================================================= */
-
-async function applicantSignUp(){
-
-  const email=$('applicantEmail').value.trim();
-
-  const password=$('applicantPassword').value;
-
-  if(!email||!password){
-
-    $('applicantAccountStatus').textContent=
-      'Please enter your email and password.';
-
-    return;
-
-  }
-
-  if(password.length<6){
-
-    $('applicantAccountStatus').textContent=
-      'Password must be at least 6 characters.';
-
-    return;
-
-  }
-
-  const r=await db.auth.signUp({
-    email,
-    password
-  });
-
-  if(r.error){
-
-    $('applicantAccountStatus').textContent=
-      r.error.message;
-
-    return;
-
-  }
-
-  $('applicantAccountStatus').textContent=
-    r.data.session
-      ?'Account created successfully.'
-      :'Account created. Please check your email to confirm your account.';
-
-  await refreshApplicantAccount();
-
-  loadApplicantProfile();
-
-  loadApplicantSavedJobs();
-
-  loadApplicantApplications();
-
-}
-
-
-/* =========================================================
-   APPLICANT LOGIN
-========================================================= */
-
-async function applicantLogin(){
-
-  const email=$('applicantEmail').value.trim();
-
-  const password=$('applicantPassword').value;
-
-  if(!email||!password){
-
-    $('applicantAccountStatus').textContent=
-      'Please enter your email and password.';
-
-    return;
-
-  }
-
-  const r=await db.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if(r.error){
-
-    $('applicantAccountStatus').textContent=
-      r.error.message;
-
-    return;
-
-  }
-
-  $('applicantAccountStatus').textContent=
-    'Login successful.';
-
-  await refreshApplicantAccount();
-
-  loadApplicantProfile();
-
-  loadApplicantSavedJobs();
-
-  loadApplicantApplications();
-
-}
-
-
-/* =========================================================
-   APPLICANT LOGOUT
-========================================================= */
-
-async function applicantLogout(){
-
-  const r=await db.auth.signOut();
-
-  $('applicantAccountStatus').textContent=
-    r.error
-      ?'Logout error: '+r.error.message
-      :'You have been logged out.';
-
-  await refreshApplicantAccount();
-
-}
-
-
-/* =========================================================
-   APPLICANT PROFILE
-========================================================= */
-
-async function loadApplicantProfile(){
-
-  const user=await getApplicantUser();
-
-  if(!user)return;
-
-  const r=await db
-    .from('applicant_profiles')
-    .select('*')
-    .eq('id',user.id)
-    .maybeSingle();
-
-  if(r.error){
-
-    $('profileMsg').textContent=
-      'Profile error: '+r.error.message;
-
-    return;
-
-  }
-
-  const p=r.data||{};
-
-  $('profileName').value=p.full_name||'';
-
-  $('profilePhone').value=p.phone||'';
-
-  $('profileLocation').value=p.location||'';
-
-  $('profileHeadline').value=p.headline||'';
-
-  $('profileBio').value=p.bio||'';
-
-  $('profileMsg').textContent=
-    r.data
-      ?'Profile loaded.'
-      :'New profile — fill in your details and save.';
-
-}
-
-
-async function saveApplicantProfile(){
-
-  const user=await getApplicantUser();
-
-  if(!user){
-
-    $('profileMsg').textContent=
-      'Please log in first.';
-
-    return;
-
-  }
-
-  const payload={
-
-    id:user.id,
-
-    full_name:$('profileName').value.trim(),
-
-    phone:$('profilePhone').value.trim(),
-
-    location:$('profileLocation').value.trim(),
-
-    headline:$('profileHeadline').value.trim(),
-
-    bio:$('profileBio').value.trim(),
-
-    updated_at:new Date().toISOString()
-
-  };
-
-  const r=await db
-    .from('applicant_profiles')
-    .upsert(payload);
-
-  $('profileMsg').textContent=
-    r.error
-      ?'Profile error: '+r.error.message
-      :'Profile saved successfully.';
-
-}
-
-
-/* =========================================================
-   SAVED JOBS
-========================================================= */
-
-function getSavedIds(){
-
-  try{
-
-    return JSON.parse(
-      localStorage.getItem('earnsmart_saved_jobs')||'[]'
-    );
-
-  }catch{
-
-    return[];
-
-  }
-
-}
-
-
-function updateSavedCount(){
-
-  const el=$('savedCount');
-
-  if(el){
-
-    el.textContent=
-      getSavedIds().length;
-
-  }
-
-}
-
-
-function isSaved(id){
-
-  return getSavedIds().includes(id);
-
-}
-
-
-function toggleSave(id){
-
-  let ids=getSavedIds();
-
-  if(ids.includes(id)){
-
-    ids=ids.filter(x=>x!==id);
-
-  }else{
-
-    ids.push(id);
-
-  }
-
-  localStorage.setItem(
-    'earnsmart_saved_jobs',
-    JSON.stringify(ids)
-  );
-
-  updateSavedCount();
-
-  if($('applicantSavedJobs')){
-
-    loadApplicantSavedJobs();
-
-  }
-
-  openJob(id);
-
-}
-
-
-async function loadApplicantSavedJobs(){
-
-  const ids=getSavedIds();
-
-  const saved=(window.publicJobs||jobs)
-    .filter(x=>ids.includes(x.id));
-
-  $('applicantSavedJobs').innerHTML=
-
-    saved.length
-
-      ?saved.map(x=>`
-
-        <div class="job">
-
-          <h4 style="margin:0 0 6px">
-            ${esc(x.title)}
-          </h4>
-
-          <p>
-            ${esc(x.company||'Company not stated')}
-            ·
-            ${esc(x.location||'Remote')}
-          </p>
-
-          <button onclick="openJob('${x.id}')">
-            👁️ View Job
-          </button>
-
-          <button
-            class="secondary"
-            onclick="toggleSave('${x.id}')"
-          >
-            Remove
-          </button>
-
-        </div>
-
-      `).join('')
-
-      :'<p class="muted">No saved jobs yet. Save a job from the Jobs section.</p>';
-
-}
-
-
-function showSavedJobs(){
-
-  const box=$('savedJobsBox');
-
-  if(!box)return;
-
-  const ids=getSavedIds();
-
-  const saved=(window.publicJobs||jobs)
-    .filter(x=>ids.includes(x.id));
-
-  box.classList.remove('hidden');
-
-  box.innerHTML=
-
-    '<h3>⭐ Saved Jobs</h3>'+
-
-    (
-
-      saved.length
-
-      ?saved.map(x=>`
-
-        <div class="job">
-
-          <h3>${esc(x.title)}</h3>
-
-          <p>
-            <b>${esc(x.company||'')}</b>
-            ·
-            ${esc(x.location||'Remote')}
-          </p>
-
-          <button onclick="openJob('${x.id}')">
-            👁️ View
-          </button>
-
-          <button
-            class="secondary"
-            onclick="toggleSave('${x.id}')"
-          >
-            Remove
-          </button>
-
-        </div>
-
-      `).join('')
-
-      :'<p class="muted">You have not saved any jobs yet.</p>'
-
-    );
-
-  box.scrollIntoView({
-    behavior:'smooth',
-    block:'start'
-  });
-
-}
-
-
-/* =========================================================
-   APPLICANT APPLICATIONS
-========================================================= */
-
-async function loadApplicantApplications(){
-
-  const user=await getApplicantUser();
-
-  if(!user){
-
-    $('applicantApplications').innerHTML=
-      '<p class="muted">Please log in to see your applications.</p>';
-
-    return;
-
-  }
-
-  const r=await db
-    .from('job_applications')
-    .select(
-      'id,job_id,status,applied_at,notes'
-    )
-    .eq('applicant_id',user.id)
-    .order('applied_at',{
-      ascending:false
-    });
-
-  if(r.error){
-
-    $('applicantApplications').innerHTML=
-      '<p class="muted">Application tracking error: '+
-      esc(r.error.message)+
-      '</p>';
-
-    return;
-
-  }
-
-  const rows=r.data||[];
-
-  if(!rows.length){
-
-    $('applicantApplications').innerHTML=
-      '<p class="muted">No applications tracked yet. Tap “Mark as Applied” on a job after applying.</p>';
-
-    return;
-
-  }
-
-  const jobIds=[
-    ...new Set(
-      rows
-        .map(a=>a.job_id)
-        .filter(Boolean)
-    )
-  ];
-
-  let jobMap={};
-
-  if(jobIds.length){
-
-    const jr=await db
-      .from('jobs')
-      .select(
-        'id,title,company,location,application_url'
-      )
-      .in('id',jobIds);
-
-    if(!jr.error){
-
-      (jr.data||[]).forEach(
-        j=>jobMap[j.id]=j
-      );
-
-    }
-
-  }
-
-  $('applicantApplications').innerHTML=
-
-    rows.map(a=>{
-
-      const j=
-        jobMap[a.job_id]||{};
-
-      return `
-
-        <div class="job">
-
-          <h4 style="margin:0 0 6px">
-            ${esc(j.title||'Job')}
-          </h4>
-
-          <p>
-            ${esc(j.company||'')}
-            ·
-            ${esc(j.location||'')}
-          </p>
-
-          <span class="badge">
-            ${esc(a.status||'Applied')}
-          </span>
-
-          <p class="muted">
-            Marked applied:
-            ${
-              a.applied_at
-              ?new Date(a.applied_at).toLocaleDateString()
-              :'—'
-            }
-          </p>
-
-          ${
-            j.application_url
-            ?`
-
-              <a
-                class="apply"
-                target="_blank"
-                rel="noopener"
-                href="${safe(j.application_url)}"
-              >
-                🚀 Open Application
-              </a>
-
-            `
-            :''
-          }
-
-        </div>
-
-      `;
-
-    }).join('');
-
-}
-
-
-/* =========================================================
-   MARK JOB AS APPLIED
-========================================================= */
-
-async function markApplied(id){
-
-  const user=await getApplicantUser();
-
-  if(!user){
-
-    showApplicantAccount();
-
-    $('applicantAccountStatus').textContent=
-      'Please log in to track an application.';
-
-    return;
-
-  }
-
-  const payload={
-
-    applicant_id:user.id,
-
-    job_id:id,
-
-    status:'Applied',
-
-    applied_at:new Date().toISOString()
-
-  };
-
-  const r=await db
-    .from('job_applications')
-    .upsert(
-      payload,
-      {
-        onConflict:'applicant_id,job_id'
-      }
-    );
-
-  if(r.error){
-
-    alert(
-      'Could not save application status: '+
-      r.error.message
-    );
-
-    return;
-
-  }
-
-  alert(
-    'Application marked as applied. You can track it from Applicant Account.'
-  );
-
-  loadApplicantApplications();
-
-}
-
-
-/* =========================================================
-   ADMIN LOGIN
-========================================================= */
-
-let jobs=[];
-
-let editingId=null;
-
-let isAdmin=false;
-
-
-async function login(){
-
-  const r=
-    await db.auth.signInWithPassword({
-
-      email:$('email').value.trim(),
-
-      password:$('password').value
-
-    });
-
-  $('msg').textContent=
-    r.error
-      ?r.error.message
-      :'';
-
-  if(!r.error){
-
-    await checkAdmin();
-
-    if(isAdmin){
-
-      $('adminLoginView')
-        .classList.add('hidden');
-
-      $('adminView')
-        .classList.remove('hidden');
-
-      await loadAdmin();
-
-    }else{
-
-      $('msg').textContent=
-        'This account is not approved as an EarnSmart admin.';
-
-      await db.auth.signOut();
-
-    }
-
-  }
-
-}
-
-
-async function logout(){
-
-  await db.auth.signOut();
-
-  isAdmin=false;
-
-  showHome();
-
-}
-
-
-async function checkAdmin(){
-
-  const r=await db.auth.getUser();
-
-  if(r.error||!r.data.user){
-
-    isAdmin=false;
-
-    return;
-
-  }
-
-  const x=
-    await db
-      .from('admin_users')
-      .select('user_id')
-      .eq(
-        'user_id',
-        r.data.user.id
-      )
-      .maybeSingle();
-
-  isAdmin=
-    !x.error &&
-    !!x.data;
-
-}
-
-
-/* =========================================================
-   OPEN JOB
-========================================================= */
-
-function copyJobLink(url){
-
-  if(navigator.clipboard){
-
-    navigator.clipboard
-      .writeText(url)
-      .then(()=>{
-
-        alert(
-          'Job link copied. You can paste it into WhatsApp or anywhere else.'
-        );
-
-      });
-
-  }else{
-
-    prompt(
-      'Copy this job link:',
-      url
-    );
-
-  }
-
-}
-
-
-function reportJob(title){
-
-  const subject=
-    encodeURIComponent(
-      'Report job on EarnSmart Nigeria: '+title
-    );
-
-  const body=
-    encodeURIComponent(
-      'I would like to report this job because:'
-    );
-
-  location.href=
-    'mailto:earnsmartnigeria@gmail.com?subject='+
-    subject+
-    '&body='+
-    body;
-
-}
-
-
-function openJob(id){
-
-  const x=
-    jobs.find(j=>j.id===id);
-
-  if(!x)return;
-
-  const shareUrl=
-    location.origin+
-    location.pathname+
-    '?job='+
-    encodeURIComponent(id);
-
-  const sourceUrl=
-    safe(x.source_url);
-
-  const applicationUrl=
-    safe(x.application_url);
-
-  const saved=
-    isSaved(id);
-
-  $('jobDetails').innerHTML=`
-
-    <h2 style="font-size:30px;margin-top:35px">
-      ${esc(x.title)}
-    </h2>
-
-    <p>
-      <b>
-        ${esc(x.company||'Company not stated')}
-      </b>
-      ·
-      ${esc(x.location||'Remote')}
-    </p>
-
-    <p>
-
-      <span class="badge">
-        ✓ Verified
-      </span>
-
-      ${
-        x.remote
-        ?'<span class="badge">Remote</span>'
-        :'<span class="badge off">On-site / Hybrid</span>'
-      }
-
-    </p>
-
-    ${
-      x.salary_text
-      ?`
-
-        <h3>
-          💰 Pay
-        </h3>
-
-        <p>
-          ${esc(x.salary_text)}
-        </p>
-
-      `
-      :''
-    }
-
-    <h3>
-      📝 Job Description
-    </h3>
-
-    <p
-      style="
-        white-space:pre-line;
-        line-height:1.6
-      "
-    >
-      ${esc(
-        x.description||
-        'No detailed description provided.'
-      )}
-    </p>
-
-    <h3>
-      📌 Job Source
-    </h3>
-
-    <p>
-      ${esc(
-        x.source_name||
-        'Original source'
-      )}
-    </p>
-
-    <div class="actions">
-
-      <a
-        class="secondary"
-        style="display:inline-block"
-        target="_blank"
-        rel="noopener"
-        href="${sourceUrl}"
-      >
-        🔗 Open Source Listing
-      </a>
-
-      <button
-        class="apply"
-        onclick="window.open('${applicationUrl}','_blank','noopener')"
-      >
-        🚀 APPLY NOW
-      </button>
-
-      <button
-        class="secondary"
-        onclick="markApplied('${x.id}')"
-      >
-        📝 Mark as Applied
-      </button>
-
-      <button
-        class="secondary"
-        onclick="shareJob(
-          '${esc(x.title)}',
-          '${shareUrl}'
-        )"
-      >
-        📤 Share Job
-      </button>
-
-      <button
-        class="secondary"
-        onclick="copyJobLink('${shareUrl}')"
-      >
-        📋 Copy Link
-      </button>
-
-      <button
-        class="secondary"
-        onclick="toggleSave('${x.id}')"
-      >
-        ${
-          saved
-          ?'⭐ Saved'
-          :'☆ Save Job'
-        }
-      </button>
-
-      <button
-        class="danger"
-        onclick="reportJob('${esc(x.title)}')"
-      >
-        ⚠️ Report
-      </button>
-
-    </div>
-
-    <p
-      class="muted"
-      style="margin-top:18px"
-    >
-      EarnSmart Nigeria does not charge applicants to access jobs.
-      Always confirm the opportunity on the original source before applying.
-    </p>
-
-  `;
-
-  $('jobModal')
-    .classList.remove('hidden');
-
-  document.body.style.overflow=
-    'hidden';
-
-}
-
-
-function closeJob(){
-
-  updateSavedCount();
-
-  $('jobModal')
-    .classList.add('hidden');
-
-  document.body.style.overflow='';
-
-}
-
-
-async function shareJob(title,url){
-
-  try{
-
-    if(navigator.share){
-
-      await navigator.share({
-
-        title:
-          'EarnSmart Nigeria - '+title,
-
-        text:
-          'Check out this job on EarnSmart Nigeria',
-
-        url
-
-      });
-
-    }else{
-
-      await navigator.clipboard
-        .writeText(url);
-
-      alert(
-        'Job link copied. You can paste it into WhatsApp or any social app.'
-      );
-
-    }
-
-  }catch(e){}
-
-}
-
-
-function openJobFromUrl(){
-
-  const id=
-    new URLSearchParams(
-      location.search
-    ).get('job');
-
-  if(
-    id &&
-    jobs.some(j=>j.id===id)
-  ){
-
-    openJob(id);
-
-  }
-
-}
-
-
-/* =========================================================
-   PUBLIC JOBS
-========================================================= */
-
-async function loadPublic(){
-
-  let r=
-    await db
-      .from('jobs')
-      .select('*')
-      .eq('active',true)
-      .eq('verified',true)
-      .order(
-        'created_at',
-        {
-          ascending:false
-        }
-      );
-
-  if(r.error){
-
-    $('list').textContent=
-      'Jobs database error: '+
-      r.error.message;
-
-    return;
-
-  }
-
-  window.publicJobs=
-    r.data||[];
-
-  jobs=
-    window.publicJobs.slice();
-
-  let cats=[
-    ...new Set(
-      jobs
-        .map(x=>x.category)
-        .filter(Boolean)
-    )
-  ].sort();
-
-  let locs=[
-    ...new Set(
-      jobs
-        .map(x=>x.location)
-        .filter(Boolean)
-    )
-  ].sort();
-
-  $('cat').innerHTML=
-    '<option value="">All categories</option>'+
-    cats
-      .map(
-        x=>
-          '<option value="'+
-          esc(x)+
-          '">'+
-          esc(x)+
-          '</option>'
-      )
-      .join('');
-
-  $('loc').innerHTML=
-    '<option value="">📍 All locations</option>'+
-    locs
-      .map(
-        x=>
-          '<option value="'+
-          esc(x)+
-          '">'+
-          esc(x)+
-          '</option>'
-      )
-      .join('');
-
-  $('totalCount').textContent=
-    jobs.length;
-
-  $('remoteCount').textContent=
-    jobs.filter(
-      x=>x.remote
-    ).length;
-
-  $('categoryCount').textContent=
-    cats.length;
-
-  updateSavedCount();
-
-  renderPublic();
-
-  openJobFromUrl();
-
-}
-
-
-/* =========================================================
-   PUBLIC JOB FILTER
-========================================================= */
-
-function renderPublic(){
-
-  let q=
-    $('search')
-      .value
-      .toLowerCase()
-      .trim();
-
-  let c=
-    $('cat').value;
-
-  let l=
-    $('loc').value;
-
-  let ro=
-    $('remoteOnly').value;
-
-  let a=
-    (window.publicJobs||jobs)
-      .filter(x=>
-
-        (!c||x.category===c)&&
-
-        (!l||x.location===l)&&
-
-        (
-          !ro||
-          (
-            ro==='true'
-            ?!!x.remote
-            :!x.remote
-          )
-        )&&
-
-        (
-          !q||
-          [
-            x.title,
-            x.company,
-            x.description,
-            x.category,
-            x.location
-          ]
-          .join(' ')
-          .toLowerCase()
-          .includes(q)
-        )
-
-      );
-
-  $('list').innerHTML=
-
-    a.length
-
-    ?a.map(x=>`
-
-      <article class="job">
-
-        <h3>
-          ${esc(x.title)}
-        </h3>
-
-        <span class="badge">
-          ✓ Verified
-        </span>
-
-        ${
-          x.remote
-          ?'<span class="badge">Remote</span>'
-          :''
-        }
-
-        <p>
-
-          <b>
-            ${esc(
-              x.company||
-              'Company not stated'
-            )}
-          </b>
-
-          ·
-
-          ${esc(
-            x.location||
-            'Remote'
-          )}
-
-        </p>
-
-        <p>
-          ${esc(
-            x.description||
-            ''
-          )}
-        </p>
-
-        ${
-          x.salary_text
-          ?`
-
-            <p>
-              <b>Pay:</b>
-              ${esc(x.salary_text)}
-            </p>
-
-          `
-          :''
-        }
-
-        <p class="muted">
-
-          Source:
-          ${esc(
-            x.source_name
-          )}
-
-        </p>
-
-        <div class="actions">
-
-          <button
-            onclick="openJob('${x.id}')"
-          >
-            👁️ View Job Details
-          </button>
-
-          <a
-            class="apply"
-            target="_blank"
-            rel="noopener"
-            href="${safe(x.application_url)}"
-          >
-            🚀 Apply at original source ↗
-          </a>
-
-        </div>
-
-      </article>
-
-    `).join('')
-
-    :'<p class="muted">No matching verified jobs found.</p>';
-
-}
-
-
-/* =========================================================
-   ADMIN APPLICATIONS
-========================================================= */
-
-async function loadAdminApplications(){
-
-  if(!isAdmin)return;
-
-  const box=
-    $('adminApplications');
-
-  if(!box)return;
-
-  box.innerHTML=
-    'Loading applications...';
-
-
-  const r=
-    await db
-      .from('job_applications')
-      .select(
-        'id,applicant_id,job_id,status,applied_at,notes'
-      )
-      .order(
-        'applied_at',
-        {
-          ascending:false
-        }
-      );
-
-
-  if(r.error){
-
-    box.innerHTML=
-      '<p class="muted">'+
-      'Application error: '+
-      esc(r.error.message)+
-      '</p>';
-
-    return;
-
-  }
-
-
-  const rows=
-    r.data||[];
-
-
-  if(!rows.length){
-
-    box.innerHTML=
-      '<p class="muted">'+
-      'No applicant applications yet.'+
-      '</p>';
-
-    return;
-
-  }
-
-
-  const applicantIds=[
-    ...new Set(
-      rows
-        .map(x=>x.applicant_id)
-        .filter(Boolean)
-    )
-  ];
-
-
-  const jobIds=[
-    ...new Set(
-      rows
-        .map(x=>x.job_id)
-        .filter(Boolean)
-    )
-  ];
-
-
-  let applicants={};
-
-  let jobsMap={};
-
-
-  /* GET APPLICANT PROFILES */
-
-  if(applicantIds.length){
-
-    const pr=
-      await db
-        .from('applicant_profiles')
-        .select(
-          'id,full_name,phone,location,headline,bio'
-        )
-        .in(
-          'id',
-          applicantIds
-        );
-
-
-    if(!pr.error){
-
-      (pr.data||[])
-        .forEach(
-          p=>applicants[p.id]=p
-        );
-
-    }
-
-  }
-
-
-  /* GET JOB INFORMATION */
-
-  if(jobIds.length){
-
-    const jr=
-      await db
-        .from('jobs')
-        .select(
-          'id,title,company,location,application_url'
-        )
-        .in(
-          'id',
-          jobIds
-        );
-
-
-    if(!jr.error){
-
-      (jr.data||[])
-        .forEach(
-          j=>jobsMap[j.id]=j
-        );
-
-    }
-
-  }
-
-
-  box.innerHTML=
-
-    rows.map(a=>{
-
-      const p=
-        applicants[a.applicant_id]||{};
-
-      const j=
-        jobsMap[a.job_id]||{};
-
-
-      const applicantName=
-        p.full_name||
-        'Name not provided';
-
-
-      const jobTitle=
-        j.title||
-        'Job not found';
-
-
-      const company=
-        j.company||
-        'Not stated';
-
-
-      const appliedDate=
-        a.applied_at
-        ?new Date(
-            a.applied_at
-          ).toLocaleDateString()
-        :'—';
-
-
-      const status=
-        a.status||
-        'Applied';
-
-
-      return `
-
-        <article class="job">
-
-          <h3>
-            💼 ${esc(jobTitle)}
-          </h3>
-
-
-          <p>
-            <b>
-              👤 Applicant:
-            </b>
-
-            ${esc(applicantName)}
-          </p>
-
-
-          <p>
-            <b>
-              💼 Company:
-            </b>
-
-            ${esc(company)}
-          </p>
-
-
-          <p>
-            <b>
-              📍 Location:
-            </b>
-
-            ${esc(
-              j.location||
-              p.location||
-              'Not stated'
-            )}
-          </p>
-
-
-          <p>
-            <b>
-              📅 Applied:
-            </b>
-
-            ${esc(appliedDate)}
-          </p>
-
-
-          ${
-            p.phone
-            ?`
-
-              <p>
-                <b>
-                  📞 Phone:
-                </b>
-
-                ${esc(p.phone)}
-              </p>
-
-            `
-            :''
-          }
-
-
-          ${
-            p.headline
-            ?`
-
-              <p>
-                <b>
-                  Professional headline:
-                </b>
-
-                ${esc(p.headline)}
-              </p>
-
-            `
-            :''
-          }
-
-
-          ${
-            p.bio
-            ?`
-
-              <p>
-                <b>
-                  Bio:
-                </b>
-
-                ${esc(p.bio)}
-              </p>
-
-            `
-            :''
-          }
-
-
-          <p>
-
-            <b>
-              📌 Status:
-            </b>
-
-            <span class="badge">
-              ${esc(status)}
-            </span>
-
-          </p>
-
-
-          <div class="actions">
-
-
-            <select
-              class="status-select"
-              onchange="updateApplicationStatus(
-                '${a.id}',
-                this.value
-              )"
-            >
-
-              <option
-                value="Applied"
-                ${status==='Applied'?'selected':''}
-              >
-                Applied
-              </option>
-
-
-              <option
-                value="Reviewing"
-                ${status==='Reviewing'?'selected':''}
-              >
-                Reviewing
-              </option>
-
-
-              <option
-                value="Shortlisted"
-                ${status==='Shortlisted'?'selected':''}
-              >
-                Shortlisted
-              </option>
-
-
-              <option
-                value="Rejected"
-                ${status==='Rejected'?'selected':''}
-              >
-                Rejected
-              </option>
-
-
-              <option
-                value="Hired"
-                ${status==='Hired'?'selected':''}
-              >
-                Hired
-              </option>
-
-            </select>
-
-
-            <button
-              class="danger"
-              onclick="deleteApplication('${a.id}')"
-            >
-              🗑️ Delete
-            </button>
-
-
-          </div>
-
-        </article>
-
-      `;
-
-    }).join('');
-
-}
-
-
-/* =========================================================
-   UPDATE APPLICATION STATUS
-========================================================= */
-
-async function updateApplicationStatus(
-  id,
-  status
-){
-
-  if(!isAdmin)return;
-
-
-  const r=
-    await db
-      .from('job_applications')
-      .update({
-        status:status
-      })
-      .eq(
-        'id',
-        id
-      );
-
-
-  if(r.error){
-
-    alert(
-      'Could not update application: '+
-      r.error.message
-    );
-
-    return;
-
-  }
-
-
-  $('adminMsg').textContent=
-    'Application status updated to '+
-    status+
-    '.';
-
-
-  await loadAdminApplications();
-
-}
-
-
-/* =========================================================
-   DELETE APPLICATION
-========================================================= */
-
-async function deleteApplication(id){
-
-  if(!isAdmin)return;
-
-
-  if(
-    !confirm(
-      'Delete this application record?'
-    )
-  ){
-
-    return;
-
-  }
-
-
-  const r=
-    await db
-      .from('job_applications')
-      .delete()
-      .eq(
-        'id',
-        id
-      );
-
-
-  if(r.error){
-
-    alert(
-      'Could not delete application: '+
-      r.error.message
-    );
-
-    return;
-
-  }
-
-
-  $('adminMsg').textContent=
-    'Application deleted.';
-
-
-  await loadAdminApplications();
-
-}
-
-
-/* =========================================================
-   ADMIN JOB MANAGEMENT
-========================================================= */
-
-async function loadAdmin(){
-
-  if(!isAdmin)return;
-
-
-  let r=
-    await db
-      .from('jobs')
-      .select('*')
-      .order(
-        'created_at',
-        {
-          ascending:false
-        }
-      );
-
-
-  if(r.error){
-
-    $('adminJobs').textContent=
-      r.error.message;
-
-    return;
-
-  }
-
-
-  jobs=
-    r.data||[];
-
-
-  $('adminJobs').innerHTML=
-
-    jobs.length
-
-    ?jobs.map(x=>`
-
-      <article class="job">
-
-        <h3>
-          ${esc(x.title)}
-        </h3>
-
-        <p>
-
-          <b>
-            ${esc(x.company||'')}
-          </b>
-
-          ·
-
-          ${esc(x.category||'')}
-
-          ·
-
-          ${esc(x.location||'')}
-
-        </p>
-
-        <p class="muted">
-          ${esc(
-            x.salary_text||''
-          )}
-        </p>
-
-
-        <span
-          class="badge ${x.verified?'':'off'}"
-        >
-          ${
-            x.verified
-            ?'✓ Verified'
-            :'Not verified'
-          }
-        </span>
-
-
-        <span
-          class="badge ${x.active?'':'off'}"
-        >
-          ${
-            x.active
-            ?'Active'
-            :'Inactive'
-          }
-        </span>
-
-
-        <br>
-
-
-        <button
-          onclick="editJob('${x.id}')"
-        >
-          ✏️ Edit
-        </button>
-
-
-        <button
-          class="success"
-          onclick="toggleVerified(
-            '${x.id}',
-            ${!x.verified}
-          )"
-        >
-          ${
-            x.verified
-            ?'Unverify'
-            :'Verify'
-          }
-        </button>
-
-
-        <button
-          class="secondary"
-          onclick="toggleActive(
-            '${x.id}',
-            ${!x.active}
-          )"
-        >
-          ${
-            x.active
-            ?'Deactivate'
-            :'Activate'
-          }
-        </button>
-
-
-        <button
-          class="danger"
-          onclick="deleteJob('${x.id}')"
-        >
-          🗑️ Delete
-        </button>
-
-      </article>
-
-    `).join('')
-
-    :'<p class="muted">No jobs yet.</p>';
-
-
-  /* LOAD APPLICATIONS TOO */
-
-  await loadAdminApplications();
-
-}
-
-
-/* =========================================================
-   RESET JOB FORM
-========================================================= */
-
-function resetForm(){
-
-  editingId=null;
-
-  $('formTitle').textContent=
-    '➕ Add Job';
-
-
-  [
-    'jtitle',
-    'jcompany',
-    'jcategory',
-    'jlocation',
-    'jsource',
-    'jsourceurl',
-    'jappurl',
-    'jsalary',
-    'jdesc'
-  ]
-  .forEach(
-    id=>$(id).value=''
-  );
-
-
-  $('jremote').value=
-    'true';
-
-  $('jverified').checked=
-    false;
-
-  $('jactive').checked=
-    true;
-
-}
-
-
-/* =========================================================
-   EDIT JOB
-========================================================= */
-
-function editJob(id){
-
-  let x=
-    jobs.find(
-      j=>j.id===id
-    );
-
-  if(!x)return;
-
-
-  editingId=id;
-
-
-  $('formTitle').textContent=
-    '✏️ Edit Job';
-
-
-  $('jtitle').value=
-    x.title||'';
-
-  $('jcompany').value=
-    x.company||'';
-
-  $('jcategory').value=
-    x.category||'';
-
-  $('jlocation').value=
-    x.location||'';
-
-  $('jsource').value=
-    x.source_name||'';
-
-  $('jsourceurl').value=
-    x.source_url||'';
-
-  $('jappurl').value=
-    x.application_url||'';
-
-  $('jsalary').value=
-    x.salary_text||'';
-
-  $('jremote').value=
-    String(x.remote);
-
-  $('jdesc').value=
-    x.description||'';
-
-  $('jverified').checked=
-    !!x.verified;
-
-  $('jactive').checked=
-    !!x.active;
-
-
-  window.scrollTo({
-    top:0,
-    behavior:'smooth'
-  });
-
-}
-
-
-/* =========================================================
-   SAVE JOB
-========================================================= */
-
-async function saveJob(){
-
-  if(!isAdmin)return;
-
-
-  let p={
-
-    title:
-      $('jtitle')
-      .value
-      .trim(),
-
-    company:
-      $('jcompany')
-      .value
-      .trim(),
-
-    description:
-      $('jdesc')
-      .value
-      .trim(),
-
-    category:
-      $('jcategory')
-      .value
-      .trim(),
-
-    location:
-      $('jlocation')
-      .value
-      .trim(),
-
-    remote:
-      $('jremote')
-      .value==='true',
-
-    source_name:
-      $('jsource')
-      .value
-      .trim(),
-
-    source_url:
-      $('jsourceurl')
-      .value
-      .trim(),
-
-    application_url:
-      $('jappurl')
-      .value
-      .trim(),
-
-    salary_text:
-      $('jsalary')
-      .value
-      .trim(),
-
-    verified:
-      $('jverified')
-      .checked,
-
-    active:
-      $('jactive')
-      .checked
-
-  };
-
-
-  if(
-    !p.title||
-    !p.source_name||
-    !p.source_url||
-    !p.application_url
-  ){
-
-    $('adminMsg').textContent=
-      'Please fill all fields marked *.';
-
-    return;
-
-  }
-
-
-  let r;
-
-
-  if(editingId){
-
-    r=
-      await db
-        .from('jobs')
-        .update(p)
-        .eq(
-          'id',
-          editingId
-        );
-
-  }else{
-
-    r=
-      await db
-        .from('jobs')
-        .insert(p);
-
-  }
-
-
-  $('adminMsg').textContent=
-    r.error
-      ?r.error.message
-      :'Saved successfully.';
-
-
-  if(!r.error){
-
-    resetForm();
-
-    await loadAdmin();
-
-    await loadPublic();
-
-  }
-
-}
-
-
-/* =========================================================
-   CSV PARSER
-========================================================= */
-
-function parseCSV(text){
-
-  const rows=[];
-
-  let row=[];
-
-  let cell='';
-
-  let quoted=false;
-
-
-  for(
-    let i=0;
-    i<text.length;
-    i++
-  ){
-
-    const ch=
-      text[i];
-
-    const next=
-      text[i+1];
-
-
-    if(
-      ch==='"' &&
-      quoted &&
-      next==='"'
-    ){
-
-      cell+='"';
-
-      i++;
-
-      continue;
-
-    }
-
-
-    if(ch==='"'){
-
-      quoted=!quoted;
-
-      continue;
-
-    }
-
-
-    if(
-      ch===',' &&
-      !quoted
-    ){
-
-      row.push(cell);
-
-      cell='';
-
-      continue;
-
-    }
-
-
-    if(
-      (
-        ch==='\n'||
-        ch==='\r'
-      ) &&
-      !quoted
-    ){
-
-      if(
-        ch==='\r' &&
-        next==='\n'
-      ){
-
-        i++;
-
-      }
-
-
-      row.push(cell);
-
-      cell='';
-
-
-      if(
-        row.some(
-          v=>v.trim()!==''
-        )
-      ){
-
-        rows.push(row);
-
-      }
-
-
-      row=[];
-
-      continue;
-
-    }
-
-
-    cell+=ch;
-
-  }
-
-
-  if(
-    cell!==''||
-    row.length
-  ){
-
-    row.push(cell);
-
-
-    if(
-      row.some(
-        v=>v.trim()!==''
-      )
-    ){
-
-      rows.push(row);
-
-    }
-
-  }
-
-
-  return rows;
-
-}
-
-
-/* =========================================================
-   CSV BOOLEAN
-========================================================= */
-
-function csvBool(
-  v,
-  def=false
-){
-
-  const x=
-    String(v??'')
-      .trim()
-      .toLowerCase();
-
-
-  if(
-    [
-      'true',
-      'yes',
-      '1',
-      'y'
-    ].includes(x)
-  ){
-
-    return true;
-
-  }
-
-
-  if(
-    [
-      'false',
-      'no',
-      '0',
-      'n'
-    ].includes(x)
-  ){
-
-    return false;
-
-  }
-
-
-  return def;
-
-}
-
-
-/* =========================================================
-   BULK TEMPLATE
-========================================================= */
-
-function loadBulkTemplate(){
-
-  $('bulkJobs').value=
-`title,company,category,location,source_name,source_url,application_url,salary_text,remote,description,verified,active
-Administrator,Example Company,Admin & Office,Nigeria,Jobberman,https://example.com/job,https://example.com/app,"₦300,000 - ₦350,000",true,"Remote administrator opportunity",false,true`;
-
-
-  $('bulkMsg').textContent=
-    'Template loaded. Replace the example row(s) with your jobs.';
-
-}
-
-
-function clearBulk(){
-
-  $('bulkJobs').value='';
-
-  $('bulkMsg').textContent='';
-
-}
-
-
-/* =========================================================
-   IMPORT BULK JOBS
-========================================================= */
-
-async function importBulkJobs(){
-
-  if(!isAdmin)return;
-
-
-  const text=
-    $('bulkJobs')
-      .value
-      .trim();
-
-
-  if(!text){
-
-    $('bulkMsg').textContent=
-      'Paste CSV data first.';
-
-    return;
-
-  }
-
-
-  const rows=
-    parseCSV(text);
-
-
-  if(rows.length<2){
-
-    $('bulkMsg').textContent=
-      'Please include a header row and at least one job.';
-
-    return;
-
-  }
-
-
-  const headers=
-    rows[0]
-      .map(
-        x=>x.trim().toLowerCase()
-      );
-
-
-  const required=[
-    'title',
-    'source_name',
-    'source_url',
-    'application_url'
-  ];
-
-
-  const missing=
-    required.filter(
-      k=>!headers.includes(k)
-    );
-
-
-  if(missing.length){
-
-    $('bulkMsg').textContent=
-      'Missing required columns: '+
-      missing.join(', ');
-
-    return;
-
-  }
-
-
-  const idx=
-    k=>headers.indexOf(k);
-
-
-  const existing=
-    new Set(
-      (jobs||[])
-        .map(
-          x=>
-            String(
-              x.source_url||''
-            ).trim()
-        )
-        .filter(Boolean)
-    );
-
-
-  const payload=[];
-
-  const errors=[];
-
-  const seen=new Set();
-
-
-  rows
-    .slice(1)
-    .forEach(
-      (r,n)=>{
-
-        const get=
-          k=>
-            String(
-              r[idx(k)]??''
-            ).trim();
-
-
-        const title=
-          get('title');
-
-        const source=
-          get('source_name');
-
-        const sourceUrl=
-          get('source_url');
-
-        const appUrl=
-          get('application_url');
-
-
-        if(
-          !title||
-          !source||
-          !sourceUrl||
-          !appUrl
-        ){
-
-          errors.push(
-            'Row '+
-            (n+2)+
-            ': missing title/source/source URL/application URL'
-          );
-
-          return;
-
-        }
-
-
-        if(
-          existing.has(sourceUrl)||
-          seen.has(sourceUrl)
-        ){
-
-          errors.push(
-            'Row '+
-            (n+2)+
-            ': duplicate source URL skipped'
-          );
-
-          return;
-
-        }
-
-
-        seen.add(sourceUrl);
-
-
-        payload.push({
-
-          title,
-
-          company:
-            get('company'),
-
-          category:
-            get('category'),
-
-          location:
-            get('location'),
-
-          source_name:
-            source,
-
-          source_url:
-            sourceUrl,
-
-          application_url:
-            appUrl,
-
-          salary_text:
-            get('salary_text'),
-
-          remote:
-            csvBool(
-              get('remote'),
-              true
-            ),
-
-          description:
-            get('description'),
-
-          verified:
-            csvBool(
-              get('verified'),
-              false
-            ),
-
-          active:
-            csvBool(
-              get('active'),
-              true
-            )
-
-        });
-
-      }
-    );
-
-
-  if(!payload.length){
-
-    $('bulkMsg').textContent=
-      'No new valid jobs to import. '+
-      errors.join(' | ');
-
-    return;
-
-  }
-
-
-  let added=0;
-
-
-  for(
-    let i=0;
-    i<payload.length;
-    i+=50
-  ){
-
-    const batch=
-      payload.slice(
-        i,
-        i+50
-      );
-
-
-    const r=
-      await db
-        .from('jobs')
-        .insert(batch);
-
-
-    if(r.error){
-
-      $('bulkMsg').textContent=
-        'Import stopped after '+
-        added+
-        ' jobs: '+
-        r.error.message;
-
-      return;
-
-    }
-
-
-    added+=batch.length;
-
-  }
-
-
-  $('bulkMsg').textContent=
-    'Successfully imported '+
-    added+
-    ' job(s).'+
-    (
-      errors.length
-      ?' Skipped: '+
-        errors.length+
-        '.'
-      :''
-    );
-
-
-  $('bulkJobs').value='';
-
-
-  await loadAdmin();
-
-  await loadPublic();
-
-}
-
-
-/* =========================================================
-   VERIFY / UNVERIFY
-========================================================= */
-
-async function toggleVerified(
-  id,
-  v
-){
-
-  let r=
-    await db
-      .from('jobs')
-      .update({
-        verified:v
-      })
-      .eq(
-        'id',
-        id
-      );
-
-
-  $('adminMsg').textContent=
-    r.error
-      ?r.error.message
-      :'Updated.';
-
-
-  await loadAdmin();
-
-  await loadPublic();
-
-}
-
-
-/* =========================================================
-   ACTIVATE / DEACTIVATE
-========================================================= */
-
-async function toggleActive(
-  id,
-  v
-){
-
-  let r=
-    await db
-      .from('jobs')
-      .update({
-        active:v
-      })
-      .eq(
-        'id',
-        id
-      );
-
-
-  $('adminMsg').textContent=
-    r.error
-      ?r.error.message
-      :'Updated.';
-
-
-  await loadAdmin();
-
-  await loadPublic();
-
-}
-
-
-/* =========================================================
-   DELETE JOB
-========================================================= */
-
-async function deleteJob(id){
-
-  if(
-    !confirm(
-      'Delete this job?'
-    )
-  ){
-
-    return;
-
-  }
-
-
-  let r=
-    await db
-      .from('jobs')
-      .delete()
-      .eq(
-        'id',
-        id
-      );
-
-
-  $('adminMsg').textContent=
-    r.error
-      ?r.error.message
-      :'Job deleted.';
-
-
-  await loadAdmin();
-
-  await loadPublic();
-
-}
-
-
-/* =========================================================
-   START APPLICATION
-========================================================= */
-
-loadPublic();
-
-</script>
-
-</body>
-  </html>
+<div class="modal
