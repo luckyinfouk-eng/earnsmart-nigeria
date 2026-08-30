@@ -1727,3 +1727,132 @@ loadPublicJobs();
 
 </body>
 </html>
+/* ===============================
+   EarnSmart Notification System
+   =============================== */
+
+async function loadNotifications(){
+
+  const box = $("notifications");
+
+  if(!box) return;
+
+  if(!currentUser){
+    box.innerHTML =
+      "<p class='muted'>Please log in to see your notifications.</p>";
+    return;
+  }
+
+  box.innerHTML =
+    "<p class='muted'>Loading notifications...</p>";
+
+  const {data,error} = await db
+    .from("application_notifications")
+    .select("*")
+    .eq("applicant_id",currentUser.id)
+    .order("created_at",{ascending:false});
+
+  if(error){
+
+    box.innerHTML =
+      "<p class='muted'>Notification error: " +
+      escapeHtml(error.message) +
+      "</p>";
+
+    return;
+  }
+
+  if(!data || !data.length){
+
+    box.innerHTML =
+      "<p class='muted'>No notifications yet.</p>";
+
+    return;
+  }
+
+  box.innerHTML = data.map(n => {
+
+    const title =
+      n.title ||
+      n.notification_title ||
+      "Application Update";
+
+    const message =
+      n.message ||
+      n.body ||
+      n.notification ||
+      "Your application has been updated.";
+
+    const date =
+      n.created_at
+      ? new Date(n.created_at).toLocaleString()
+      : "";
+
+    return `
+      <div class="job">
+
+        <h3>🔔 ${escapeHtml(title)}</h3>
+
+        <p>
+          ${escapeHtml(message)}
+        </p>
+
+        ${
+          date
+          ? `<p class="muted">${escapeHtml(date)}</p>`
+          : ""
+        }
+
+      </div>
+    `;
+
+  }).join("");
+}
+
+
+/* Load notifications whenever Applicant page opens */
+
+const originalShowApplicant = showApplicant;
+
+showApplicant = async function(){
+
+  await originalShowApplicant();
+
+  if(currentUser){
+    await loadNotifications();
+  }
+
+};
+
+
+/* Refresh notifications after Admin changes application status */
+
+const originalUpdateApplicationStatus =
+  updateApplicationStatus;
+
+updateApplicationStatus = async function(id,status){
+
+  await originalUpdateApplicationStatus(id,status);
+
+  if(currentUser && !isAdmin){
+    await loadNotifications();
+  }
+
+};
+
+
+/* Also refresh notifications when the user logs in */
+
+db.auth.onAuthStateChange((event,session)=>{
+
+  currentUser = session?.user || null;
+
+  if(currentUser){
+
+    setTimeout(()=>{
+      loadNotifications();
+    },500);
+
+  }
+
+});
