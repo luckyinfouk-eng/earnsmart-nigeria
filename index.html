@@ -10,17 +10,17 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#f4f6fa;color:#102a43}
-header{background:#092642;color:white;padding:18px}
+header{background:#092642;color:#fff;padding:18px}
 .nav{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .brand{font-size:25px;font-weight:800}
-button,.btn{border:0;border-radius:10px;padding:12px 16px;background:#092642;color:white;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
+button,.btn{border:0;border-radius:10px;padding:12px 16px;background:#092642;color:#fff;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
 .light{background:#e9eef3;color:#102a43}
 .red{background:#b42318}
 .green{background:#16794c}
 .orange{background:#b54708}
 main{max-width:1100px;margin:auto;padding:20px}
-.card{background:white;border-radius:18px;padding:22px;margin:18px 0;box-shadow:0 5px 18px #0001}
-.hero{background:#092642;color:white;border-radius:22px;padding:35px 25px}
+.card{background:#fff;border-radius:18px;padding:22px;margin:18px 0;box-shadow:0 5px 18px #0001}
+.hero{background:#092642;color:#fff;border-radius:22px;padding:35px 25px}
 .hero h1{font-size:38px;margin:0 0 10px}
 .hero p{font-size:18px;line-height:1.5}
 input,select,textarea{width:100%;padding:13px;margin:6px 0;border:1px solid #ccd6e0;border-radius:10px;font-size:16px}
@@ -36,8 +36,8 @@ textarea{min-height:110px}
 .muted{color:#667085}
 .notice{background:#eef4ff;padding:12px;border-radius:10px}
 .filebox{border:1px dashed #98a2b3;border-radius:12px;padding:14px;margin:8px 0;background:#f8fafc}
-.filebox input[type=file]{padding:8px;background:white}
-.cvlink{display:inline-block;margin-top:8px}
+.filebox input[type=file]{padding:8px;background:#fff}
+.cvlink{margin-top:8px}
 .hidden{display:none!important}
 .status{display:inline-block;padding:6px 10px;border-radius:20px;font-weight:bold;font-size:13px}
 .applied{background:#e7f7ef;color:#16794c}
@@ -47,12 +47,13 @@ textarea{min-height:110px}
 .rejected{background:#fff0ee;color:#b42318}
 .withdrawn{background:#f2f4f7;color:#475467}
 .modal{position:fixed;inset:0;background:#0008;z-index:1000;padding:20px;overflow:auto}
-.modalbox{max-width:750px;background:white;margin:30px auto;padding:25px;border-radius:20px}
+.modalbox{max-width:750px;background:#fff;margin:30px auto;padding:25px;border-radius:20px}
 .footer{text-align:center;padding:30px;color:#667085}
+.notification{border-left:5px solid #092642;background:#f8fafc;padding:12px;margin:10px 0;border-radius:8px}
 @media(max-width:700px){
- .nav{flex-direction:column;align-items:flex-start}
- .grid,.toolbar{grid-template-columns:1fr}
- .hero h1{font-size:30px}
+.nav{flex-direction:column;align-items:flex-start}
+.grid,.toolbar{grid-template-columns:1fr}
+.hero h1{font-size:30px}
 }
 </style>
 </head>
@@ -73,6 +74,7 @@ textarea{min-height:110px}
 <main>
 
 <section id="home">
+
 <div class="hero">
 <h1>Find genuine opportunities. Earn smarter.</h1>
 <p>Browse verified jobs and apply through the original employer or job platform.</p>
@@ -84,12 +86,15 @@ textarea{min-height:110px}
 
 <div class="toolbar">
 <input id="search" placeholder="🔎 Search jobs..." oninput="renderJobs()">
+
 <select id="category" onchange="renderJobs()">
 <option value="">All categories</option>
 </select>
+
 <select id="location" onchange="renderJobs()">
 <option value="">All locations</option>
 </select>
+
 <select id="workType" onchange="renderJobs()">
 <option value="">All work types</option>
 <option value="remote">Remote</option>
@@ -99,6 +104,7 @@ textarea{min-height:110px}
 
 <div id="jobsList">Loading jobs...</div>
 </div>
+
 </section>
 
 
@@ -109,8 +115,11 @@ textarea{min-height:110px}
 <p class="muted">Create an account or log in to your EarnSmart Nigeria account.</p>
 
 <div id="authBox">
+
 <input id="appEmail" type="email" placeholder="Email address">
-<input id="appPassword" type="password" placeholder="Password (minimum 6 characters)">
+
+<input id="appPassword" type="password"
+placeholder="Password (minimum 6 characters)">
 
 <div class="actions">
 <button onclick="createApplicant()">📝 Create Account</button>
@@ -120,62 +129,100 @@ textarea{min-height:110px}
 <p id="authMessage" class="muted"></p>
 </div>
 
+
 <div id="accountBox" class="hidden">
 
 <div class="notice">
 <b>Account:</b> <span id="accountEmail"></span>
 </div>
 
+
 <div class="card">
+
 <h3>👤 My Applicant Profile</h3>
 
 <div id="profileView"></div>
 
 <div id="profileForm" class="hidden">
+
 <div class="grid">
+
 <input id="fullName" placeholder="Full name *">
+
 <input id="phone" placeholder="Phone number *">
+
 <input id="profileLocation" placeholder="Location / City *">
+
 <input id="headline" placeholder="Professional headline">
+
 </div>
 
 <textarea id="bio" placeholder="Short professional bio"></textarea>
 
 <div class="filebox">
+
 <b>📄 CV / Resume</b>
-<p class="muted">Upload PDF, DOC or DOCX. Maximum 5MB.</p>
-<input id="cvFile" type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+
+<p class="muted">
+Upload PDF, DOC or DOCX. Maximum 5MB.
+</p>
+
+<input id="cvFile" type="file"
+accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+
 <p id="currentCv" class="muted"></p>
+
 </div>
 
 <button onclick="saveProfile()">💾 Save Profile</button>
+
 <button class="light" onclick="cancelProfileEdit()">Cancel</button>
 
 <p id="profileMessage" class="muted"></p>
+
 </div>
 </div>
 
 
 <div class="card">
+
 <h3>⭐ My Saved Jobs</h3>
-<div id="savedJobs">No saved jobs yet.</div>
+
+<div id="savedJobs">
+No saved jobs yet.
+</div>
+
 </div>
 
 
 <div class="card">
+
 <h3>📝 My Applications</h3>
-<div id="myApplications">Loading...</div>
+
+<div id="myApplications">
+Loading...
 </div>
+
+</div>
+
+
 <div class="card">
-  <h3>🔔 Notifications</h3>
-  <div id="notifications">
-    Loading notifications...
-  </div>
+
+<h3>🔔 Notifications</h3>
+
+<div id="notifications">
+Loading notifications...
 </div>
+
+</div>
+
 
 <div class="actions">
+
 <button onclick="showHome()">💼 Browse Jobs</button>
+
 <button class="light" onclick="logoutApplicant()">🚪 Log Out</button>
+
 </div>
 
 </div>
@@ -185,14 +232,25 @@ textarea{min-height:110px}
 
 
 <section id="adminLogin" class="hidden">
+
 <div class="card">
+
 <h2>🔐 Admin Login</h2>
-<input id="adminEmail" type="email" placeholder="Admin email">
-<input id="adminPassword" type="password" placeholder="Password">
+
+<input id="adminEmail" type="email"
+placeholder="Admin email">
+
+<input id="adminPassword" type="password"
+placeholder="Password">
+
 <button onclick="adminLogin()">Log In</button>
+
 <button class="light" onclick="showHome()">Back to Jobs</button>
+
 <p id="adminMessage" class="muted"></p>
+
 </div>
+
 </section>
 
 
@@ -201,52 +259,83 @@ textarea{min-height:110px}
 <div class="card">
 
 <div class="actions">
+
 <button onclick="showHome()">💼 Public Jobs</button>
-<button class="light" onclick="openAdminApplications()">📝 Applications</button>
-<button class="light" onclick="adminLogout()">🚪 Log Out</button>
+
+<button class="light"
+onclick="openAdminApplications()">
+📝 Applications
+</button>
+
+<button class="light"
+onclick="adminLogout()">
+🚪 Log Out
+</button>
+
 </div>
 
 <h2>⚙️ EarnSmart Admin Dashboard</h2>
-<p class="muted">Add, edit, verify, activate or delete jobs.</p>
+
+<p class="muted">
+Add, edit, verify, activate or delete jobs.
+</p>
 
 <p id="adminStatus" class="muted"></p>
+
 
 <div class="card">
 
 <h3 id="jobFormTitle">➕ Add Job</h3>
 
 <div class="grid">
+
 <input id="jobTitle" placeholder="Job title *">
+
 <input id="jobCompany" placeholder="Company">
+
 <input id="jobCategory" placeholder="Category">
+
 <input id="jobLocation" placeholder="Location">
+
 <input id="sourceName" placeholder="Source name *">
+
 <input id="sourceUrl" placeholder="Source URL *">
-<input id="applicationUrl" placeholder="Application URL *">
+
+<input id="applicationUrl"
+placeholder="Application URL *">
+
 <input id="salary" placeholder="Salary / pay">
+
 <select id="remote">
 <option value="true">Remote</option>
 <option value="false">On-site / Hybrid</option>
 </select>
+
 <input id="expiresAt" type="date">
+
 </div>
 
-<textarea id="description" placeholder="Job description"></textarea>
+<textarea id="description"
+placeholder="Job description"></textarea>
 
 <label>
-<input id="verified" type="checkbox" style="width:auto">
+<input id="verified" type="checkbox"
+style="width:auto">
 Verified
 </label>
 
 <label>
-<input id="active" type="checkbox" style="width:auto" checked>
+<input id="active" type="checkbox"
+style="width:auto" checked>
 Active
 </label>
 
 <br><br>
 
 <button onclick="saveJob()">💾 Save Job</button>
-<button class="light" onclick="clearJobForm()">Clear</button>
+
+<button class="light"
+onclick="clearJobForm()">Clear</button>
 
 </div>
 
@@ -261,27 +350,49 @@ Use this exact column order:
 <b>title,company,category,location,source_name,source_url,application_url,salary_text,remote,description,verified,active,expires_at</b>
 </p>
 
-<textarea id="csvBox" style="min-height:220px" placeholder="Paste CSV here"></textarea>
+<textarea id="csvBox"
+style="min-height:220px"
+placeholder="Paste CSV here"></textarea>
 
 <div class="actions">
+
 <button onclick="importJobs()">📥 Import Jobs</button>
-<button class="light" onclick="loadTemplate()">📋 Load Template</button>
-<button class="light" onclick="document.getElementById('csvBox').value=''">Clear</button>
+
+<button class="light"
+onclick="loadTemplate()">📋 Load Template</button>
+
+<button class="light"
+onclick="document.getElementById('csvBox').value=''">
+Clear
+</button>
+
 </div>
 
 <p id="csvMessage" class="muted"></p>
+
 </div>
 
 
 <div class="card">
+
 <h3>📋 All Jobs</h3>
-<div id="adminJobs">Loading...</div>
+
+<div id="adminJobs">
+Loading...
+</div>
+
 </div>
 
 
-<div class="card hidden" id="adminApplicationBox">
+<div class="card hidden"
+id="adminApplicationBox">
+
 <h3>📝 Applicant Applications</h3>
-<div id="adminApplications">Loading...</div>
+
+<div id="adminApplications">
+Loading...
+</div>
+
 </div>
 
 </div>
@@ -290,12 +401,20 @@ Use this exact column order:
 
 </main>
 
+
 <div id="jobModal" class="modal hidden">
+
 <div class="modalbox">
-<button class="light" onclick="closeJob()">✕ Close</button>
+
+<button class="light"
+onclick="closeJob()">✕ Close</button>
+
 <div id="jobDetails"></div>
+
 </div>
+
 </div>
+
 
 <div class="footer">
 EarnSmart Nigeria 🇳🇬 · Learn. Earn. Grow.
@@ -304,1421 +423,2153 @@ EarnSmart Nigeria 🇳🇬 · Learn. Earn. Grow.
 
 <script>
 
-const supabaseUrl = "https://nvifxcudispvdgatrunk.supabase.co";
-const supabaseKey = "sb_publishable_wCFkTXL6MJVSHxQr5geRwg_OEndNw_F";
+const supabaseUrl =
+"https://nvifxcudispvdgatrunk.supabase.co";
 
-const db = supabase.createClient(supabaseUrl,supabaseKey);
+const supabaseKey =
+"sb_publishable_wCFkTXL6MJVSHxQr5geRwg_OEndNw_F";
+
+const db =
+supabase.createClient(supabaseUrl,supabaseKey);
 
 let allJobs=[];
-let adminJobs=[];
 let editingJobId=null;
 let currentUser=null;
 let isAdmin=false;
 
 
 function $(id){
- return document.getElementById(id);
+return document.getElementById(id);
 }
 
 
 function escapeHtml(value){
- return String(value ?? "")
- .replace(/&/g,"&amp;")
- .replace(/</g,"&lt;")
- .replace(/>/g,"&gt;")
- .replace(/"/g,"&quot;")
- .replace(/'/g,"&#039;");
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 }
 
 
 function safeUrl(value){
- try{
-  const u=new URL(value);
-  if(u.protocol==="http:" || u.protocol==="https:") return u.href;
- }catch(e){}
- return "#";
+
+try{
+
+const u=new URL(value);
+
+if(u.protocol==="http:" ||
+u.protocol==="https:"){
+return u.href;
+}
+
+}catch(e){}
+
+return "#";
 }
 
 
 function expired(job){
- if(!job.expires_at) return false;
- return new Date(job.expires_at+"T23:59:59") < new Date();
+
+if(!job.expires_at)return false;
+
+return new Date(job.expires_at+"T23:59:59") < new Date();
 }
 
 
 function showOnly(id){
- ["home","applicant","adminLogin","admin"].forEach(x=>{
-  $(x).classList.add("hidden");
- });
- $(id).classList.remove("hidden");
- window.scrollTo(0,0);
+
+["home","applicant","adminLogin","admin"]
+.forEach(x=>{
+$(x).classList.add("hidden");
+});
+
+$(id).classList.remove("hidden");
+
+window.scrollTo(0,0);
 }
 
 
 function showHome(){
- showOnly("home");
+showOnly("home");
 }
 
 
 async function showApplicant(){
- showOnly("applicant");
- await refreshApplicant();
+
+showOnly("applicant");
+
+await refreshApplicant();
+
 }
 
 
 function showAdminLogin(){
- showOnly("adminLogin");
+showOnly("adminLogin");
 }
 
 
 async function createApplicant(){
 
- const email=$("appEmail").value.trim();
- const password=$("appPassword").value;
+const email=$("appEmail").value.trim();
+const password=$("appPassword").value;
 
- if(!email || !password){
-  $("authMessage").textContent="Enter your email and password.";
-  return;
- }
+if(!email || !password){
 
- if(password.length<6){
-  $("authMessage").textContent="Password must be at least 6 characters.";
-  return;
- }
+$("authMessage").textContent=
+"Enter your email and password.";
 
- const {data,error}=await db.auth.signUp({email,password});
+return;
+}
 
- if(error){
-  $("authMessage").textContent=error.message;
-  return;
- }
+if(password.length<6){
 
- $("authMessage").textContent=
- data.session
- ? "Account created successfully."
- : "Account created. Check your email to confirm the account.";
+$("authMessage").textContent=
+"Password must be at least 6 characters.";
 
- await refreshApplicant();
+return;
+}
+
+const {data,error}=
+await db.auth.signUp({email,password});
+
+if(error){
+
+$("authMessage").textContent=error.message;
+
+return;
+}
+
+$("authMessage").textContent=
+data.session
+?"Account created successfully."
+:"Account created. Check your email to confirm the account.";
+
+await refreshApplicant();
+
 }
 
 
 async function loginApplicant(){
 
- const email=$("appEmail").value.trim();
- const password=$("appPassword").value;
+const email=$("appEmail").value.trim();
+const password=$("appPassword").value;
 
- if(!email || !password){
-  $("authMessage").textContent="Enter your email and password.";
-  return;
- }
+if(!email || !password){
 
- const {error}=await db.auth.signInWithPassword({
-  email,
-  password
- });
+$("authMessage").textContent=
+"Enter your email and password.";
 
- if(error){
-  $("authMessage").textContent=error.message;
-  return;
- }
+return;
+}
 
- $("authMessage").textContent="Login successful.";
+const {error}=
+await db.auth.signInWithPassword({
+email,
+password
+});
 
- await refreshApplicant();
+if(error){
+
+$("authMessage").textContent=error.message;
+
+return;
+}
+
+$("authMessage").textContent=
+"Login successful.";
+
+await refreshApplicant();
+
 }
 
 
 async function logoutApplicant(){
 
- await db.auth.signOut();
- currentUser=null;
+await db.auth.signOut();
 
- $("authMessage").textContent="You have been logged out.";
+currentUser=null;
+isAdmin=false;
 
- await refreshApplicant();
+$("authMessage").textContent=
+"You have been logged out.";
+
+await refreshApplicant();
+
 }
 
 
 async function refreshApplicant(){
 
- const {data}=await db.auth.getUser();
+const {data}=await db.auth.getUser();
 
- currentUser=data?.user || null;
+currentUser=data?.user || null;
 
- if(!currentUser){
+if(!currentUser){
 
-  $("authBox").classList.remove("hidden");
-  $("accountBox").classList.add("hidden");
+$("authBox").classList.remove("hidden");
+$("accountBox").classList.add("hidden");
 
-  return;
- }
+return;
+}
 
- $("authBox").classList.add("hidden");
- $("accountBox").classList.remove("hidden");
+$("authBox").classList.add("hidden");
+$("accountBox").classList.remove("hidden");
 
- $("accountEmail").textContent=currentUser.email || "";
+$("accountEmail").textContent=
+currentUser.email || "";
 
- await loadProfile();
- await loadSavedJobs();
- await loadApplications();
+await loadProfile();
+await loadSavedJobs();
+await loadApplications();
+await loadNotifications();
+
 }
 
 
 async function loadProfile(){
 
- const {data,error}=await db
- .from("applicant_profiles")
- .select("*")
- .eq("id",currentUser.id)
- .maybeSingle();
+const {data,error}=await db
+.from("applicant_profiles")
+.select("*")
+.eq("id",currentUser.id)
+.maybeSingle();
 
- if(error){
-  $("profileView").innerHTML=
-   "<p class='muted'>Profile error: "+escapeHtml(error.message)+"</p>";
-  return;
- }
+if(error){
 
- if(!data){
-  $("profileView").innerHTML=
-   "<p class='muted'>Your profile is not complete yet.</p>"+
-   "<button onclick='editProfile()'>✏️ Create Profile</button>";
-  return;
- }
+$("profileView").innerHTML=
+"<p class='muted'>Profile error: "+
+escapeHtml(error.message)+
+"</p>";
 
- let cvHtml="<p><b>CV / Resume:</b> Not uploaded</p>";
- if(data.cv_path){
-   const {data:signed,error:signedError}=await db.storage
-    .from("resumes")
-    .createSignedUrl(data.cv_path,300);
-   if(!signedError && signed?.signedUrl){
-     cvHtml=`<p><b>CV / Resume:</b> ${escapeHtml(data.cv_name || "Resume")}<br><a class="btn light cvlink" target="_blank" rel="noopener" href="${safeUrl(signed.signedUrl)}">📄 View CV</a></p>`;
-   } else {
-     cvHtml=`<p><b>CV / Resume:</b> ${escapeHtml(data.cv_name || "Uploaded")}</p>`;
-   }
- }
-
- $("profileView").innerHTML=`
- <div class="notice">
- <p><b>Full name:</b> ${escapeHtml(data.full_name || "Not provided")}</p>
- <p><b>Phone:</b> ${escapeHtml(data.phone || "Not provided")}</p>
- <p><b>Email:</b> ${escapeHtml(currentUser.email || "Not provided")}</p>
- <p><b>Location:</b> ${escapeHtml(data.location || "Not provided")}</p>
- <p><b>Professional headline:</b> ${escapeHtml(data.headline || "Not provided")}</p>
- <p><b>Bio:</b> ${escapeHtml(data.bio || "Not provided")}</p>
- ${cvHtml}
- </div>
- <button onclick="editProfile()">✏️ Edit Profile</button>
- `;
+return;
 }
+
+if(!data){
+
+$("profileView").innerHTML=
+"<p class='muted'>Your profile is not complete yet.</p>"+
+"<button onclick='editProfile()'>✏️ Create Profile</button>";
+
+return;
+}
+
+let cvHtml=
+"<p><b>CV / Resume:</b> Not uploaded</p>";
+
+if(data.cv_path){
+
+const {data:signed,error:signedError}=
+await db.storage
+.from("resumes")
+.createSignedUrl(data.cv_path,300);
+
+if(!signedError && signed?.signedUrl){
+
+cvHtml=
+`<p><b>CV / Resume:</b>
+${escapeHtml(data.cv_name || "Resume")}
+<br>
+<a class="btn light cvlink"
+target="_blank"
+rel="noopener"
+href="${safeUrl(signed.signedUrl)}">
+📄 View CV
+</a>
+</p>`;
+
+}else{
+
+cvHtml=
+`<p><b>CV / Resume:</b>
+${escapeHtml(data.cv_name || "Uploaded")}
+</p>`;
+
+}
+}
+
+$("profileView").innerHTML=`
+
+<div class="notice">
+
+<p><b>Full name:</b>
+${escapeHtml(data.full_name || "Not provided")}</p>
+
+<p><b>Phone:</b>
+${escapeHtml(data.phone || "Not provided")}</p>
+
+<p><b>Email:</b>
+${escapeHtml(currentUser.email || "Not provided")}</p>
+
+<p><b>Location:</b>
+${escapeHtml(data.location || "Not provided")}</p>
+
+<p><b>Professional headline:</b>
+${escapeHtml(data.headline || "Not provided")}</p>
+
+<p><b>Bio:</b>
+${escapeHtml(data.bio || "Not provided")}</p>
+
+${cvHtml}
+
+</div>
+
+<button onclick="editProfile()">
+✏️ Edit Profile
+</button>
+
+`;
+
+}
+
 
 async function editProfile(){
 
- const {data}=await db
- .from("applicant_profiles")
- .select("*")
- .eq("id",currentUser.id)
- .maybeSingle();
+const {data}=await db
+.from("applicant_profiles")
+.select("*")
+.eq("id",currentUser.id)
+.maybeSingle();
 
- const p=data || {};
+const p=data || {};
 
- $("fullName").value=p.full_name || "";
- $("phone").value=p.phone || "";
- $("profileLocation").value=p.location || "";
- $("headline").value=p.headline || "";
- $("bio").value=p.bio || "";
- $("cvFile").value="";
- $("currentCv").textContent=p.cv_name ? "Current CV: "+p.cv_name+" (choose a new file to replace it)" : "No CV uploaded yet.";
- $("profileMessage").textContent="";
+$("fullName").value=p.full_name || "";
+$("phone").value=p.phone || "";
+$("profileLocation").value=p.location || "";
+$("headline").value=p.headline || "";
+$("bio").value=p.bio || "";
 
- $("profileView").classList.add("hidden");
- $("profileForm").classList.remove("hidden");
+$("cvFile").value="";
+
+$("currentCv").textContent=
+p.cv_name
+?"Current CV: "+p.cv_name+
+" (choose a new file to replace it)"
+:"No CV uploaded yet.";
+
+$("profileMessage").textContent="";
+
+$("profileView").classList.add("hidden");
+$("profileForm").classList.remove("hidden");
+
 }
 
 
 function cancelProfileEdit(){
 
- $("profileForm").classList.add("hidden");
- $("profileView").classList.remove("hidden");
+$("profileForm").classList.add("hidden");
+$("profileView").classList.remove("hidden");
 
 }
 
 
 async function saveProfile(){
- const fullName=$("fullName").value.trim();
- const phone=$("phone").value.trim();
- const location=$("profileLocation").value.trim();
- const file=$("cvFile").files[0];
 
- if(!fullName || !phone || !location){
-  $("profileMessage").textContent="Please fill in your full name, phone number and location.";
-  return;
- }
+const fullName=$("fullName").value.trim();
+const phone=$("phone").value.trim();
+const location=$("profileLocation").value.trim();
+const file=$("cvFile").files[0];
 
- if(file){
-  const allowed=["application/pdf","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
-  const ext=(file.name.split(".").pop()||"").toLowerCase();
-  if(!allowed.includes(file.type) && !["pdf","doc","docx"].includes(ext)){
-   $("profileMessage").textContent="CV must be PDF, DOC or DOCX.";
-   return;
-  }
-  if(file.size>5*1024*1024){
-   $("profileMessage").textContent="CV is too large. Maximum size is 5MB.";
-   return;
-  }
- }
+if(!fullName || !phone || !location){
 
- $("profileMessage").textContent=file ? "Uploading CV and saving profile..." : "Saving profile...";
+$("profileMessage").textContent=
+"Please fill in your full name, phone number and location.";
 
- const existing=await db.from("applicant_profiles")
-  .select("cv_path,cv_name")
-  .eq("id",currentUser.id)
-  .maybeSingle();
-
- let cv_path=existing.data?.cv_path || null;
- let cv_name=existing.data?.cv_name || null;
-
- if(file){
-  const cleanName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
-  const path=currentUser.id+"/"+Date.now()+"_"+cleanName;
-  const upload=await db.storage.from("resumes").upload(path,file,{upsert:false,contentType:file.type||undefined});
-  if(upload.error){
-   $("profileMessage").textContent="CV upload error: "+upload.error.message;
-   return;
-  }
-  cv_path=path;
-  cv_name=file.name;
- }
-
- const payload={
-  id:currentUser.id,
-  full_name:fullName,
-  phone:phone,
-  location:location,
-  headline:$("headline").value.trim(),
-  bio:$("bio").value.trim(),
-  cv_path:cv_path,
-  cv_name:cv_name,
-  updated_at:new Date().toISOString()
- };
-
- const {error}=await db.from("applicant_profiles").upsert(payload);
- if(error){
-  $("profileMessage").textContent="Error saving profile: "+error.message;
-  return;
- }
-
- $("profileMessage").textContent="Profile saved successfully.";
- $("profileForm").classList.add("hidden");
- $("profileView").classList.remove("hidden");
- await loadProfile();
+return;
 }
+
+if(file){
+
+const ext=(file.name.split(".").pop()||"")
+.toLowerCase();
+
+if(!["pdf","doc","docx"].includes(ext)){
+
+$("profileMessage").textContent=
+"CV must be PDF, DOC or DOCX.";
+
+return;
+}
+
+if(file.size>5*1024*1024){
+
+$("profileMessage").textContent=
+"CV is too large. Maximum size is 5MB.";
+
+return;
+}
+
+}
+
+$("profileMessage").textContent=
+file
+?"Uploading CV and saving profile..."
+:"Saving profile...";
+
+
+const existing=await db
+.from("applicant_profiles")
+.select("cv_path,cv_name")
+.eq("id",currentUser.id)
+.maybeSingle();
+
+let cv_path=existing.data?.cv_path || null;
+let cv_name=existing.data?.cv_name || null;
+
+
+if(file){
+
+const cleanName=
+file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+
+const path=
+currentUser.id+"/"+Date.now()+"_"+cleanName;
+
+const upload=
+await db.storage
+.from("resumes")
+.upload(
+path,
+file,
+{
+upsert:false,
+contentType:file.type || undefined
+}
+);
+
+if(upload.error){
+
+$("profileMessage").textContent=
+"CV upload error: "+
+upload.error.message;
+
+return;
+}
+
+cv_path=path;
+cv_name=file.name;
+
+}
+
+
+const payload={
+
+id:currentUser.id,
+
+full_name:fullName,
+
+phone:phone,
+
+location:location,
+
+headline:$("headline").value.trim(),
+
+bio:$("bio").value.trim(),
+
+cv_path:cv_path,
+
+cv_name:cv_name,
+
+updated_at:new Date().toISOString()
+
+};
+
+
+const {error}=await db
+.from("applicant_profiles")
+.upsert(payload);
+
+
+if(error){
+
+$("profileMessage").textContent=
+"Error saving profile: "+error.message;
+
+return;
+}
+
+$("profileMessage").textContent=
+"Profile saved successfully.";
+
+$("profileForm").classList.add("hidden");
+$("profileView").classList.remove("hidden");
+
+await loadProfile();
+
+}
+
 
 function getSaved(){
 
- try{
-  return JSON.parse(localStorage.getItem("earnsmart_saved") || "[]");
- }catch(e){
-  return [];
- }
+try{
+
+return JSON.parse(
+localStorage.getItem("earnsmart_saved") || "[]"
+);
+
+}catch(e){
+
+return [];
+
+}
 
 }
 
 
 function isSaved(id){
- return getSaved().includes(id);
+
+return getSaved().includes(id);
+
 }
 
 
 function toggleSaved(id){
 
- let saved=getSaved();
+let saved=getSaved();
 
- if(saved.includes(id)){
-  saved=saved.filter(x=>x!==id);
- }else{
-  saved.push(id);
- }
+if(saved.includes(id)){
 
- localStorage.setItem("earnsmart_saved",JSON.stringify(saved));
+saved=saved.filter(x=>x!==id);
 
- loadSavedJobs();
+}else{
 
- openJob(id);
+saved.push(id);
+
+}
+
+localStorage.setItem(
+"earnsmart_saved",
+JSON.stringify(saved)
+);
+
+loadSavedJobs();
+
+openJob(id);
+
 }
 
 
 async function loadSavedJobs(){
 
- const ids=getSaved();
+const ids=getSaved();
 
- const saved=allJobs.filter(x=>ids.includes(x.id));
+const saved=
+allJobs.filter(x=>ids.includes(x.id));
 
- if(!saved.length){
-  $("savedJobs").innerHTML="<p class='muted'>No saved jobs yet.</p>";
-  return;
- }
+if(!saved.length){
 
- $("savedJobs").innerHTML=saved.map(x=>`
- <div class="job">
- <h3>${escapeHtml(x.title)}</h3>
- <p>${escapeHtml(x.company || "")} · ${escapeHtml(x.location || "")}</p>
- <button onclick="openJob('${x.id}')">👁️ View Job</button>
- <button class="light" onclick="toggleSaved('${x.id}')">Remove</button>
- </div>
- `).join("");
+$("savedJobs").innerHTML=
+"<p class='muted'>No saved jobs yet.</p>";
+
+return;
+}
+
+$("savedJobs").innerHTML=
+saved.map(x=>`
+
+<div class="job">
+
+<h3>${escapeHtml(x.title)}</h3>
+
+<p>
+${escapeHtml(x.company || "")}
+·
+${escapeHtml(x.location || "")}
+</p>
+
+<button onclick="openJob('${x.id}')">
+👁️ View Job
+</button>
+
+<button class="light"
+onclick="toggleSaved('${x.id}')">
+Remove
+</button>
+
+</div>
+
+`).join("");
+
 }
 
 
 async function markApplied(jobId){
 
- if(!currentUser){
+if(!currentUser){
 
-  await showApplicant();
+await showApplicant();
 
-  $("authMessage").textContent=
-   "Please log in first to track your application.";
+$("authMessage").textContent=
+"Please log in first to track your application.";
 
-  return;
- }
+return;
+}
 
- const {error}=await db
- .from("job_applications")
- .upsert({
-  applicant_id:currentUser.id,
-  job_id:jobId,
-  status:"Applied",
-  applied_at:new Date().toISOString()
- },{
-  onConflict:"applicant_id,job_id"
- });
+const {error}=await db
+.from("job_applications")
+.upsert({
 
- if(error){
-  alert("Could not save application: "+error.message);
-  return;
- }
+applicant_id:currentUser.id,
 
- alert("Application marked as Applied.");
+job_id:jobId,
 
- await loadApplications();
+status:"Applied",
+
+applied_at:new Date().toISOString()
+
+},{
+onConflict:"applicant_id,job_id"
+});
+
+if(error){
+
+alert(
+"Could not save application: "+
+error.message
+);
+
+return;
+}
+
+alert("Application marked as Applied.");
+
+await loadApplications();
+
 }
 
 
 function statusClass(status){
 
- return {
-  "Applied":"applied",
-  "Under Review":"review",
-  "Interview":"interview",
-  "Accepted":"accepted",
-  "Rejected":"rejected",
-  "Withdrawn":"withdrawn"
- }[status] || "applied";
+return {
+
+"Applied":"applied",
+
+"Under Review":"review",
+
+"Interview":"interview",
+
+"Accepted":"accepted",
+
+"Rejected":"rejected",
+
+"Withdrawn":"withdrawn"
+
+}[status] || "applied";
 
 }
 
 
 async function loadApplications(){
 
- const {data,error}=await db
- .from("job_applications")
- .select("id,job_id,status,applied_at")
- .eq("applicant_id",currentUser.id)
- .order("applied_at",{ascending:false});
+if(!currentUser)return;
 
- if(error){
+const {data,error}=await db
+.from("job_applications")
+.select("id,job_id,status,applied_at")
+.eq("applicant_id",currentUser.id)
+.order("applied_at",{ascending:false});
 
-  $("myApplications").innerHTML=
-   "<p class='muted'>Application tracking error: "+
-   escapeHtml(error.message)+"</p>";
+if(error){
 
-  return;
- }
+$("myApplications").innerHTML=
+"<p class='muted'>Application tracking error: "+
+escapeHtml(error.message)+
+"</p>";
 
- if(!data || !data.length){
+return;
+}
 
-  $("myApplications").innerHTML=
-   "<p class='muted'>No applications tracked yet.</p>";
+if(!data || !data.length){
 
-  return;
- }
+$("myApplications").innerHTML=
+"<p class='muted'>No applications tracked yet.</p>";
 
- const ids=data.map(x=>x.job_id).filter(Boolean);
+return;
+}
 
- let jobMap={};
+const ids=data.map(x=>x.job_id).filter(Boolean);
 
- if(ids.length){
+let jobMap={};
 
-  const r=await db
-   .from("jobs")
-   .select("id,title,company,location,application_url")
-   .in("id",ids);
+if(ids.length){
 
-  if(!r.error){
-   (r.data||[]).forEach(j=>jobMap[j.id]=j);
-  }
+const r=await db
+.from("jobs")
+.select("id,title,company,location,application_url")
+.in("id",ids);
 
- }
+if(!r.error){
 
- $("myApplications").innerHTML=data.map(a=>{
+(r.data||[]).forEach(
+j=>jobMap[j.id]=j
+);
 
-  const j=jobMap[a.job_id] || {};
-  const status=a.status || "Applied";
+}
 
-  return `
-  <div class="job">
-   <h3>${escapeHtml(j.title || "Job")}</h3>
-   <p>${escapeHtml(j.company || "")} · ${escapeHtml(j.location || "")}</p>
+}
 
-   <span class="status ${statusClass(status)}">
-    ${escapeHtml(status)}
-   </span>
 
-   <p class="muted">
-    Applied:
-    ${a.applied_at ? new Date(a.applied_at).toLocaleDateString() : "—"}
-   </p>
+$("myApplications").innerHTML=
+data.map(a=>{
 
-   ${
-    j.application_url
-    ? `<a class="btn" target="_blank" rel="noopener"
-       href="${safeUrl(j.application_url)}">🚀 Open Application</a>`
-    : ""
-   }
+const j=jobMap[a.job_id] || {};
 
-  </div>
-  `;
+const status=a.status || "Applied";
 
- }).join("");
+return `
+
+<div class="job">
+
+<h3>${escapeHtml(j.title || "Job")}</h3>
+
+<p>
+${escapeHtml(j.company || "")}
+·
+${escapeHtml(j.location || "")}
+</p>
+
+<span class="status ${statusClass(status)}">
+${escapeHtml(status)}
+</span>
+
+<p class="muted">
+Applied:
+${a.applied_at
+?new Date(a.applied_at).toLocaleDateString()
+:"—"}
+</p>
+
+${j.application_url
+?`
+<a class="btn"
+target="_blank"
+rel="noopener"
+href="${safeUrl(j.application_url)}">
+🚀 Open Application
+</a>
+`
+:""}
+
+</div>
+
+`;
+
+}).join("");
+
+}
+
+
+async function loadNotifications(){
+
+const box=$("notifications");
+
+if(!box)return;
+
+if(!currentUser){
+
+box.innerHTML=
+"<p class='muted'>Please log in to see your notifications.</p>";
+
+return;
+}
+
+const {data,error}=await db
+.from("application_notifications")
+.select("*")
+.eq("applicant_id",currentUser.id)
+.order("created_at",{ascending:false});
+
+
+if(error){
+
+box.innerHTML=
+"<p class='muted'>Notifications are not available yet.</p>";
+
+return;
+}
+
+if(!data || !data.length){
+
+box.innerHTML=
+"<p class='muted'>No new notifications.</p>";
+
+return;
+}
+
+box.innerHTML=data.map(n=>`
+
+<div class="notification">
+
+<b>${escapeHtml(n.title || "Application update")}</b>
+
+<p>
+${escapeHtml(n.message || "")}
+</p>
+
+<small class="muted">
+${n.created_at
+?new Date(n.created_at).toLocaleString()
+:""}
+</small>
+
+</div>
+
+`).join("");
+
 }
 
 
 async function loadPublicJobs(){
 
- const {data,error}=await db
- .from("jobs")
- .select("*")
- .eq("active",true)
- .eq("verified",true)
- .order("created_at",{ascending:false});
+const {data,error}=await db
+.from("jobs")
+.select("*")
+.eq("active",true)
+.eq("verified",true)
+.order("created_at",{ascending:false});
 
- if(error){
+if(error){
 
-  $("jobsList").innerHTML=
-   "<p>Jobs error: "+escapeHtml(error.message)+"</p>";
+$("jobsList").innerHTML=
+"<p>Jobs error: "+
+escapeHtml(error.message)+
+"</p>";
 
-  return;
- }
+return;
+}
 
- allJobs=(data||[]).filter(x=>!expired(x));
+allJobs=(data||[]).filter(x=>!expired(x));
 
- buildFilters();
- renderJobs();
+buildFilters();
+renderJobs();
 
 }
 
 
 function buildFilters(){
 
- const cats=[...new Set(allJobs.map(x=>x.category).filter(Boolean))].sort();
- const locs=[...new Set(allJobs.map(x=>x.location).filter(Boolean))].sort();
+const cats=[
+...new Set(
+allJobs.map(x=>x.category).filter(Boolean)
+)
+].sort();
 
- $("category").innerHTML=
- "<option value=''>All categories</option>"+
- cats.map(x=>`<option>${escapeHtml(x)}</option>`).join("");
+const locs=[
+...new Set(
+allJobs.map(x=>x.location).filter(Boolean)
+)
+].sort();
 
- $("location").innerHTML=
- "<option value=''>All locations</option>"+
- locs.map(x=>`<option>${escapeHtml(x)}</option>`).join("");
+$("category").innerHTML=
+"<option value=''>All categories</option>"+
+cats.map(x=>
+`<option>${escapeHtml(x)}</option>`
+).join("");
+
+$("location").innerHTML=
+"<option value=''>All locations</option>"+
+locs.map(x=>
+`<option>${escapeHtml(x)}</option>`
+).join("");
 
 }
 
 
 function renderJobs(){
 
- const q=$("search").value.toLowerCase().trim();
- const cat=$("category").value;
- const loc=$("location").value;
- const type=$("workType").value;
+const q=$("search").value.toLowerCase().trim();
 
- const list=allJobs.filter(x=>{
+const cat=$("category").value;
 
-  const text=[
-   x.title,
-   x.company,
-   x.category,
-   x.location,
-   x.description
-  ].join(" ").toLowerCase();
+const loc=$("location").value;
 
-  return (
-   (!q || text.includes(q)) &&
-   (!cat || x.category===cat) &&
-   (!loc || x.location===loc) &&
-   (!type ||
-    (type==="remote" && x.remote) ||
-    (type==="onsite" && !x.remote)
-   )
-  );
+const type=$("workType").value;
 
- });
+const list=allJobs.filter(x=>{
 
- if(!list.length){
+const text=[
+x.title,
+x.company,
+x.category,
+x.location,
+x.description
+].join(" ").toLowerCase();
 
-  $("jobsList").innerHTML=
-   "<p class='muted'>No matching verified jobs found.</p>";
+return(
 
-  return;
- }
+(!q || text.includes(q)) &&
 
- $("jobsList").innerHTML=list.map(x=>`
+(!cat || x.category===cat) &&
 
- <article class="job">
+(!loc || x.location===loc) &&
 
- <h3>${escapeHtml(x.title)}</h3>
+(!type ||
 
- <span class="badge">✓ Verified</span>
+(type==="remote" && x.remote) ||
 
- ${
-  x.remote
-  ? "<span class='badge'>Remote</span>"
-  : "<span class='badge orangebg'>On-site / Hybrid</span>"
- }
+(type==="onsite" && !x.remote))
 
- <p>
- <b>${escapeHtml(x.company || "Company not stated")}</b>
- · ${escapeHtml(x.location || "Nigeria")}
- </p>
+);
 
- ${
-  x.salary_text
-  ? `<p><b>Pay:</b> ${escapeHtml(x.salary_text)}</p>`
-  : ""
- }
+});
 
- ${
-  x.expires_at
-  ? `<p class='muted'>Deadline: ${escapeHtml(x.expires_at)}</p>`
-  : ""
- }
 
- <p>${escapeHtml(x.description || "")}</p>
+if(!list.length){
 
- <p class="muted">
- Source: ${escapeHtml(x.source_name || "")}
- </p>
+$("jobsList").innerHTML=
+"<p class='muted'>No matching verified jobs found.</p>";
 
- <div class="actions">
- <button onclick="openJob('${x.id}')">👁️ View Job</button>
- <a class="btn"
- target="_blank"
- rel="noopener"
- href="${safeUrl(x.application_url)}">
- 🚀 Apply at Original Source
- </a>
- </div>
+return;
+}
 
- </article>
 
- `).join("");
+$("jobsList").innerHTML=
+list.map(x=>`
+
+<article class="job">
+
+<h3>${escapeHtml(x.title)}</h3>
+
+<span class="badge">
+✓ Verified
+</span>
+
+${
+x.remote
+?"<span class='badge'>Remote</span>"
+:"<span class='badge orangebg'>On-site / Hybrid</span>"
+}
+
+<p>
+<b>${escapeHtml(
+x.company || "Company not stated"
+)}</b>
+·
+${escapeHtml(x.location || "Nigeria")}
+</p>
+
+${
+x.salary_text
+?`<p><b>Pay:</b>
+${escapeHtml(x.salary_text)}</p>`
+:""
+}
+
+${
+x.expires_at
+?`<p class='muted'>Deadline:
+${escapeHtml(x.expires_at)}</p>`
+:""
+}
+
+<p>${escapeHtml(x.description || "")}</p>
+
+<p class="muted">
+Source:
+${escapeHtml(x.source_name || "")}
+</p>
+
+<div class="actions">
+
+<button onclick="openJob('${x.id}')">
+👁️ View Job
+</button>
+
+<a class="btn"
+target="_blank"
+rel="noopener"
+href="${safeUrl(x.application_url)}">
+🚀 Apply at Original Source
+</a>
+
+</div>
+
+</article>
+
+`).join("");
 
 }
 
 
 function openJob(id){
 
- const x=allJobs.find(j=>j.id===id);
+const x=allJobs.find(j=>j.id===id);
 
- if(!x)return;
+if(!x)return;
 
- $("jobDetails").innerHTML=`
+$("jobDetails").innerHTML=`
 
- <h2>${escapeHtml(x.title)}</h2>
+<h2>${escapeHtml(x.title)}</h2>
 
- <p>
- <b>${escapeHtml(x.company || "")}</b>
- · ${escapeHtml(x.location || "")}
- </p>
+<p>
+<b>${escapeHtml(x.company || "")}</b>
+·
+${escapeHtml(x.location || "")}
+</p>
 
- <span class="badge">✓ Verified</span>
+<span class="badge">✓ Verified</span>
 
- ${
-  x.remote
-  ? "<span class='badge'>Remote</span>"
-  : "<span class='badge orangebg'>On-site / Hybrid</span>"
- }
+${
+x.remote
+?"<span class='badge'>Remote</span>"
+:"<span class='badge orangebg'>On-site / Hybrid</span>"
+}
 
- ${
-  x.salary_text
-  ? `<h3>💰 Pay</h3><p>${escapeHtml(x.salary_text)}</p>`
-  : ""
- }
+${
+x.salary_text
+?`<h3>💰 Pay</h3>
+<p>${escapeHtml(x.salary_text)}</p>`
+:""
+}
 
- ${
-  x.expires_at
-  ? `<p class='muted'>Deadline: ${escapeHtml(x.expires_at)}</p>`
-  : ""
- }
+${
+x.expires_at
+?`<p class='muted'>Deadline:
+${escapeHtml(x.expires_at)}</p>`
+:""
+}
 
- <h3>📝 Job Description</h3>
+<h3>📝 Job Description</h3>
 
- <p style="white-space:pre-line;line-height:1.6">
- ${escapeHtml(x.description || "No detailed description provided.")}
- </p>
+<p style="white-space:pre-line;line-height:1.6">
+${escapeHtml(
+x.description ||
+"No detailed description provided."
+)}
+</p>
 
- <h3>📌 Source</h3>
+<h3>📌 Source</h3>
 
- <p>${escapeHtml(x.source_name || "")}</p>
+<p>${escapeHtml(x.source_name || "")}</p>
 
- <div class="actions">
+<div class="actions">
 
- <a class="btn light"
- target="_blank"
- rel="noopener"
- href="${safeUrl(x.source_url)}">
- 🔗 Source Listing
- </a>
+<a class="btn light"
+target="_blank"
+rel="noopener"
+href="${safeUrl(x.source_url)}">
+🔗 Source Listing
+</a>
 
- <a class="btn"
- target="_blank"
- rel="noopener"
- href="${safeUrl(x.application_url)}">
- 🚀 APPLY NOW
- </a>
+<a class="btn"
+target="_blank"
+rel="noopener"
+href="${safeUrl(x.application_url)}">
+🚀 APPLY NOW
+</a>
 
- <button class="light" onclick="markApplied('${x.id}')">
- 📝 Mark as Applied
- </button>
+<button class="light"
+onclick="markApplied('${x.id}')">
+📝 Mark as Applied
+</button>
 
- <button class="light" onclick="toggleSaved('${x.id}')">
- ${isSaved(x.id) ? "⭐ Saved" : "☆ Save Job"}
- </button>
+<button class="light"
+onclick="toggleSaved('${x.id}')">
+${isSaved(x.id)
+?"⭐ Saved"
+:"☆ Save Job"}
+</button>
 
- </div>
+</div>
 
- <p class="muted">
- EarnSmart Nigeria does not charge applicants to access jobs.
- Always confirm the opportunity on the original source.
- </p>
- `;
+<p class="muted">
+EarnSmart Nigeria does not charge applicants
+to access jobs.
+</p>
 
- $("jobModal").classList.remove("hidden");
+`;
+
+$("jobModal").classList.remove("hidden");
+
 }
 
 
 function closeJob(){
- $("jobModal").classList.add("hidden");
+
+$("jobModal").classList.add("hidden");
+
 }
 
 
 async function adminLogin(){
 
- const email=$("adminEmail").value.trim();
- const password=$("adminPassword").value;
+const email=$("adminEmail").value.trim();
 
- const {error}=await db.auth.signInWithPassword({
-  email,
-  password
- });
+const password=$("adminPassword").value;
 
- if(error){
-  $("adminMessage").textContent=error.message;
-  return;
- }
+const {error}=
+await db.auth.signInWithPassword({
+email,
+password
+});
 
- const {data:userData}=await db.auth.getUser();
+if(error){
 
- if(!userData?.user){
-  $("adminMessage").textContent="Login failed.";
-  return;
- }
+$("adminMessage").textContent=
+error.message;
 
- const {data,error:adminError}=await db
- .from("admin_users")
- .select("user_id")
- .eq("user_id",userData.user.id)
- .maybeSingle();
+return;
+}
 
- if(adminError || !data){
 
-  await db.auth.signOut();
+const {data:userData}=
+await db.auth.getUser();
 
-  $("adminMessage").textContent=
-   "This account is not approved as an EarnSmart administrator.";
+if(!userData?.user){
 
-  return;
- }
+$("adminMessage").textContent=
+"Login failed.";
 
- currentUser=userData.user;
- isAdmin=true;
+return;
+}
 
- showOnly("admin");
 
- await loadAdminJobs();
+const {data,error:adminError}=
+await db
+.from("admin_users")
+.select("user_id")
+.eq("user_id",userData.user.id)
+.maybeSingle();
+
+
+if(adminError || !data){
+
+await db.auth.signOut();
+
+$("adminMessage").textContent=
+"This account is not approved as an EarnSmart administrator.";
+
+return;
+}
+
+
+currentUser=userData.user;
+isAdmin=true;
+
+showOnly("admin");
+
+await loadAdminJobs();
+
 }
 
 
 async function adminLogout(){
 
- await db.auth.signOut();
+await db.auth.signOut();
 
- currentUser=null;
- isAdmin=false;
+currentUser=null;
+isAdmin=false;
 
- showHome();
+showHome();
+
 }
 
 
 async function loadAdminJobs(){
 
- if(!isAdmin)return;
+if(!isAdmin)return;
 
- const {data,error}=await db
- .from("jobs")
- .select("*")
- .order("created_at",{ascending:false});
+const {data,error}=await db
+.from("jobs")
+.select("*")
+.order("created_at",{ascending:false});
 
- if(error){
+if(error){
 
-  $("adminJobs").innerHTML=
-   "<p>"+escapeHtml(error.message)+"</p>";
+$("adminJobs").innerHTML=
+"<p>"+
+escapeHtml(error.message)+
+"</p>";
 
-  return;
- }
+return;
+}
 
- allJobs=data||[];
+allJobs=data||[];
 
- if(!allJobs.length){
+if(!allJobs.length){
 
-  $("adminJobs").innerHTML=
-   "<p class='muted'>No jobs yet.</p>";
+$("adminJobs").innerHTML=
+"<p class='muted'>No jobs yet.</p>";
 
-  return;
- }
+return;
+}
 
- $("adminJobs").innerHTML=allJobs.map(x=>`
 
- <div class="job">
+$("adminJobs").innerHTML=
+allJobs.map(x=>`
 
- <h3>${escapeHtml(x.title)}</h3>
+<div class="job">
 
- <p>
- ${escapeHtml(x.company || "")}
- · ${escapeHtml(x.category || "")}
- · ${escapeHtml(x.location || "")}
- </p>
+<h3>${escapeHtml(x.title)}</h3>
 
- <span class="badge ${x.verified ? "" : "redbg"}">
- ${x.verified ? "✓ Verified" : "Not verified"}
- </span>
+<p>
+${escapeHtml(x.company || "")}
+·
+${escapeHtml(x.category || "")}
+·
+${escapeHtml(x.location || "")}
+</p>
 
- <span class="badge ${x.active ? "" : "redbg"}">
- ${x.active ? "Active" : "Inactive"}
- </span>
+<span class="badge ${
+x.verified ? "" : "redbg"
+}">
+${x.verified
+?"✓ Verified"
+:"Not verified"}
+</span>
 
- ${
-  expired(x)
-  ? "<span class='badge orangebg'>Expired</span>"
-  : ""
- }
+<span class="badge ${
+x.active ? "" : "redbg"
+}">
+${x.active
+?"Active"
+:"Inactive"}
+</span>
 
- <div class="actions">
+${
+expired(x)
+?"<span class='badge orangebg'>Expired</span>"
+:""
+}
 
- <button onclick="editJob('${x.id}')">
- ✏️ Edit
- </button>
+<div class="actions">
 
- <button class="green"
- onclick="setVerified('${x.id}',${!x.verified})">
- ${x.verified ? "Unverify" : "Verify"}
- </button>
+<button onclick="editJob('${x.id}')">
+✏️ Edit
+</button>
 
- <button class="light"
- onclick="setActive('${x.id}',${!x.active})">
- ${x.active ? "Deactivate" : "Activate"}
- </button>
+<button class="green"
+onclick="setVerified('${x.id}',${!x.verified})">
+${x.verified?"Unverify":"Verify"}
+</button>
 
- <button class="orange"
- onclick="expireJob('${x.id}')">
- ⏳ Expire
- </button>
+<button class="light"
+onclick="setActive('${x.id}',${!x.active})">
+${x.active?"Deactivate":"Activate"}
+</button>
 
- <button class="red"
- onclick="deleteJob('${x.id}')">
- 🗑️ Delete
- </button>
+<button class="orange"
+onclick="expireJob('${x.id}')">
+⏳ Expire
+</button>
 
- </div>
+<button class="red"
+onclick="deleteJob('${x.id}')">
+🗑️ Delete
+</button>
 
- </div>
+</div>
 
- `).join("");
+</div>
+
+`).join("");
 
 }
 
 
 function clearJobForm(){
 
- editingJobId=null;
+editingJobId=null;
 
- $("jobFormTitle").textContent="➕ Add Job";
+$("jobFormTitle").textContent=
+"➕ Add Job";
 
- [
- "jobTitle",
- "jobCompany",
- "jobCategory",
- "jobLocation",
- "sourceName",
- "sourceUrl",
- "applicationUrl",
- "salary",
- "description",
- "expiresAt"
- ].forEach(id=>$(id).value="");
+[
+"jobTitle",
+"jobCompany",
+"jobCategory",
+"jobLocation",
+"sourceName",
+"sourceUrl",
+"applicationUrl",
+"salary",
+"description",
+"expiresAt"
+].forEach(id=>{
+$(id).value="";
+});
 
- $("remote").value="true";
- $("verified").checked=false;
- $("active").checked=true;
+$("remote").value="true";
+
+$("verified").checked=false;
+
+$("active").checked=true;
+
 }
 
 
 function editJob(id){
 
- const x=allJobs.find(j=>j.id===id);
+const x=allJobs.find(j=>j.id===id);
 
- if(!x)return;
+if(!x)return;
 
- editingJobId=id;
+editingJobId=id;
 
- $("jobFormTitle").textContent="✏️ Edit Job";
+$("jobFormTitle").textContent=
+"✏️ Edit Job";
 
- $("jobTitle").value=x.title || "";
- $("jobCompany").value=x.company || "";
- $("jobCategory").value=x.category || "";
- $("jobLocation").value=x.location || "";
- $("sourceName").value=x.source_name || "";
- $("sourceUrl").value=x.source_url || "";
- $("applicationUrl").value=x.application_url || "";
- $("salary").value=x.salary_text || "";
- $("remote").value=String(x.remote);
- $("description").value=x.description || "";
- $("verified").checked=!!x.verified;
- $("active").checked=!!x.active;
- $("expiresAt").value=x.expires_at || "";
+$("jobTitle").value=x.title || "";
+$("jobCompany").value=x.company || "";
+$("jobCategory").value=x.category || "";
+$("jobLocation").value=x.location || "";
+$("sourceName").value=x.source_name || "";
+$("sourceUrl").value=x.source_url || "";
+$("applicationUrl").value=x.application_url || "";
+$("salary").value=x.salary_text || "";
+$("remote").value=String(x.remote);
+$("description").value=x.description || "";
+$("verified").checked=!!x.verified;
+$("active").checked=!!x.active;
+$("expiresAt").value=x.expires_at || "";
 
- window.scrollTo(0,0);
+window.scrollTo(0,0);
+
 }
 
 
 async function saveJob(){
 
- const payload={
-  title:$("jobTitle").value.trim(),
-  company:$("jobCompany").value.trim(),
-  category:$("jobCategory").value.trim(),
-  location:$("jobLocation").value.trim(),
-  source_name:$("sourceName").value.trim(),
-  source_url:$("sourceUrl").value.trim(),
-  application_url:$("applicationUrl").value.trim(),
-  salary_text:$("salary").value.trim(),
-  remote:$("remote").value==="true",
-  description:$("description").value.trim(),
-  verified:$("verified").checked,
-  active:$("active").checked,
-  expires_at:$("expiresAt").value || null
- };
+const payload={
 
- if(
-  !payload.title ||
-  !payload.source_name ||
-  !payload.source_url ||
-  !payload.application_url
- ){
+title:$("jobTitle").value.trim(),
 
-  $("adminStatus").textContent=
-   "Please fill all required fields marked *.";
+company:$("jobCompany").value.trim(),
 
-  return;
- }
+category:$("jobCategory").value.trim(),
 
- let result;
+location:$("jobLocation").value.trim(),
 
- if(editingJobId){
+source_name:$("sourceName").value.trim(),
 
-  result=await db
-   .from("jobs")
-   .update(payload)
-   .eq("id",editingJobId);
+source_url:$("sourceUrl").value.trim(),
 
- }else{
+application_url:$("applicationUrl").value.trim(),
 
-  result=await db
-   .from("jobs")
-   .insert(payload);
+salary_text:$("salary").value.trim(),
 
- }
+remote:$("remote").value==="true",
 
- if(result.error){
+description:$("description").value.trim(),
 
-  $("adminStatus").textContent=
-   result.error.message;
+verified:$("verified").checked,
 
-  return;
- }
+active:$("active").checked,
 
- $("adminStatus").textContent=
-  "Job saved successfully.";
+expires_at:$("expiresAt").value || null
 
- clearJobForm();
+};
 
- await loadAdminJobs();
- await loadPublicJobs();
+
+if(
+!payload.title ||
+!payload.source_name ||
+!payload.source_url ||
+!payload.application_url
+){
+
+$("adminStatus").textContent=
+"Please fill all required fields marked *.";
+
+return;
+}
+
+
+let result;
+
+
+if(editingJobId){
+
+result=await db
+.from("jobs")
+.update(payload)
+.eq("id",editingJobId);
+
+}else{
+
+result=await db
+.from("jobs")
+.insert(payload);
+
+}
+
+
+if(result.error){
+
+$("adminStatus").textContent=
+result.error.message;
+
+return;
+}
+
+
+$("adminStatus").textContent=
+"Job saved successfully.";
+
+clearJobForm();
+
+await loadAdminJobs();
+
+await loadPublicJobs();
+
 }
 
 
 async function setVerified(id,value){
 
- const {error}=await db
- .from("jobs")
- .update({verified:value})
- .eq("id",id);
+const {error}=await db
+.from("jobs")
+.update({verified:value})
+.eq("id",id);
 
- if(error){
-  $("adminStatus").textContent=error.message;
-  return;
- }
+if(error){
 
- await loadAdminJobs();
- await loadPublicJobs();
+$("adminStatus").textContent=
+error.message;
+
+return;
+}
+
+await loadAdminJobs();
+await loadPublicJobs();
+
 }
 
 
 async function setActive(id,value){
 
- const {error}=await db
- .from("jobs")
- .update({active:value})
- .eq("id",id);
+const {error}=await db
+.from("jobs")
+.update({active:value})
+.eq("id",id);
 
- if(error){
-  $("adminStatus").textContent=error.message;
-  return;
- }
+if(error){
 
- await loadAdminJobs();
- await loadPublicJobs();
+$("adminStatus").textContent=
+error.message;
+
+return;
+}
+
+await loadAdminJobs();
+await loadPublicJobs();
+
 }
 
 
 async function expireJob(id){
 
- const yesterday=new Date(Date.now()-86400000)
- .toISOString().slice(0,10);
+const yesterday=
+new Date(Date.now()-86400000)
+.toISOString()
+.slice(0,10);
 
- const {error}=await db
- .from("jobs")
- .update({
-  expires_at:yesterday,
-  active:false
- })
- .eq("id",id);
+const {error}=await db
+.from("jobs")
+.update({
+expires_at:yesterday,
+active:false
+})
+.eq("id",id);
 
- if(error){
-  $("adminStatus").textContent=error.message;
-  return;
- }
+if(error){
 
- await loadAdminJobs();
- await loadPublicJobs();
+$("adminStatus").textContent=
+error.message;
+
+return;
+}
+
+await loadAdminJobs();
+await loadPublicJobs();
+
 }
 
 
 async function deleteJob(id){
 
- if(!confirm("Delete this job?"))return;
+if(!confirm("Delete this job?"))return;
 
- const {error}=await db
- .from("jobs")
- .delete()
- .eq("id",id);
+const {error}=await db
+.from("jobs")
+.delete()
+.eq("id",id);
 
- if(error){
-  $("adminStatus").textContent=error.message;
-  return;
- }
+if(error){
 
- $("adminStatus").textContent="Job deleted.";
+$("adminStatus").textContent=
+error.message;
 
- await loadAdminJobs();
- await loadPublicJobs();
+return;
+}
+
+$("adminStatus").textContent=
+"Job deleted.";
+
+await loadAdminJobs();
+await loadPublicJobs();
+
 }
 
 
 function parseCSV(text){
 
- const rows=[];
- let row=[];
- let cell="";
- let quoted=false;
+const rows=[];
+let row=[];
+let cell="";
+let quoted=false;
 
- for(let i=0;i<text.length;i++){
+for(let i=0;i<text.length;i++){
 
-  const ch=text[i];
-  const next=text[i+1];
+const ch=text[i];
+const next=text[i+1];
 
-  if(ch==='"' && quoted && next==='"'){
-   cell+='"';
-   i++;
-   continue;
-  }
+if(ch==='"' && quoted && next==='"'){
 
-  if(ch==='"'){
-   quoted=!quoted;
-   continue;
-  }
+cell+='"';
+i++;
+continue;
 
-  if(ch===',' && !quoted){
-   row.push(cell);
-   cell="";
-   continue;
-  }
+}
 
-  if((ch==='\n' || ch==='\r') && !quoted){
+if(ch==='"'){
 
-   if(ch==='\r' && next==='\n')i++;
+quoted=!quoted;
+continue;
 
-   row.push(cell);
-   cell="";
+}
 
-   if(row.some(x=>x.trim()!=="")){
-    rows.push(row);
-   }
+if(ch===',' && !quoted){
 
-   row=[];
-   continue;
-  }
+row.push(cell);
+cell="";
+continue;
 
-  cell+=ch;
- }
+}
 
- if(cell!=="" || row.length){
+if(
+(ch==='\n' || ch==='\r') &&
+!quoted
+){
 
-  row.push(cell);
+if(ch==='\r' && next==='\n')i++;
 
-  if(row.some(x=>x.trim()!=="")){
-   rows.push(row);
-  }
+row.push(cell);
+cell="";
 
- }
+if(row.some(x=>x.trim()!=="")){
+rows.push(row);
+}
 
- return rows;
+row=[];
+
+continue;
+
+}
+
+cell+=ch;
+
+}
+
+
+if(cell!=="" || row.length){
+
+row.push(cell);
+
+if(row.some(x=>x.trim()!=="")){
+rows.push(row);
+}
+
+}
+
+return rows;
+
 }
 
 
 function csvBool(value,defaultValue=false){
 
- const v=String(value ?? "")
- .trim()
- .toLowerCase();
+const v=String(value ?? "")
+.trim()
+.toLowerCase();
 
- if(["true","yes","1"].includes(v))return true;
- if(["false","no","0"].includes(v))return false;
+if(
+["true","yes","1"].includes(v)
+)return true;
 
- return defaultValue;
+if(
+["false","no","0"].includes(v)
+)return false;
+
+return defaultValue;
+
 }
 
 
 function loadTemplate(){
 
- $("csvBox").value=
+$("csvBox").value=
 `title,company,category,location,source_name,source_url,application_url,salary_text,remote,description,verified,active,expires_at
 Office Clerk,Example Company,Admin & Office,Nigeria,Jobberman,https://www.jobberman.com/,https://www.jobberman.com/,"NGN 70,000 - 150,000",false,"Perform data entry, filing and basic administrative support.",true,true,2026-09-30`;
 
- $("csvMessage").textContent=
-  "Template loaded. Replace the example job with a real job.";
+$("csvMessage").textContent=
+"Template loaded.";
 
 }
 
 
 async function importJobs(){
 
- const text=$("csvBox").value.trim();
+const text=$("csvBox").value.trim();
 
- if(!text){
-  $("csvMessage").textContent="Paste CSV data first.";
-  return;
- }
+if(!text){
 
- const rows=parseCSV(text);
+$("csvMessage").textContent=
+"Paste CSV data first.";
 
- if(rows.length<2){
-  $("csvMessage").textContent=
-   "CSV needs a header row and at least one job.";
-  return;
- }
-
- const headers=rows[0].map(x=>x.trim().toLowerCase());
-
- const required=[
-  "title",
-  "source_name",
-  "source_url",
-  "application_url"
- ];
-
- const missing=required.filter(x=>!headers.includes(x));
-
- if(missing.length){
-
-  $("csvMessage").textContent=
-   "Missing columns: "+missing.join(", ");
-
-  return;
- }
-
- const index=name=>headers.indexOf(name);
-
- const existing=new Set(
-   adminJobs
-   .map(x=>String(x.source_url || "").trim())
-   .filter(Boolean)
- );
-
- const seen=new Set();
- const payload=[];
- let skipped=0;
-
- rows.slice(1).forEach((r,n)=>{
-
-  const get=name=>String(r[index(name)] ?? "").trim();
-
-  const title=get("title");
-  const sourceName=get("source_name");
-  const sourceUrl=get("source_url");
-  const applicationUrl=get("application_url");
-
-  if(!title || !sourceName || !sourceUrl || !applicationUrl){
-   skipped++;
-   return;
-  }
-
-  if(existing.has(sourceUrl) || seen.has(sourceUrl)){
-   skipped++;
-   return;
-  }
-
-  seen.add(sourceUrl);
-
-  payload.push({
-   title:title,
-   company:get("company"),
-   category:get("category"),
-   location:get("location"),
-   source_name:sourceName,
-   source_url:sourceUrl,
-   application_url:applicationUrl,
-   salary_text:get("salary_text"),
-   remote:csvBool(get("remote"),true),
-   description:get("description"),
-   verified:csvBool(get("verified"),false),
-   active:csvBool(get("active"),true),
-   expires_at:get("expires_at") || null
-  });
-
- });
-
- if(!payload.length){
-
-  $("csvMessage").textContent=
-   "No new valid jobs found. Skipped: "+skipped;
-
-  return;
- }
-
- const {error}=await db
- .from("jobs")
- .insert(payload);
-
- if(error){
-
-  $("csvMessage").textContent=
-   "Import error: "+error.message;
-
-  return;
- }
-
- $("csvMessage").textContent=
-  "Successfully imported "+payload.length+
-  " job(s). Skipped: "+skipped+".";
-
- $("csvBox").value="";
-
- await loadAdminJobs();
- await loadPublicJobs();
+return;
 }
 
+const rows=parseCSV(text);
+
+if(rows.length<2){
+
+$("csvMessage").textContent=
+"CSV needs a header row and at least one job.";
+
+return;
+}
+
+const headers=
+rows[0].map(x=>x.trim().toLowerCase());
+
+const required=[
+"title",
+"source_name",
+"source_url",
+"application_url"
+];
+
+const missing=
+required.filter(x=>!headers.includes(x));
+
+if(missing.length){
+
+$("csvMessage").textContent=
+"Missing columns: "+
+missing.join(", ");
+
+return;
+}
+
+
+const index=name=>headers.indexOf(name);
+
+const existing=
+new Set(
+allJobs
+.map(x=>String(x.source_url || "").trim())
+.filter(Boolean)
+);
+
+const seen=new Set();
+
+const payload=[];
+
+let skipped=0;
+
+
+rows.slice(1).forEach(r=>{
+
+const get=name=>
+String(r[index(name)] ?? "").trim();
+
+const title=get("title");
+
+const sourceName=get("source_name");
+
+const sourceUrl=get("source_url");
+
+const applicationUrl=
+get("application_url");
+
+
+if(
+!title ||
+!sourceName ||
+!sourceUrl ||
+!applicationUrl
+){
+
+skipped++;
+return;
+
+}
+
+
+if(
+existing.has(sourceUrl) ||
+seen.has(sourceUrl)
+){
+
+skipped++;
+return;
+
+}
+
+
+seen.add(sourceUrl);
+
+
+payload.push({
+
+title,
+
+company:get("company"),
+
+category:get("category"),
+
+location:get("location"),
+
+source_name:sourceName,
+
+source_url:sourceUrl,
+
+application_url:applicationUrl,
+
+salary_text:get("salary_text"),
+
+remote:csvBool(
+get("remote"),true
+),
+
+description:get("description"),
+
+verified:csvBool(
+get("verified"),false
+),
+
+active:csvBool(
+get("active"),true
+),
+
+expires_at:get("expires_at") || null
+
+});
+
+});
+
+
+if(!payload.length){
+
+$("csvMessage").textContent=
+"No new valid jobs found.";
+
+return;
+}
+
+
+const {error}=await db
+.from("jobs")
+.insert(payload);
+
+
+if(error){
+
+$("csvMessage").textContent=
+"Import error: "+
+error.message;
+
+return;
+}
+
+
+$("csvMessage").textContent=
+"Successfully imported "+
+payload.length+
+" job(s). Skipped: "+
+skipped+".";
+
+$("csvBox").value="";
+
+await loadAdminJobs();
+await loadPublicJobs();
+
+}
+
+
+/* =====================================================
+   ADMIN APPLICATIONS
+   ===================================================== */
 
 async function openAdminApplications(){
- if(!isAdmin){
-  alert("Please log in as an approved administrator first.");
-  return;
- }
- await loadAdminApplications();
- setTimeout(()=>{
-  $("adminApplicationBox").scrollIntoView({behavior:"smooth",block:"start"});
- },100);
+
+if(!isAdmin){
+
+alert(
+"Please log in as an approved administrator first."
+);
+
+return;
 }
+
+const box=
+$("adminApplicationBox");
+
+if(!box){
+
+alert(
+"Applicant Applications section was not found."
+);
+
+return;
+}
+
+box.classList.remove("hidden");
+
+$("adminApplications").innerHTML=
+"<p class='muted'>Loading applicant applications...</p>";
+
+await loadAdminApplications();
+
+setTimeout(function(){
+
+box.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+},200);
+
+}
+
 
 async function loadAdminApplications(){
 
- if(!isAdmin)return;
+if(!isAdmin)return;
 
- $("adminApplicationBox").classList.remove("hidden");
+const box=$("adminApplications");
 
- const {data,error}=await db
- .from("job_applications")
- .select("id,applicant_id,job_id,status,applied_at")
- .order("applied_at",{ascending:false});
+box.innerHTML=
+"<p class='muted'>Loading applications...</p>";
 
- if(error){
 
-  $("adminApplications").innerHTML=
-   "<p>"+escapeHtml(error.message)+"</p>";
+const {data,error}=await db
+.from("job_applications")
+.select(
+"id,applicant_id,job_id,status,applied_at"
+)
+.order(
+"applied_at",
+{ascending:false}
+);
 
-  return;
- }
 
- if(!data || !data.length){
+if(error){
 
-  $("adminApplications").innerHTML=
-   "<p class='muted'>No applications tracked yet.</p>";
+box.innerHTML=
+"<p class='muted'>Application error: "+
+escapeHtml(error.message)+
+"</p>";
 
-  return;
- }
+return;
+}
 
- const jobIds=[...new Set(data.map(x=>x.job_id).filter(Boolean))];
- const userIds=[...new Set(data.map(x=>x.applicant_id).filter(Boolean))];
 
- let jobsMap={};
- let profilesMap={};
+if(!data || !data.length){
 
- if(jobIds.length){
+box.innerHTML=
+"<p class='muted'>No applications tracked yet.</p>";
 
-  const r=await db
-   .from("jobs")
-   .select("id,title,company")
-   .in("id",jobIds);
+return;
+}
 
-  if(!r.error){
-   (r.data||[]).forEach(x=>jobsMap[x.id]=x);
-  }
- }
 
- if(userIds.length){
+const jobIds=[
+...new Set(
+data.map(x=>x.job_id).filter(Boolean)
+)
+];
 
-  const r=await db
-   .from("applicant_profiles")
-   .select("id,full_name,phone,location,headline,bio,cv_path,cv_name")
-   .in("id",userIds);
+const userIds=[
+...new Set(
+data.map(x=>x.applicant_id).filter(Boolean)
+)
+];
 
-  if(!r.error){
-   (r.data||[]).forEach(x=>profilesMap[x.id]=x);
-  }
- }
 
- $("adminApplications").innerHTML=data.map(a=>{
+let jobsMap={};
 
-  const job=jobsMap[a.job_id] || {};
-  const profile=profilesMap[a.applicant_id] || {};
-  const status=a.status || "Applied";
+let profilesMap={};
 
-  return `
-  <div class="job">
 
-   <h3>${escapeHtml(job.title || "Job")}</h3>
+if(jobIds.length){
 
-   <p>
-    <b>Applicant:</b>
-    ${escapeHtml(profile.full_name || "Name not provided")}
-   </p>
+const r=await db
+.from("jobs")
+.select("id,title,company,location")
+.in("id",jobIds);
 
-   <p>
-    <b>Phone:</b>
-    ${escapeHtml(profile.phone || "Not provided")}
-   </p>
+if(!r.error){
 
-   <p>
-    <b>Location:</b>
-    ${escapeHtml(profile.location || "Not provided")}
-   </p>
+(r.data||[]).forEach(
+x=>jobsMap[x.id]=x
+);
 
-   ${profile.cv_path ? `<p><button class="light" onclick="viewApplicantCv('${escapeHtml(profile.cv_path)}')">📄 View CV / Resume</button></p>` : "<p class='muted'>CV / Resume: Not uploaded</p>"}
+}
 
-   <p class="muted">
-    Applied:
-    ${a.applied_at ? new Date(a.applied_at).toLocaleString() : "—"}
-   </p>
+}
 
-   <select onchange="updateApplicationStatus('${a.id}',this.value)">
-    ${[
-      "Applied",
-      "Under Review",
-      "Interview",
-      "Accepted",
-      "Rejected",
-      "Withdrawn"
-    ].map(s=>
-      `<option value="${escapeHtml(s)}"
-       ${s===status ? "selected" : ""}>
-       ${escapeHtml(s)}
-       </option>`
-    ).join("")}
-   </select>
 
-   <span class="status ${statusClass(status)}">
-    ${escapeHtml(status)}
-   </span>
+if(userIds.length){
 
-  </div>
-  `;
+const r=await db
+.from("applicant_profiles")
+.select(
+"id,full_name,phone,location,headline,bio,cv_path,cv_name"
+)
+.in("id",userIds);
 
- }).join("");
+if(!r.error){
+
+(r.data||[]).forEach(
+x=>profilesMap[x.id]=x
+);
+
+}
+
+}
+
+
+box.innerHTML=
+data.map(a=>{
+
+const job=
+jobsMap[a.job_id] || {};
+
+const profile=
+profilesMap[a.applicant_id] || {};
+
+const status=
+a.status || "Applied";
+
+
+return `
+
+<div class="job">
+
+<h3>
+${escapeHtml(
+job.title || "Job"
+)}
+</h3>
+
+<p>
+<b>Applicant:</b>
+${escapeHtml(
+profile.full_name ||
+"Name not provided"
+)}
+</p>
+
+<p>
+<b>Phone:</b>
+${escapeHtml(
+profile.phone ||
+"Not provided"
+)}
+</p>
+
+<p>
+<b>Location:</b>
+${escapeHtml(
+profile.location ||
+"Not provided"
+)}
+</p>
+
+${
+profile.cv_path
+?
+`
+<p>
+<button class="light"
+onclick="viewApplicantCv('${escapeHtml(profile.cv_path)}')">
+📄 View CV / Resume
+</button>
+</p>
+`
+:
+`
+<p class="muted">
+CV / Resume: Not uploaded
+</p>
+`
+}
+
+<p class="muted">
+Applied:
+${
+a.applied_at
+?
+new Date(
+a.applied_at
+).toLocaleString()
+:
+"—"
+}
+</p>
+
+
+<select
+onchange="updateApplicationStatus(
+'${a.id}',
+this.value
+)">
+
+${
+[
+"Applied",
+"Under Review",
+"Interview",
+"Accepted",
+"Rejected",
+"Withdrawn"
+]
+.map(s=>
+`
+<option
+value="${escapeHtml(s)}"
+${s===status?"selected":""}>
+${escapeHtml(s)}
+</option>
+`
+).join("")
+}
+
+</select>
+
+
+<span class="status ${statusClass(status)}">
+${escapeHtml(status)}
+</span>
+
+
+</div>
+
+`;
+
+}).join("");
 
 }
 
 
 async function viewApplicantCv(path){
- const {data,error}=await db.storage.from("resumes").createSignedUrl(path,300);
- if(error || !data?.signedUrl){
-  alert("Could not open CV: "+(error?.message || "Storage access denied."));
-  return;
- }
- window.open(data.signedUrl,"_blank","noopener");
+
+const {data,error}=
+await db.storage
+.from("resumes")
+.createSignedUrl(path,300);
+
+if(
+error ||
+!data?.signedUrl
+){
+
+alert(
+"Could not open CV: "+
+(error?.message ||
+"Storage access denied.")
+);
+
+return;
 }
 
-async function updateApplicationStatus(id,status){
-
- const {error}=await db
- .from("job_applications")
- .update({status})
- .eq("id",id);
-
- if(error){
-  alert("Could not update status: "+error.message);
-  return;
- }
-
- await loadAdminApplications();
-
- if(currentUser && !isAdmin){
-  await loadApplications();
- }
+window.open(
+data.signedUrl,
+"_blank",
+"noopener"
+);
 
 }
 
 
-db.auth.onAuthStateChange((event, session)=>{
-  currentUser=session?.user || null;
+async function updateApplicationStatus(
+id,
+status
+){
+
+const {error}=await db
+.from("job_applications")
+.update({status})
+.eq("id",id);
+
+
+if(error){
+
+alert(
+"Could not update status: "+
+error.message
+);
+
+return;
+}
+
+
+/* Try to create notification.
+   If the notification table does not
+   exist, application status still works. */
+
+try{
+
+await db
+.from("application_notifications")
+.insert({
+
+applicant_id:
+(await db
+.from("job_applications")
+.select("applicant_id")
+.eq("id",id)
+.maybeSingle()
+).data?.applicant_id,
+
+title:"Application Status Updated",
+
+message:
+"Your application status is now: "+
+status
+
 });
+
+}catch(e){
+
+/* Notification table is optional. */
+
+}
+
+
+await loadAdminApplications();
+
+if(currentUser && !isAdmin){
+
+await loadApplications();
+await loadNotifications();
+
+}
+
+}
+
+
+db.auth.onAuthStateChange(
+(event,session)=>{
+
+currentUser=
+session?.user || null;
+
+}
+);
 
 
 loadPublicJobs();
@@ -1726,133 +2577,4 @@ loadPublicJobs();
 </script>
 
 </body>
-</html>
-/* ===============================
-   EarnSmart Notification System
-   =============================== */
-
-async function loadNotifications(){
-
-  const box = $("notifications");
-
-  if(!box) return;
-
-  if(!currentUser){
-    box.innerHTML =
-      "<p class='muted'>Please log in to see your notifications.</p>";
-    return;
-  }
-
-  box.innerHTML =
-    "<p class='muted'>Loading notifications...</p>";
-
-  const {data,error} = await db
-    .from("application_notifications")
-    .select("*")
-    .eq("applicant_id",currentUser.id)
-    .order("created_at",{ascending:false});
-
-  if(error){
-
-    box.innerHTML =
-      "<p class='muted'>Notification error: " +
-      escapeHtml(error.message) +
-      "</p>";
-
-    return;
-  }
-
-  if(!data || !data.length){
-
-    box.innerHTML =
-      "<p class='muted'>No notifications yet.</p>";
-
-    return;
-  }
-
-  box.innerHTML = data.map(n => {
-
-    const title =
-      n.title ||
-      n.notification_title ||
-      "Application Update";
-
-    const message =
-      n.message ||
-      n.body ||
-      n.notification ||
-      "Your application has been updated.";
-
-    const date =
-      n.created_at
-      ? new Date(n.created_at).toLocaleString()
-      : "";
-
-    return `
-      <div class="job">
-
-        <h3>🔔 ${escapeHtml(title)}</h3>
-
-        <p>
-          ${escapeHtml(message)}
-        </p>
-
-        ${
-          date
-          ? `<p class="muted">${escapeHtml(date)}</p>`
-          : ""
-        }
-
-      </div>
-    `;
-
-  }).join("");
-}
-
-
-/* Load notifications whenever Applicant page opens */
-
-const originalShowApplicant = showApplicant;
-
-showApplicant = async function(){
-
-  await originalShowApplicant();
-
-  if(currentUser){
-    await loadNotifications();
-  }
-
-};
-
-
-/* Refresh notifications after Admin changes application status */
-
-const originalUpdateApplicationStatus =
-  updateApplicationStatus;
-
-updateApplicationStatus = async function(id,status){
-
-  await originalUpdateApplicationStatus(id,status);
-
-  if(currentUser && !isAdmin){
-    await loadNotifications();
-  }
-
-};
-
-
-/* Also refresh notifications when the user logs in */
-
-db.auth.onAuthStateChange((event,session)=>{
-
-  currentUser = session?.user || null;
-
-  if(currentUser){
-
-    setTimeout(()=>{
-      loadNotifications();
-    },500);
-
-  }
-
-});
+ </html>
