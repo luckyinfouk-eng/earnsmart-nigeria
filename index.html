@@ -2624,5 +2624,171 @@ async function saveEmployerProfile(){
     <p id="employerMessage"></p>
   </div>
 </section>
+<!-- EMPLOYER DASHBOARD -->
+<section id="employerDashboard" style="max-width:1100px;margin:30px auto;padding:25px;background:#f8fafc;border-radius:15px;">
+  <h2>🏢 Employer Dashboard</h2>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin:20px 0;">
+    <button class="btn" onclick="showEmployerTab('postJob')">📝 Post a Job</button>
+    <button class="btn" onclick="showEmployerTab('myJobs')">📋 My Jobs</button>
+    <button class="btn" onclick="showEmployerTab('applications')">👥 Applications</button>
+  </div>
+
+  <!-- POST JOB -->
+  <div id="postJob" style="display:block;">
+    <h3>📝 Post a New Job</h3>
+
+    <input id="empJobTitle" placeholder="Job title" style="width:100%;padding:12px;margin:6px 0;">
+
+    <input id="empJobCategory" placeholder="Category" style="width:100%;padding:12px;margin:6px 0;">
+
+    <input id="empJobLocation" placeholder="Location" style="width:100%;padding:12px;margin:6px 0;">
+
+    <input id="empJobSalary" placeholder="Salary (optional)" style="width:100%;padding:12px;margin:6px 0;">
+
+    <input id="empJobApplicationUrl" placeholder="Application URL" style="width:100%;padding:12px;margin:6px 0;">
+
+    <textarea id="empJobDescription" placeholder="Job description" style="width:100%;padding:12px;margin:6px 0;min-height:140px;"></textarea>
+
+    <label style="display:block;margin:10px 0;">
+      <input type="checkbox" id="empJobRemote">
+      Remote job
+    </label>
+
+    <button class="btn" onclick="postEmployerJob()">🚀 Publish Job</button>
+
+    <p id="employerJobMessage"></p>
+  </div>
+
+  <!-- MY JOBS -->
+  <div id="myJobs" style="display:none;">
+    <h3>📋 My Jobs</h3>
+    <div id="employerJobsList">Loading your jobs...</div>
+  </div>
+
+  <!-- APPLICATIONS -->
+  <div id="applications" style="display:none;">
+    <h3>👥 Job Applications</h3>
+    <div id="employerApplicationsList">Loading applications...</div>
+  </div>
+</section>
+
+<script>
+function showEmployerTab(tab){
+  ["postJob","myJobs","applications"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display = id===tab ? "block" : "none";
+  });
+
+  if(tab==="myJobs") loadEmployerJobs();
+  if(tab==="applications") loadEmployerApplications();
+}
+
+async function postEmployerJob(){
+  if(!currentUser){
+    $("employerJobMessage").textContent="Please log in as an employer first.";
+    return;
+  }
+
+  const title=$("empJobTitle").value.trim();
+  const category=$("empJobCategory").value.trim();
+  const location=$("empJobLocation").value.trim();
+  const salary=$("empJobSalary").value.trim();
+  const applicationUrl=$("empJobApplicationUrl").value.trim();
+  const description=$("empJobDescription").value.trim();
+  const remote=$("empJobRemote").checked;
+
+  if(!title || !description || !applicationUrl){
+    $("employerJobMessage").textContent="Please enter the job title, description and application URL.";
+    return;
+  }
+
+  const {error}=await db.from("jobs").insert({
+    title:title,
+    company:$("employerCompany").value.trim(),
+    description:description,
+    category:category,
+    location:location,
+    application_url:applicationUrl,
+    salary_text:salary,
+    remote:remote,
+    verified:false,
+    active:true,
+    employer_id:currentUser.id
+  });
+
+  if(error){
+    $("employerJobMessage").textContent="Error: "+error.message;
+    return;
+  }
+
+  $("employerJobMessage").textContent="✅ Job posted successfully and sent for verification.";
+
+  $("empJobTitle").value="";
+  $("empJobCategory").value="";
+  $("empJobLocation").value="";
+  $("empJobSalary").value="";
+  $("empJobApplicationUrl").value="";
+  $("empJobDescription").value="";
+  $("empJobRemote").checked=false;
+}
+
+async function loadEmployerJobs(){
+  if(!currentUser) return;
+
+  const {data,error}=await db
+    .from("jobs")
+    .select("*")
+    .eq("employer_id",currentUser.id)
+    .order("created_at",{ascending:false});
+
+  if(error){
+    $("employerJobsList").textContent="Error: "+error.message;
+    return;
+  }
+
+  if(!data || data.length===0){
+    $("employerJobsList").textContent="You have not posted any jobs yet.";
+    return;
+  }
+
+  $("employerJobsList").innerHTML=data.map(job=>`
+    <div style="background:white;padding:15px;margin:10px 0;border-radius:10px;">
+      <h4>${job.title}</h4>
+      <p>${job.location || ""}</p>
+      <p>Status: ${job.verified ? "✅ Verified" : "⏳ Pending verification"}</p>
+      <p>${job.active ? "🟢 Active" : "🔴 Inactive"}</p>
+    </div>
+  `).join("");
+}
+
+async function loadEmployerApplications(){
+  if(!currentUser) return;
+
+  const {data,error}=await db
+    .from("job_applications")
+    .select("*, jobs!inner(title, employer_id)")
+    .eq("jobs.employer_id",currentUser.id)
+    .order("created_at",{ascending:false});
+
+  if(error){
+    $("employerApplicationsList").textContent="Error: "+error.message;
+    return;
+  }
+
+  if(!data || data.length===0){
+    $("employerApplicationsList").textContent="No applications received yet.";
+    return;
+  }
+
+  $("employerApplicationsList").innerHTML=data.map(app=>`
+    <div style="background:white;padding:15px;margin:10px 0;border-radius:10px;">
+      <h4>${app.jobs?.title || "Job Application"}</h4>
+      <p>Status: ${app.status || "Pending"}</p>
+      <p>Application ID: ${app.id}</p>
+    </div>
+  `).join("");
+}
+</script>
 </body>
  </html>
