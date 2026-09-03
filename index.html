@@ -2573,8 +2573,56 @@ session?.user || null;
 
 
 loadPublicJobs();
+async function saveEmployerProfile(){
+  if(!currentUser){
+    $("employerMessage").textContent="Please log in first.";
+    return;
+  }
 
+  const profile={
+    id:currentUser.id,
+    company_name:$("employerCompany").value.trim(),
+    contact_name:$("employerContact").value.trim(),
+    phone:$("employerPhone").value.trim(),
+    location:$("employerLocation").value.trim(),
+    website:$("employerWebsite").value.trim(),
+    description:$("employerDescription").value.trim()
+  };
+
+  if(!profile.company_name){
+    $("employerMessage").textContent="Please enter your company name.";
+    return;
+  }
+
+  const {error}=await db
+    .from("employer_profiles")
+    .upsert(profile,{onConflict:"id"});
+
+  if(error){
+    $("employerMessage").textContent="Error: "+error.message;
+    return;
+  }
+
+  $("employerMessage").textContent="✅ Company profile saved successfully!";
+}
 </script>
 
+<section id="employerSection" style="max-width:1100px;margin:40px auto;padding:25px;background:#f4f7fb;border-radius:15px;">
+  <h2>🏢 Employer Portal</h2>
+  <p>Create your company profile and manage your hiring activities on EarnSmart Nigeria.</p>
+
+  <div id="employerProfileBox">
+    <input id="employerCompany" placeholder="Company name" style="width:100%;padding:12px;margin:6px 0;">
+    <input id="employerContact" placeholder="Contact person" style="width:100%;padding:12px;margin:6px 0;">
+    <input id="employerPhone" placeholder="Phone number" style="width:100%;padding:12px;margin:6px 0;">
+    <input id="employerLocation" placeholder="Company location" style="width:100%;padding:12px;margin:6px 0;">
+    <input id="employerWebsite" placeholder="Company website" style="width:100%;padding:12px;margin:6px 0;">
+    <textarea id="employerDescription" placeholder="Tell job seekers about your company" style="width:100%;padding:12px;margin:6px 0;"></textarea>
+
+    <button class="btn" onclick="saveEmployerProfile()">💾 Save Company Profile</button>
+
+    <p id="employerMessage"></p>
+  </div>
+</section>
 </body>
  </html>
