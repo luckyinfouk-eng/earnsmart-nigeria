@@ -2562,12 +2562,7 @@ await loadNotifications();
 }
 
 
-currentUser=
-session?.user || null;
-
-if(currentUser){
-  loadEmployerJobs();
-}
+db.auth.onAuthStateChange(
 (event,session)=>{
 
 currentUser=
